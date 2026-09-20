@@ -1,0 +1,13 @@
+{
+  "uid": 230,
+  "wallet": "GOLD",
+  "hotkey": "sn1003",
+  "port": 9102,
+  "external_ip": "176.9.86.107",
+  "pm2_name": "miner-sn79-gold-9102-sn1003",
+  "live_config": "/root/MVTRX_08_29/sn-79/agents/data/topagent.230.json",
+  "agent": "TopAgent",
+  "repo": "/root/MVTRX_08_29/sn-79",
+  "started_utc": "2026-09-19T14:15:08Z",
+  "note": "BookManageBot Register (TopAgent)"
+}

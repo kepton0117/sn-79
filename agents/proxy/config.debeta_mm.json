@@ -1,0 +1,53 @@
+{
+    "proxy": {
+        "port": 8000,
+        "simulation_xml": "../../simulate/trading/run/config/simulation_debeta_mm_test.xml",
+        "timeout": 10,
+        "debeta_fills_out": "debeta_fills.json",
+        "debeta_caps_out": "debeta_caps.json",
+        "debeta_skill_window_ns": 10800000000000,
+        "debeta_making_window_ns": 86400000000000
+    },
+    "agents": {
+        "path": "..",
+        "start_port": 8888,
+        "DebetaMMAgent": [
+            {
+                "params": {
+                    "quantity": 1,
+                    "max_books": 128,
+                    "n_ticks": 1,
+                    "expiry_period": 200000000000,
+                    "max_fee_rate": 0.005,
+                    "cancel_before_quote": true
+                },
+                "count": 1
+            }
+        ],
+        "RandomMakerAgent": [
+            {
+                "params": {
+                    "min_quantity": 1.0,
+                    "max_quantity": 2.0,
+                    "expiry_period": 200000000000,
+                    "lazy_load": 1
+                },
+                "count": 4
+            }
+        ],
+        "RandomTakerAgent": [
+            {
+                "params": {
+                    "min_quantity": 1.0,
+                    "max_quantity": 2.0,
+                    "lazy_load": 1
+                },
+                "count": 4
+            }
+        ]
+    },
+    "taosim": {
+        "bin": "taosim",
+        "delay": 8
+    }
+}

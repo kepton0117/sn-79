@@ -177,6 +177,12 @@ checkpoints/
 # GenTRX runtime artifacts
 agents/*/miner_buckets.json
 
+# Local miner runtime / backups (not for version control)
+agents/data/
+agents/downloaded_files/
+*.zip
+*.tmp.*
+
 # The swap proxy keeps its own encrypted password store by the same mechanism (see
 # swap_wallet_manager.py). It was not listed here, so an operator running the swap rail would have
 # had wallet passwords sitting committable in the worktree. Found 2026-08-24 by the file this

@@ -1,0 +1,4325 @@
+{
+  "generated_at": "2026-09-07",
+  "network": "finney",
+  "source": [
+    "on-chain SubtensorModule.SubnetOwner via bt.Subtensor.get_all_subnets_info",
+    "on-chain SubtensorModule.SubnetIdentitiesV3",
+    "on-chain wallet Identity via query_identity",
+    "https://api.metagraph.sh/api/v1/subnets public surfaces",
+    "known_team is a curated public-org map, not a legal-ownership claim"
+  ],
+  "notes": [
+    "On-chain owner is a coldkey. It is usually NOT a legal company name.",
+    "Slots can be sold/transferred; netuid is not a permanent team.",
+    "Today every live netuid 0-128 has a distinct owner coldkey (129 unique keys).",
+    "This file is public-team intel only. No private addresses, personal Gmail, phones, or salaries.",
+    "Many wallet identities are placeholders like Owner4. Ignore those."
+  ],
+  "counts": {
+    "subnets": 129,
+    "unique_owner_keys": 129,
+    "with_public_contact": 86,
+    "with_known_team": 20,
+    "with_useful_wallet_identity": 55
+  },
+  "studios": {
+    "Opentensor / root": [
+      0
+    ],
+    "Macrocosmos": [
+      1,
+      9,
+      13,
+      25
+    ],
+    "Inference Labs": [
+      2
+    ],
+    "Templar / one-covenant": [
+      3
+    ],
+    "Manifold": [
+      4,
+      5
+    ],
+    "Taoshi": [
+      8
+    ],
+    "blockmachine": [
+      19
+    ],
+    "BitMind": [
+      34
+    ],
+    "Datura / lium.io": [
+      51
+    ],
+    "Tensorplex": [
+      52
+    ],
+    "Gradients / Grads LLC (Rayon Labs contrib)": [
+      56
+    ],
+    "Chutes / Chutes Global Corp (Rayon Labs contrib)": [
+      64
+    ],
+    "NATIX": [
+      72
+    ],
+    "Rayleigh Research Oy / TAOS": [
+      79
+    ],
+    "Albedo / advertised operator Arbos": [
+      97
+    ],
+    "Affine Foundation": [
+      120
+    ]
+  },
+  "subnets": [
+    {
+      "netuid": 0,
+      "name": "root",
+      "symbol": "Τ",
+      "owner_ss58": "5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM",
+      "owner_taostats": "https://taostats.io/account/5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM",
+      "owner_chain_identity": {
+        "name": "Polychain",
+        "url": "https://polychain.capital/",
+        "github": "",
+        "image": "",
+        "discord": "",
+        "description": "",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": null,
+      "public": {
+        "website": "https://bittensor.com",
+        "contact": null,
+        "github": "https://github.com/opentensor/subtensor",
+        "discord": null,
+        "x": null,
+        "docs": "https://docs.learnbittensor.org/concepts/bittensor-networks",
+        "description": null
+      },
+      "known_team": {
+        "org": "Opentensor / root",
+        "public_face": "chain identity: Polychain",
+        "notes": "Root network. Owner identity on-chain is Polychain."
+      },
+      "explorer": "https://subnetradar.com/research/subnets/0"
+    },
+    {
+      "netuid": 1,
+      "name": "Apex",
+      "symbol": "α",
+      "owner_ss58": "5HCFWvRqzSHWRPecN7q8J6c7aKQnrCZTMHstPv39xL1wgDHh",
+      "owner_taostats": "https://taostats.io/account/5HCFWvRqzSHWRPecN7q8J6c7aKQnrCZTMHstPv39xL1wgDHh",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Apex",
+        "github_repo": "https://github.com/macrocosm-os/apex",
+        "subnet_contact": "hello@macrocosmos.ai",
+        "subnet_url": "https://apex.macrocosmos.ai",
+        "discord": "https://discord.gg/bvBDat3Gy",
+        "description": "The general intelligence platform",
+        "logo_url": "https://www.macrocosmos.ai/images/mc_logo_black.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://apex.macrocosmos.ai",
+        "contact": "hello@macrocosmos.ai",
+        "github": "https://github.com/macrocosm-os/apex",
+        "discord": "https://discord.gg/bvBDat3Gy",
+        "x": "https://x.com/macrocosmosai",
+        "docs": "https://docs.macrocosmos.ai/subnets/subnet-1-apex",
+        "description": "The general intelligence platform"
+      },
+      "known_team": {
+        "org": "Macrocosmos",
+        "public_face": "Macrocosmos",
+        "notes": "Apex inference. Contact support@macrocosmos.ai"
+      },
+      "explorer": "https://subnetradar.com/research/subnets/1"
+    },
+    {
+      "netuid": 2,
+      "name": "DSperse",
+      "symbol": "β",
+      "owner_ss58": "5EcYQ3W77ndrmMWdvVQusoFqY8doxfP3U2zrh7xZQiaz7avY",
+      "owner_taostats": "https://taostats.io/account/5EcYQ3W77ndrmMWdvVQusoFqY8doxfP3U2zrh7xZQiaz7avY",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "DSperse",
+        "github_repo": "https://github.com/inference-labs-inc/subnet-2",
+        "subnet_contact": "",
+        "subnet_url": "https://subnet2.inferencelabs.com",
+        "discord": "",
+        "description": "Verifiable and distributed inference on Bittensor",
+        "logo_url": "https://dsperse.inferencelabs.com/logo-512.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://subnet2.inferencelabs.com",
+        "contact": null,
+        "github": "https://github.com/inference-labs-inc/subnet-2",
+        "discord": null,
+        "x": "https://x.com/inference_labs",
+        "docs": "https://sn2-docs.inferencelabs.com/",
+        "description": "Verifiable and distributed inference on Bittensor"
+      },
+      "known_team": {
+        "org": "Inference Labs",
+        "public_face": "Inference Labs",
+        "notes": "DSperse / zkML. https://inferencelabs.com"
+      },
+      "explorer": "https://subnetradar.com/research/subnets/2"
+    },
+    {
+      "netuid": 3,
+      "name": "Teutonic",
+      "symbol": "γ",
+      "owner_ss58": "5GsGUrd21bnkNxQsH2grv474y4gcDwCmp5xJ72KeokspZ2bg",
+      "owner_taostats": "https://taostats.io/account/5GsGUrd21bnkNxQsH2grv474y4gcDwCmp5xJ72KeokspZ2bg",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Teutonic",
+        "github_repo": "https://github.com/unarbos/teutonic",
+        "subnet_contact": "arbos@bittensor.com",
+        "subnet_url": "https://www.teutonic.ai/",
+        "discord": "@unarbos",
+        "description": "Coordinated Learning",
+        "logo_url": "https://teutonic.ai/favicon.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.teutonic.ai/",
+        "contact": "arbos@bittensor.com",
+        "github": "https://github.com/unarbos/teutonic",
+        "discord": "@unarbos",
+        "x": "https://x.com/tplr_ai",
+        "docs": "https://docs.tplr.ai/",
+        "description": "Coordinated Learning"
+      },
+      "known_team": {
+        "org": "Templar / one-covenant",
+        "public_face": "tplr.ai",
+        "notes": "Live name Teutonic; Templar pretraining lineage."
+      },
+      "explorer": "https://subnetradar.com/research/subnets/3"
+    },
+    {
+      "netuid": 4,
+      "name": "Targon",
+      "symbol": "δ",
+      "owner_ss58": "5CXGPMnq9RCCLUEvp9G2iUuabw69TSFM155UVS1S4Zmusaxv",
+      "owner_taostats": "https://taostats.io/account/5CXGPMnq9RCCLUEvp9G2iUuabw69TSFM155UVS1S4Zmusaxv",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Targon",
+        "github_repo": "https://github.com/manifold-inc/targon",
+        "subnet_contact": "devs@manifold.inc",
+        "subnet_url": "https://targon.com",
+        "discord": "",
+        "description": "Incentivized Compute Marketplace powered by the Targon Virtual Machine (TVM).",
+        "logo_url": "https://www.manifold.inc/favicon.svg",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://targon.com",
+        "contact": "devs@manifold.inc",
+        "github": "https://github.com/manifold-inc/targon",
+        "discord": null,
+        "x": "https://x.com/targoncompute",
+        "docs": "https://docs.targon.com/",
+        "description": "Incentivized Compute Marketplace powered by the Targon Virtual Machine (TVM)."
+      },
+      "known_team": {
+        "org": "Manifold",
+        "public_face": "Manifold",
+        "notes": "Targon compute. Contact devs@manifold.inc"
+      },
+      "explorer": "https://subnetradar.com/research/subnets/4"
+    },
+    {
+      "netuid": 5,
+      "name": "Hone",
+      "symbol": "ε",
+      "owner_ss58": "5GurNtB3yQFCh6CSmfH7LrYJDsvzup4diHZiaYtKe274nrMX",
+      "owner_taostats": "https://taostats.io/account/5GurNtB3yQFCh6CSmfH7LrYJDsvzup4diHZiaYtKe274nrMX",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Hone",
+        "github_repo": "https://github.com/hone-subnet-org/hone-subnet",
+        "subnet_contact": "",
+        "subnet_url": "https://honedashboard.com",
+        "discord": "",
+        "description": "Hone training",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://honedashboard.com",
+        "contact": "devs@manifold.inc",
+        "github": "https://github.com/hone-subnet-org/hone-subnet",
+        "discord": null,
+        "x": null,
+        "docs": null,
+        "description": "Hone training"
+      },
+      "known_team": {
+        "org": "Manifold",
+        "public_face": "Manifold",
+        "notes": "Hone. Same contact as Targon: devs@manifold.inc"
+      },
+      "explorer": "https://subnetradar.com/research/subnets/5"
+    },
+    {
+      "netuid": 6,
+      "name": "Numinous",
+      "symbol": "ζ",
+      "owner_ss58": "5CfSg4e23Z3aTXvc2XZie8ZE1xkqRPoyVRFdWUuyyjGxJrMA",
+      "owner_taostats": "https://taostats.io/account/5CfSg4e23Z3aTXvc2XZie8ZE1xkqRPoyVRFdWUuyyjGxJrMA",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Numinous",
+        "github_repo": "https://github.com/numinouslabs/numinous",
+        "subnet_contact": "marc@infinitemech.io",
+        "subnet_url": "https://numinouslabs.io/",
+        "discord": "amedeo_ma",
+        "description": "Numinous is a forecasting protocol whose goal is to aggregate agents into superhuman LLM forecasters.",
+        "logo_url": "https://numinouslabs.io/numinous-logo.svg",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://numinouslabs.io/",
+        "contact": "marc@infinitemech.io",
+        "github": "https://github.com/numinouslabs/numinous",
+        "discord": "amedeo_ma",
+        "x": "https://x.com/numinous_ai",
+        "docs": "https://api.numinouslabs.io/api/docs",
+        "description": "Numinous is a forecasting protocol whose goal is to aggregate agents into superhuman LLM forecasters."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/6"
+    },
+    {
+      "netuid": 7,
+      "name": "Allways",
+      "symbol": "η",
+      "owner_ss58": "5CAc19iETJmWD2rYVX1ht58ghCpyHq86MoBNdx5TzLfinzcx",
+      "owner_taostats": "https://taostats.io/account/5CAc19iETJmWD2rYVX1ht58ghCpyHq86MoBNdx5TzLfinzcx",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Allways",
+        "github_repo": "https://github.com/entrius/allways",
+        "subnet_contact": " ",
+        "subnet_url": "https://all-ways.io/",
+        "discord": " ",
+        "description": "universal transaction layer",
+        "logo_url": " https://allways-905418005698-us-east-2-an.s3.us-east-2.amazonaws.com/sn7-light.png",
+        "additional": " "
+      },
+      "public": {
+        "website": "https://all-ways.io/",
+        "contact": " ",
+        "github": "https://github.com/entrius/allways",
+        "discord": " ",
+        "x": null,
+        "docs": "https://docs.all-ways.io/how-it-works.html",
+        "description": "universal transaction layer"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/7"
+    },
+    {
+      "netuid": 8,
+      "name": "Vanta",
+      "symbol": "θ",
+      "owner_ss58": "5F6tnxzAAxbhaWRmeUmB63JEM3VXBNSmqb3AwYJVDStQjw8y",
+      "owner_taostats": "https://taostats.io/account/5F6tnxzAAxbhaWRmeUmB63JEM3VXBNSmqb3AwYJVDStQjw8y",
+      "owner_chain_identity": {
+        "name": "τaoshi validator",
+        "url": "https://www.taoshi.io/",
+        "github": "",
+        "image": "",
+        "discord": "",
+        "description": "",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Vanta",
+        "github_repo": "https://github.com/taoshidev/vanta-network",
+        "subnet_contact": "",
+        "subnet_url": "https://www.vantanetwork.io/",
+        "discord": "tl_arrash",
+        "description": "The first decentralized & trustless liquidity and execution engine for prop firms and traders",
+        "logo_url": "https://website-git-ken-vanta-taoshi.vercel.app/black-white.png",
+        "additional": "Vanta Network is the first decentralized, trustless liquidity and execution engine for prop firms and traders. It live-trades top-performing miners who deposit alpha for funding, rewards them based on verifiable performance, and uses profits to buy back alpha, creating a transparent, risk-adjusted, and incentive-aligned trading ecosystem."
+      },
+      "public": {
+        "website": "https://www.vantanetwork.io/",
+        "contact": null,
+        "github": "https://github.com/taoshidev/vanta-network",
+        "discord": "tl_arrash",
+        "x": "https://x.com/taoshiio",
+        "docs": "https://www.vantanetwork.io/tokenomics",
+        "description": "The first decentralized & trustless liquidity and execution engine for prop firms and traders"
+      },
+      "known_team": {
+        "org": "Taoshi",
+        "public_face": "Taoshi",
+        "notes": "Vanta. On-chain identity: τaoshi validator"
+      },
+      "explorer": "https://subnetradar.com/research/subnets/8"
+    },
+    {
+      "netuid": 9,
+      "name": "iota",
+      "symbol": "ι",
+      "owner_ss58": "5FsbubeciqtB5Nik3umL2iD4fG8FcC9GbT9nHJfXMj4mJJZ9",
+      "owner_taostats": "https://taostats.io/account/5FsbubeciqtB5Nik3umL2iD4fG8FcC9GbT9nHJfXMj4mJJZ9",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "iota",
+        "github_repo": "https://github.com/macrocosm-os/iota",
+        "subnet_contact": "hello@macrocosmos.ai",
+        "subnet_url": "https://iota.macrocosmos.ai/",
+        "discord": "https://discord.gg/adsQPnFRY",
+        "description": "Bringing liquid training to the world",
+        "logo_url": "https://www.macrocosmos.ai/images/mc_logo_black.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://iota.macrocosmos.ai/",
+        "contact": "hello@macrocosmos.ai",
+        "github": "https://github.com/macrocosm-os/iota",
+        "discord": "https://discord.gg/adsQPnFRY",
+        "x": null,
+        "docs": null,
+        "description": "Bringing liquid training to the world"
+      },
+      "known_team": {
+        "org": "Macrocosmos",
+        "public_face": "Macrocosmos",
+        "notes": "IOTA distributed pretraining. Steffen Cruz often cited as architect."
+      },
+      "explorer": "https://subnetradar.com/research/subnets/9"
+    },
+    {
+      "netuid": 10,
+      "name": "Pareton",
+      "symbol": "Ⱂ",
+      "owner_ss58": "5HK5714cfComgoVg9UfQswQHad6wJV4RnGvp6PQvTkLUUFt5",
+      "owner_taostats": "https://taostats.io/account/5HK5714cfComgoVg9UfQswQHad6wJV4RnGvp6PQvTkLUUFt5",
+      "owner_chain_identity": {
+        "name": "Pareton",
+        "url": "https://www.pareton.ai/",
+        "github": "https://github.com/Pareton-ai/pareton",
+        "image": "https://www.pareton.ai/logo.png",
+        "discord": "",
+        "description": "Inference Optimization",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Pareton",
+        "github_repo": "https://github.com/Pareton-ai/pareton",
+        "subnet_contact": "",
+        "subnet_url": "https://www.pareton.ai/",
+        "discord": "",
+        "description": "The Intelligence Layer for AI Inference",
+        "logo_url": "https://www.pareton.ai/logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.pareton.ai/",
+        "contact": null,
+        "github": "https://github.com/Pareton-ai/pareton",
+        "discord": null,
+        "x": null,
+        "docs": "https://docs.taofi.com/",
+        "description": "The Intelligence Layer for AI Inference"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/10"
+    },
+    {
+      "netuid": 11,
+      "name": "TrajectoryRL",
+      "symbol": "λ",
+      "owner_ss58": "5D2Jhtbnm7iAdKfjRk6DisXBnr1MEsYat8kXqaPNrVqJP3uE",
+      "owner_taostats": "https://taostats.io/account/5D2Jhtbnm7iAdKfjRk6DisXBnr1MEsYat8kXqaPNrVqJP3uE",
+      "owner_chain_identity": {
+        "name": "trajrl.com",
+        "url": "https://trajrl.com",
+        "github": "https://github.com/trajectoryRL/trajectoryRL",
+        "image": "https://pbs.twimg.com/profile_images/2018928039716089856/2PZ-Bhm2_400x400.jpg",
+        "discord": "",
+        "description": "Decentralized Reinforcement Learning for optimizing agent  \n  trajectories, making agents cheaper, faster, and more reliable.",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "TrajectoryRL",
+        "github_repo": "https://github.com/trajectoryRL/trajectoryRL",
+        "subnet_contact": "trajectoryrl@gmail.com",
+        "subnet_url": "https://trajrl.com",
+        "discord": "",
+        "description": "Agentic RL as a Service, Optimize agent trajectories to make agents cheaper, safer, and more reliable.",
+        "logo_url": "https://pbs.twimg.com/profile_images/2018928039716089856/2PZ-Bhm2_400x400.jpg",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://trajrl.com",
+        "contact": "trajectoryrl@gmail.com",
+        "github": "https://github.com/trajectoryRL/trajectoryRL",
+        "discord": null,
+        "x": "https://x.com/trajectoryrl",
+        "docs": "https://trajrl.com/docs",
+        "description": "Agentic RL as a Service, Optimize agent trajectories to make agents cheaper, safer, and more reliable."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/11"
+    },
+    {
+      "netuid": 12,
+      "name": "Compute Horde",
+      "symbol": "μ",
+      "owner_ss58": "5ELzhHvgUqmnAYs74vFWjMMehXNeHkRtkreAa3g8QQS96PCp",
+      "owner_taostats": "https://taostats.io/account/5ELzhHvgUqmnAYs74vFWjMMehXNeHkRtkreAa3g8QQS96PCp",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Compute Horde",
+        "github_repo": "https://github.com/backend-developers-ltd/ComputeHorde/",
+        "subnet_contact": "",
+        "subnet_url": "",
+        "discord": "",
+        "description": "",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://computehorde.io/",
+        "contact": null,
+        "github": "https://github.com/backend-developers-ltd/ComputeHorde/",
+        "discord": null,
+        "x": null,
+        "docs": null,
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/12"
+    },
+    {
+      "netuid": 13,
+      "name": "Data Universe",
+      "symbol": "ν",
+      "owner_ss58": "5HBswBt1A9Ahx6U76abXXGd7VmabmCNBGhSK2vrP71GSxtgZ",
+      "owner_taostats": "https://taostats.io/account/5HBswBt1A9Ahx6U76abXXGd7VmabmCNBGhSK2vrP71GSxtgZ",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Data Universe",
+        "github_repo": "https://github.com/macrocosm-os/data-universe",
+        "subnet_contact": "hello@macrocosmos.ai",
+        "subnet_url": "https://datauniverse.macrocosmos.ai/",
+        "discord": "https://discord.gg/adsQPnFRY",
+        "description": "Scraping the world's social media data",
+        "logo_url": "https://www.macrocosmos.ai/images/mc_logo_black.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://datauniverse.macrocosmos.ai/",
+        "contact": "hello@macrocosmos.ai",
+        "github": "https://github.com/macrocosm-os/data-universe",
+        "discord": "https://discord.gg/adsQPnFRY",
+        "x": "https://x.com/macrocosmosai",
+        "docs": "https://docs.macrocosmos.ai/product-and-services/gravity",
+        "description": "Scraping the world's social media data"
+      },
+      "known_team": {
+        "org": "Macrocosmos",
+        "public_face": "Macrocosmos",
+        "notes": "Data Universe / Gravity data layer."
+      },
+      "explorer": "https://subnetradar.com/research/subnets/13"
+    },
+    {
+      "netuid": 14,
+      "name": "Cacheon",
+      "symbol": "ㄷ",
+      "owner_ss58": "5CKhH8nKAhXLmqxwaXzFtVFgxqwwnyckXG8qLpmGtzVJH9Ri",
+      "owner_taostats": "https://taostats.io/account/5CKhH8nKAhXLmqxwaXzFtVFgxqwwnyckXG8qLpmGtzVJH9Ri",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Cacheon",
+        "github_repo": "https://github.com/latent-to/cacheon",
+        "subnet_contact": "hello@cacheon.ai",
+        "subnet_url": "https://cacheon.ai",
+        "discord": "https://discord.com/invite/bittensor",
+        "description": "A competition where miners submit containerized inference servers to compete on speed and correctness when serving an open-source model",
+        "logo_url": "https://cacheon.ai/icon-192.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://cacheon.ai",
+        "contact": "hello@cacheon.ai",
+        "github": "https://github.com/latent-to/cacheon",
+        "discord": "https://discord.com/invite/bittensor",
+        "x": "https://x.com/cacheon_ai",
+        "docs": "https://cacheon.ai/docs",
+        "description": "A competition where miners submit containerized inference servers to compete on speed and correctness when serving an open-source model"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/14"
+    },
+    {
+      "netuid": 15,
+      "name": "ORO",
+      "symbol": "ο",
+      "owner_ss58": "5EHdase3QHY1FSU2KoxzpbnkzGhxBZEVcWU85zyjrxG62KTK",
+      "owner_taostats": "https://taostats.io/account/5EHdase3QHY1FSU2KoxzpbnkzGhxBZEVcWU85zyjrxG62KTK",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "ORO",
+        "github_repo": "https://github.com/ORO-AI/oro",
+        "subnet_contact": "team@oroagents.com",
+        "subnet_url": "https://oroagents.com",
+        "discord": "https://discord.gg/MHqAVWTdka",
+        "description": "AI commerce agents",
+        "logo_url": "https://raw.githubusercontent.com/ORO-AI/oro/main/brand/profile-snowcap.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://oroagents.com",
+        "contact": "team@oroagents.com",
+        "github": "https://github.com/ORO-AI/oro",
+        "discord": "https://discord.gg/MHqAVWTdka",
+        "x": "https://x.com/oroagents",
+        "docs": "https://docs.oroagents.com/docs/miners/quick-start",
+        "description": "AI commerce agents"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/15"
+    },
+    {
+      "netuid": 16,
+      "name": "trav",
+      "symbol": "π",
+      "owner_ss58": "5FkKY8WJKm1fsUXuVNeoX7ayENaSmR6L2KNoJN48ZAJwtWeU",
+      "owner_taostats": "https://taostats.io/account/5FkKY8WJKm1fsUXuVNeoX7ayENaSmR6L2KNoJN48ZAJwtWeU",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "trav",
+        "github_repo": "",
+        "subnet_contact": "",
+        "subnet_url": "",
+        "discord": "",
+        "description": "",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": null,
+        "contact": null,
+        "github": "https://github.com/study-service/BitAds.ai",
+        "discord": null,
+        "x": "https://x.com/bitkoop",
+        "docs": "https://bitads.ai/docs",
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/16"
+    },
+    {
+      "netuid": 17,
+      "name": "404—GEN",
+      "symbol": "ρ",
+      "owner_ss58": "5E7a4a7QETrNjoZ2SbVSJMaavrQeyTEaHgjBPDUDxBKjUaMZ",
+      "owner_taostats": "https://taostats.io/account/5E7a4a7QETrNjoZ2SbVSJMaavrQeyTEaHgjBPDUDxBKjUaMZ",
+      "owner_chain_identity": {
+        "name": "Owner17",
+        "url": "https://404.xyz/",
+        "github": "https://github.com/404-Repo/three-gen-subnet",
+        "image": "https://avatars.githubusercontent.com/u/154099142",
+        "discord": "https://discord.gg/404gen",
+        "description": "Democratizing 3D content creation",
+        "additional": "",
+        "generic_placeholder": true
+      },
+      "subnet_identity": {
+        "subnet_name": "404—GEN",
+        "github_repo": "https://github.com/404-Repo/404-gen-subnet",
+        "subnet_contact": "404@404.xyz",
+        "subnet_url": "https://www.404.xyz",
+        "discord": "",
+        "description": "a decentralized 3D content generation competition",
+        "logo_url": "https://avatars.githubusercontent.com/u/154099142?s=200&v=4",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.404.xyz",
+        "contact": "404@404.xyz",
+        "github": "https://github.com/404-Repo/404-gen-subnet",
+        "discord": null,
+        "x": "https://x.com/404gen_",
+        "docs": null,
+        "description": "a decentralized 3D content generation competition"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/17"
+    },
+    {
+      "netuid": 18,
+      "name": "Zeus",
+      "symbol": "σ",
+      "owner_ss58": "5GgvCi6h7dNsC489T8UnUMv912SoEXpEUDVt71VJU1Td7WKh",
+      "owner_taostats": "https://taostats.io/account/5GgvCi6h7dNsC489T8UnUMv912SoEXpEUDVt71VJU1Td7WKh",
+      "owner_chain_identity": {
+        "name": "Ørpheus AI",
+        "url": "https://www.zeussubnet.com/",
+        "github": "https://github.com/Orpheus-AI/Zeus",
+        "image": "https://raw.githubusercontent.com/Orpheus-AI/Zeus/refs/heads/main/static/zeus-icon.png",
+        "discord": "wouter_orpheusai",
+        "description": "Weather API for energy traders",
+        "additional": "huggingface; https://huggingface.co/orpheus-zeus",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Zeus",
+        "github_repo": "https://github.com/Orpheus-AI/Zeus",
+        "subnet_contact": "",
+        "subnet_url": "https://www.zeussubnet.com/",
+        "discord": "wouter_orpheusai",
+        "description": "Pushing weather forecasts beyond state-of-the-art",
+        "logo_url": "https://raw.githubusercontent.com/Orpheus-AI/Zeus/refs/heads/main/static/zeus-icon.png",
+        "additional": "Powered by Ørpheus AI"
+      },
+      "public": {
+        "website": "https://www.zeussubnet.com/",
+        "contact": null,
+        "github": "https://github.com/Orpheus-AI/Zeus",
+        "discord": "wouter_orpheusai",
+        "x": "https://x.com/zeussubnet",
+        "docs": "https://docs.zeussubnet.com/docs/introduction",
+        "description": "Pushing weather forecasts beyond state-of-the-art"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/18"
+    },
+    {
+      "netuid": 19,
+      "name": "blockmachine",
+      "symbol": "t",
+      "owner_ss58": "5FWh37LfVV5LE9dZA91STzbtebh6vxYa3MH71c621sYafo1L",
+      "owner_taostats": "https://taostats.io/account/5FWh37LfVV5LE9dZA91STzbtebh6vxYa3MH71c621sYafo1L",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "blockmachine",
+        "github_repo": "https://github.com/taostat/blockmachine/",
+        "subnet_contact": "team@blockmachine.io",
+        "subnet_url": "blockmachine.io",
+        "discord": "",
+        "description": "Harnessing Bittensor's incentive layer to forge self-optimizing infrastructure.",
+        "logo_url": "https://blockmachine.io/logo.svg",
+        "additional": ""
+      },
+      "public": {
+        "website": "blockmachine.io",
+        "contact": "team@blockmachine.io",
+        "github": "https://github.com/taostat/blockmachine/",
+        "discord": null,
+        "x": "https://x.com/blockmachine_io",
+        "docs": "https://blockmachine.io/whitepaper",
+        "description": "Harnessing Bittensor's incentive layer to forge self-optimizing infrastructure."
+      },
+      "known_team": {
+        "org": "blockmachine",
+        "public_face": "blockmachine.io",
+        "notes": "Slot previously associated with Nineteen / Rayon Labs development. Legal/dev history is messy; current public brand is blockmachine."
+      },
+      "explorer": "https://subnetradar.com/research/subnets/19"
+    },
+    {
+      "netuid": 20,
+      "name": "ChronoSeek",
+      "symbol": "υ",
+      "owner_ss58": "5CFVA7aPkGRYhYThumb9UQkPPZv7kzm2ieREHVjxecaYqi3u",
+      "owner_taostats": "https://taostats.io/account/5CFVA7aPkGRYhYThumb9UQkPPZv7kzm2ieREHVjxecaYqi3u",
+      "owner_chain_identity": {
+        "name": "ChronoSeek",
+        "url": "https://chronoseek.org",
+        "github": "https://github.com/chronoseek/",
+        "image": "https://chronoseek.org/logo.png",
+        "discord": "https://discord.gg/P2Y93BRYyC",
+        "description": "Decentralized Video Moment Retrieval subnet on Bittensor. Search videos by meaning, not timestamps.",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "ChronoSeek",
+        "github_repo": "https://github.com/chronoseek/bittensor-subnet",
+        "subnet_contact": "connor@chronoseek.org",
+        "subnet_url": "https://chronoseek.org/",
+        "discord": "https://discord.gg/P2Y93BRYyC",
+        "description": "Decentralized Video Moment Retrieval subnet on Bittensor. Search videos by meaning, not timestamps.",
+        "logo_url": "https://chronoseek.org/logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://chronoseek.org/",
+        "contact": "connor@chronoseek.org",
+        "github": "https://github.com/chronoseek/bittensor-subnet",
+        "discord": "https://discord.gg/P2Y93BRYyC",
+        "x": "https://x.com/groundlayerhq",
+        "docs": null,
+        "description": "Decentralized Video Moment Retrieval subnet on Bittensor. Search videos by meaning, not timestamps."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/20"
+    },
+    {
+      "netuid": 21,
+      "name": "AdTAO",
+      "symbol": "φ",
+      "owner_ss58": "5HjCYVfrWSkzTfJM5rkWBW3qTTJqXEFUzZrKty5hodpgfjyW",
+      "owner_taostats": "https://taostats.io/account/5HjCYVfrWSkzTfJM5rkWBW3qTTJqXEFUzZrKty5hodpgfjyW",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "AdTAO",
+        "github_repo": "https://github.com/ippcteam/SN21-adtao",
+        "subnet_contact": "sn21@adtao.io",
+        "subnet_url": "https://adtao.io",
+        "discord": "",
+        "description": "Counterfactual impact prediction for advertising interventions",
+        "logo_url": "https://www.ppcrebel.com/i/adtao.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://adtao.io",
+        "contact": "sn21@adtao.io",
+        "github": "https://github.com/ippcteam/SN21-adtao",
+        "discord": null,
+        "x": "https://x.com/ppcrebel",
+        "docs": null,
+        "description": "Counterfactual impact prediction for advertising interventions"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/21"
+    },
+    {
+      "netuid": 22,
+      "name": "Desearch",
+      "symbol": "χ",
+      "owner_ss58": "5DFuaMasyQtPhXcsuoYEyJmCVSRtzKxsTKFTA4SrpcGXBxJn",
+      "owner_taostats": "https://taostats.io/account/5DFuaMasyQtPhXcsuoYEyJmCVSRtzKxsTKFTA4SrpcGXBxJn",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Desearch",
+        "github_repo": "https://github.com/datura-ai/desearch",
+        "subnet_contact": "giga@desearch.ai",
+        "subnet_url": "https://desearch.ai",
+        "discord": "https://discord.gg/P44zrJmdFy",
+        "description": "Decentralized search engine",
+        "logo_url": "https://desearch.ai/assets/logo-icon-C18R0lAC.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://desearch.ai",
+        "contact": "giga@desearch.ai",
+        "github": "https://github.com/datura-ai/desearch",
+        "discord": "https://discord.gg/P44zrJmdFy",
+        "x": "https://x.com/desearch_ai",
+        "docs": "https://www.desearch.ai/docs",
+        "description": "Decentralized search engine"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/22"
+    },
+    {
+      "netuid": 23,
+      "name": "Trishool",
+      "symbol": "ψ",
+      "owner_ss58": "5CqTRwoFmme25YAbbwovR9rEic1UY7hYBLHxSk1PSfZ2jpmN",
+      "owner_taostats": "https://taostats.io/account/5CqTRwoFmme25YAbbwovR9rEic1UY7hYBLHxSk1PSfZ2jpmN",
+      "owner_chain_identity": {
+        "name": "Trishool",
+        "url": "",
+        "github": "",
+        "image": "",
+        "discord": "",
+        "description": "",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Trishool",
+        "github_repo": "https://github.com/TrishoolAI/trishool-phase2",
+        "subnet_contact": "nav@astroware.ai",
+        "subnet_url": "https://trishool.ai",
+        "discord": "https://discord.com/channels/799672011265015819/1437447445176127618",
+        "description": "Trishool is the AI alignment protocol built on Bittensor",
+        "logo_url": "https://trishool.ai/_next/image?url=%2Ftrishool-logo-small.png&w=96&q=75",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://trishool.ai",
+        "contact": "nav@astroware.ai",
+        "github": "https://github.com/TrishoolAI/trishool-phase2",
+        "discord": "https://discord.com/channels/799672011265015819/1437447445176127618",
+        "x": "https://x.com/trishoolai",
+        "docs": "https://docs.trishool.ai",
+        "description": "Trishool is the AI alignment protocol built on Bittensor"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/23"
+    },
+    {
+      "netuid": 24,
+      "name": "Quasar",
+      "symbol": "ω",
+      "owner_ss58": "5ELutYW7EdFUS38CPGkDnbwkeMrpppi6ujEC825jTP7maAuL",
+      "owner_taostats": "https://taostats.io/account/5ELutYW7EdFUS38CPGkDnbwkeMrpppi6ujEC825jTP7maAuL",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Quasar",
+        "github_repo": "https://github.com/SILX-LABS/QUASAR-SUBNET/",
+        "subnet_contact": "-",
+        "subnet_url": "https://silxinc.com/",
+        "discord": "https://discordapp.com/channels/799672011265015819/1214246819886931988",
+        "description": "Bittensor subnet built to crush the long-context barrier.",
+        "logo_url": "https://silxinc.com/_next/image?url=%2Flogo-white.png&w=640&q=75",
+        "additional": "-"
+      },
+      "public": {
+        "website": "https://silxinc.com/",
+        "contact": "-",
+        "github": "https://github.com/SILX-LABS/QUASAR-SUBNET/",
+        "discord": "https://discordapp.com/channels/799672011265015819/1214246819886931988",
+        "x": "https://x.com/quasarmodels",
+        "docs": "https://github.com/SILX-LABS/QUASAR-SUBNET/blob/main/README.md",
+        "description": "Bittensor subnet built to crush the long-context barrier."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/24"
+    },
+    {
+      "netuid": 25,
+      "name": "UR",
+      "symbol": "א",
+      "owner_ss58": "5HTeZ5168DjjGWZgbvzGfysEAj9fnexF24gYFKJHENU5cc8a",
+      "owner_taostats": "https://taostats.io/account/5HTeZ5168DjjGWZgbvzGfysEAj9fnexF24gYFKJHENU5cc8a",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "UR",
+        "github_repo": "https://github.com/urfoundation/sn",
+        "subnet_contact": "brien@ur.io",
+        "subnet_url": "https://ur.xyz/",
+        "discord": "xcolwell",
+        "description": "The peer to peer privacy network and encryption layer for the internet",
+        "logo_url": "https://ur.xyz/ur.svg",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://ur.xyz/",
+        "contact": "brien@ur.io",
+        "github": "https://github.com/urfoundation/sn",
+        "discord": "xcolwell",
+        "x": "https://x.com/macrocosmosai",
+        "docs": null,
+        "description": "The peer to peer privacy network and encryption layer for the internet"
+      },
+      "known_team": {
+        "org": "Macrocosmos",
+        "public_face": "Macrocosmos",
+        "notes": "UR / Mainframe scientific compute. Contact brian@macrocosmos.ai"
+      },
+      "explorer": "https://subnetradar.com/research/subnets/25"
+    },
+    {
+      "netuid": 26,
+      "name": "Perturb",
+      "symbol": "ב",
+      "owner_ss58": "5FsVAEPMpkAo3eP7xTNJYLyBndi2oT5GPxVPzFT1DzSD82qx",
+      "owner_taostats": "https://taostats.io/account/5FsVAEPMpkAo3eP7xTNJYLyBndi2oT5GPxVPzFT1DzSD82qx",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Perturb",
+        "github_repo": "https://github.com/0xsigurd/Perturb",
+        "subnet_contact": "hello@perturbai.io",
+        "subnet_url": "https://www.perturbai.io/",
+        "discord": "",
+        "description": "Decentralized adversarial robustness network",
+        "logo_url": "https://www.perturbai.io/logo/Perturb_Logo_Light.svg",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.perturbai.io/",
+        "contact": "hello@perturbai.io",
+        "github": "https://github.com/0xsigurd/Perturb",
+        "discord": null,
+        "x": "https://x.com/perturbaix",
+        "docs": "https://www.perturbai.io/whitepaper",
+        "description": "Decentralized adversarial robustness network"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/26"
+    },
+    {
+      "netuid": 27,
+      "name": "Orion",
+      "symbol": "ג",
+      "owner_ss58": "5GLT9wjWzyFqwsfgvNiy9xdAkaVsHPUwAHJ34hVgbW8hy7hT",
+      "owner_taostats": "https://taostats.io/account/5GLT9wjWzyFqwsfgvNiy9xdAkaVsHPUwAHJ34hVgbW8hy7hT",
+      "owner_chain_identity": {
+        "name": "Orion",
+        "url": " ",
+        "github": " ",
+        "image": "https://raw.githubusercontent.com/troy12x/silx-web/refs/heads/master/public/orion.png?token=GHSAT0AAAAAADVEQHZM7ZD3DY27YIJFUYQK2STZJ6Q",
+        "discord": " ",
+        "description": " ",
+        "additional": " ",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Orion",
+        "github_repo": "https://github.com/SILX-LABS/Orion",
+        "subnet_contact": "",
+        "subnet_url": "",
+        "discord": "",
+        "description": "A decentralized data subnet that discovers, generates, and curates high-quality training data for LLMs",
+        "logo_url": "https://raw.githubusercontent.com/troy12x/silx-web/refs/heads/master/public/orion.png?token=GHSAT0AAAAAADVEQHZM7ZD3DY27YIJFUYQK2STZJ6Q",
+        "additional": ""
+      },
+      "public": {
+        "website": null,
+        "contact": null,
+        "github": "https://github.com/SILX-LABS/Orion",
+        "discord": null,
+        "x": null,
+        "docs": null,
+        "description": "A decentralized data subnet that discovers, generates, and curates high-quality training data for LLMs"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/27"
+    },
+    {
+      "netuid": 28,
+      "name": "SayGM",
+      "symbol": "ד",
+      "owner_ss58": "5CA6rwAytZvvyZhLYEzo79627QEV422Q8kD51DEnTaRQxm45",
+      "owner_taostats": "https://taostats.io/account/5CA6rwAytZvvyZhLYEzo79627QEV422Q8kD51DEnTaRQxm45",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "SayGM",
+        "github_repo": "https://github.com/taostat/gm-miner",
+        "subnet_contact": "hi@saygm.com",
+        "subnet_url": "https://saygm.com/",
+        "discord": "",
+        "description": "Drop-in access to Claude, GPT, and Gemini.",
+        "logo_url": "https://saygm.com/apple-touch-icon.png",
+        "additional": "Your prompts routed through a verifiable TEE."
+      },
+      "public": {
+        "website": "https://saygm.com/",
+        "contact": "hi@saygm.com",
+        "github": "https://github.com/taostat/gm-miner",
+        "discord": null,
+        "x": "https://x.com/say_gm_",
+        "docs": null,
+        "description": "Drop-in access to Claude, GPT, and Gemini."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/28"
+    },
+    {
+      "netuid": 29,
+      "name": "hoτfloaτ",
+      "symbol": "ה",
+      "owner_ss58": "5HHHHHzgLnYRvnKkHd45cRUDMHXTSwx7MjUzxBrKbY4JfZWn",
+      "owner_taostats": "https://taostats.io/account/5HHHHHzgLnYRvnKkHd45cRUDMHXTSwx7MjUzxBrKbY4JfZWn",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "hoτfloaτ",
+        "github_repo": "https://github.com/coldint/hotfloat",
+        "subnet_contact": "",
+        "subnet_url": "http://hotfloat.io",
+        "discord": "",
+        "description": "Inference optimization",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": "http://hotfloat.io",
+        "contact": null,
+        "github": "https://github.com/coldint/hotfloat",
+        "discord": null,
+        "x": null,
+        "docs": "https://github.com/coldint/coldint_validator/blob/main/README.md",
+        "description": "Inference optimization"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/29"
+    },
+    {
+      "netuid": 30,
+      "name": "Endure Network",
+      "symbol": "ו",
+      "owner_ss58": "5HTogQKFuDaLq5ifWNhL2owMpLPHM3TAmujUUaTVj7FWzf6p",
+      "owner_taostats": "https://taostats.io/account/5HTogQKFuDaLq5ifWNhL2owMpLPHM3TAmujUUaTVj7FWzf6p",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Endure Network",
+        "github_repo": "",
+        "subnet_contact": "",
+        "subnet_url": "https://endure.network",
+        "discord": "",
+        "description": "The risk intelligence network",
+        "logo_url": "https://docs.endure.network/img/favicon.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://endure.network",
+        "contact": null,
+        "github": null,
+        "discord": null,
+        "x": "https://x.com/endurenet",
+        "docs": "https://docs.endure.network/",
+        "description": "The risk intelligence network"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/30"
+    },
+    {
+      "netuid": 31,
+      "name": "rec4ll",
+      "symbol": "ז",
+      "owner_ss58": "5H3mfhC8DS853nezGzh73rRnrFqPaPXtaCR8jDtgkSCHrfvb",
+      "owner_taostats": "https://taostats.io/account/5H3mfhC8DS853nezGzh73rRnrFqPaPXtaCR8jDtgkSCHrfvb",
+      "owner_chain_identity": {
+        "name": "rec4ll",
+        "url": "",
+        "github": "",
+        "image": "",
+        "discord": "",
+        "description": "",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "rec4ll",
+        "github_repo": "",
+        "subnet_contact": "",
+        "subnet_url": "",
+        "discord": "",
+        "description": "Recall provides decentralized retrieval-augmented generation to Bittensor. Miners serve embedding models, vector search, and LLM inference. Validators independently evaluate retrieval accuracy and answer quality. The subnet discovers the best RAG pipeline through open competition and routes user queries to the top performers. Think of it as an always-improving, community-owned search engine with citations.",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": null,
+        "contact": null,
+        "github": null,
+        "discord": null,
+        "x": null,
+        "docs": null,
+        "description": "Recall provides decentralized retrieval-augmented generation to Bittensor. Miners serve embedding models, vector search, and LLM inference. Validators independently evaluate retrieval accuracy and answer quality. The subnet discovers the best RAG pipeline through open competition and routes user queries to the top performers. Think of it as an always-improving, community-owned search engine with citations."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/31"
+    },
+    {
+      "netuid": 32,
+      "name": "ItsAI",
+      "symbol": "ח",
+      "owner_ss58": "5DWgkCSvq4brWSNLDU9FBgTk1ZpAQ2y6t3ky97CvEVuS9Qad",
+      "owner_taostats": "https://taostats.io/account/5DWgkCSvq4brWSNLDU9FBgTk1ZpAQ2y6t3ky97CvEVuS9Qad",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "ItsAI",
+        "github_repo": "https://github.com/It-s-AI/llm-detection",
+        "subnet_contact": "support@its-ai.org",
+        "subnet_url": "https://its-ai.org/en",
+        "discord": "https://discord.com/channels/799672011265015819/1215319932062011464",
+        "description": "ItsAI is a bittensor subnet focused on high-quality AI detection for texts. Recognised as the most accurate AI detector by MGTD benchmark.",
+        "logo_url": "https://github.com/It-s-AI/llm-detection/blob/main/full_logo.png",
+        "additional": "ItsAI is a bittensor subnet focused on high-quality AI detection for texts. Recognised as the most accurate AI detector by MGTD benchmark."
+      },
+      "public": {
+        "website": "https://its-ai.org/en",
+        "contact": "support@its-ai.org",
+        "github": "https://github.com/It-s-AI/llm-detection",
+        "discord": "https://discord.com/channels/799672011265015819/1215319932062011464",
+        "x": "https://x.com/ai_detection",
+        "docs": "https://docs.its-ai.org/",
+        "description": "ItsAI is a bittensor subnet focused on high-quality AI detection for texts. Recognised as the most accurate AI detector by MGTD benchmark."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/32"
+    },
+    {
+      "netuid": 33,
+      "name": "ReadyAI",
+      "symbol": "ט",
+      "owner_ss58": "5HinUfk5SqBUAbkMtgdNoum3VJvwrLgdvwW5sbXA1UPYZ8uB",
+      "owner_taostats": "https://taostats.io/account/5HinUfk5SqBUAbkMtgdNoum3VJvwrLgdvwW5sbXA1UPYZ8uB",
+      "owner_chain_identity": {
+        "name": "ReadyAI",
+        "url": "readyai.ai",
+        "github": "github.com/afterpartyai/bittensor-conversation-genome-project",
+        "image": "",
+        "discord": "davfields",
+        "description": "Structured Data processing at scale",
+        "additional": "The key ingredient for high quality AI models",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "ReadyAI",
+        "github_repo": "https://github.com/afterpartyai/bittensor-conversation-genome-project",
+        "subnet_contact": "david@readyai.ai",
+        "subnet_url": "",
+        "discord": "",
+        "description": "",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://readyai.ai/",
+        "contact": "david@readyai.ai",
+        "github": "https://github.com/afterpartyai/bittensor-conversation-genome-project",
+        "discord": null,
+        "x": null,
+        "docs": "https://github.com/afterpartyai/bittensor-conversation-genome-project/blob/main/README.md",
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/33"
+    },
+    {
+      "netuid": 34,
+      "name": "BitMind",
+      "symbol": "י",
+      "owner_ss58": "5DthmKBR83sUdudSfgFnsxBkTYtYTFLJUgovNfb1TSKVLiTH",
+      "owner_taostats": "https://taostats.io/account/5DthmKBR83sUdudSfgFnsxBkTYtYTFLJUgovNfb1TSKVLiTH",
+      "owner_chain_identity": {
+        "name": "BitMind",
+        "url": "https://bitmind.ai",
+        "github": "https://github.com/BitMind-AI/bitmind-subnet",
+        "image": "https://avatars.githubusercontent.com/u/160278071?s=200&v=4",
+        "discord": "",
+        "description": "Deepfake Detection",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "BitMind",
+        "github_repo": "https://github.com/BitMind-AI/bitmind-subnet",
+        "subnet_contact": "intern@bitmind.ai",
+        "subnet_url": "",
+        "discord": "",
+        "description": "",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://bitmind.ai/",
+        "contact": "intern@bitmind.ai",
+        "github": "https://github.com/BitMind-AI/bitmind-subnet",
+        "discord": null,
+        "x": null,
+        "docs": "https://docs.bitmind.ai/",
+        "description": null
+      },
+      "known_team": {
+        "org": "BitMind",
+        "public_face": "BitMind",
+        "notes": "Deepfake detection."
+      },
+      "explorer": "https://subnetradar.com/research/subnets/34"
+    },
+    {
+      "netuid": 35,
+      "name": "OxMarkets",
+      "symbol": "ך",
+      "owner_ss58": "5EqZVDbW5sKXE5qB5zVaH6SQT2sud3LkmFBo2dn79NdY9RTr",
+      "owner_taostats": "https://taostats.io/account/5EqZVDbW5sKXE5qB5zVaH6SQT2sud3LkmFBo2dn79NdY9RTr",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "OxMarkets",
+        "github_repo": "https://github.com/General-Tao-Ventures/cartha-validator",
+        "subnet_contact": "contact@0xmarkets.io",
+        "subnet_url": "https://www.0xmarkets.io/",
+        "discord": "https://0xmarkets.io/discord",
+        "description": "Liquidity-as-a-Service subnet powering 0xMarkets - a permissionless perp DEX for FX, crypto, and commodities. Deposit USDC. Earn Spread + Fees + Alpha.",
+        "logo_url": "https://storage.googleapis.com/cartha-assets/cartha_logo.png",
+        "additional": "https://x.com/0x_Markets"
+      },
+      "public": {
+        "website": "https://www.0xmarkets.io/",
+        "contact": "contact@0xmarkets.io",
+        "github": "https://github.com/General-Tao-Ventures/cartha-validator",
+        "discord": "https://0xmarkets.io/discord",
+        "x": "https://x.com/0x_Markets",
+        "docs": "https://docs.0xmarkets.io/",
+        "description": "Liquidity-as-a-Service subnet powering 0xMarkets - a permissionless perp DEX for FX, crypto, and commodities. Deposit USDC. Earn Spread + Fees + Alpha."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/35"
+    },
+    {
+      "netuid": 36,
+      "name": "automata",
+      "symbol": "כ",
+      "owner_ss58": "5DCjvVt6LbtM5YhMd3McczwSQpu4w85Gq5ENqSsyXjwgJxpZ",
+      "owner_taostats": "https://taostats.io/account/5DCjvVt6LbtM5YhMd3McczwSQpu4w85Gq5ENqSsyXjwgJxpZ",
+      "owner_chain_identity": null,
+      "subnet_identity": null,
+      "public": {
+        "website": "https://leoma.ai/",
+        "contact": null,
+        "github": "https://github.com/RendixNetwork/leoma",
+        "discord": null,
+        "x": "https://x.com/leoma_ai",
+        "docs": null,
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/36"
+    },
+    {
+      "netuid": 37,
+      "name": "Aurelius",
+      "symbol": "ל",
+      "owner_ss58": "5GRBbS3aDep7cvR1NRm9Awp5HAF1o4HC7t59Y8HoheLZ6ZaP",
+      "owner_taostats": "https://taostats.io/account/5GRBbS3aDep7cvR1NRm9Awp5HAF1o4HC7t59Y8HoheLZ6ZaP",
+      "owner_chain_identity": {
+        "name": "Aurelius",
+        "url": "https://aureliusaligned.ai",
+        "github": "https://github.com/Aurelius-Protocol",
+        "image": "https://github.com/Aurelius-Protocol/aurelius-whitepaper/raw/main/aurelius_logo.png",
+        "discord": "",
+        "description": "Decentralized Alignment of Artificial Intelligence",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Aurelius",
+        "github_repo": "https://github.com/Aurelius-Protocol/Aurelius-Protocol",
+        "subnet_contact": "aurelius.subnet@gmail.com",
+        "subnet_url": "https://aureliusaligned.ai",
+        "discord": "",
+        "description": "Decentralized Alignment of Artificial Intelligence",
+        "logo_url": "https://raw.githubusercontent.com/Aurelius-Protocol/aurelius-whitepaper/main/aurelius_logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://aureliusaligned.ai",
+        "contact": "aurelius.subnet@gmail.com",
+        "github": "https://github.com/Aurelius-Protocol/Aurelius-Protocol",
+        "discord": null,
+        "x": "https://x.com/aureliusaligned",
+        "docs": "https://new-collector-api-production.up.railway.app/docs",
+        "description": "Decentralized Alignment of Artificial Intelligence"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/37"
+    },
+    {
+      "netuid": 38,
+      "name": "ChronoLLM",
+      "symbol": "ם",
+      "owner_ss58": "5GeWgtBAu2ezYo83sPM7VyEigAfEc3vnqqxRzbMXYVYwEV62",
+      "owner_taostats": "https://taostats.io/account/5GeWgtBAu2ezYo83sPM7VyEigAfEc3vnqqxRzbMXYVYwEV62",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "ChronoLLM",
+        "github_repo": "https://github.com/chronollm/sn38",
+        "subnet_contact": "crew@crunchdao.com",
+        "subnet_url": "https://chronollm.crunchdao.com/",
+        "discord": "https://discord.com/channels/799672011265015819/1485634202895519844",
+        "description": "Competitive training of chronologically consistent Large Language Models",
+        "logo_url": "https://assets.crunchdao.com/chronollm/logo-round.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://chronollm.crunchdao.com/",
+        "contact": "crew@crunchdao.com",
+        "github": "https://github.com/chronollm/sn38",
+        "discord": "https://discord.com/channels/799672011265015819/1485634202895519844",
+        "x": "https://x.com/chronollm",
+        "docs": "https://github.com/chronollm/sn38/blob/main/docs/miner.md",
+        "description": "Competitive training of chronologically consistent Large Language Models"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/38"
+    },
+    {
+      "netuid": 39,
+      "name": "deprecated",
+      "symbol": "מ",
+      "owner_ss58": "5DkwfxC9mZTTCsRUt6nrnwQEWVrhsmY13SBRparj6cpAVxVY",
+      "owner_taostats": "https://taostats.io/account/5DkwfxC9mZTTCsRUt6nrnwQEWVrhsmY13SBRparj6cpAVxVY",
+      "owner_chain_identity": {
+        "name": "Datura",
+        "url": "datura.ai",
+        "github": "",
+        "image": "",
+        "discord": "",
+        "description": "Bridging Bittensor to a billion users",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "deprecated",
+        "github_repo": "https://github.com/deprecated/deprecated",
+        "subnet_contact": "deprecated@gmail.com",
+        "subnet_url": "",
+        "discord": "deprecated",
+        "description": "deprecated",
+        "logo_url": "https://deprecated.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.basilica.ai/",
+        "contact": "deprecated@gmail.com",
+        "github": "https://github.com/deprecated/deprecated",
+        "discord": "deprecated",
+        "x": null,
+        "docs": "https://docs.basilica.ai/miners",
+        "description": "deprecated"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/39"
+    },
+    {
+      "netuid": 40,
+      "name": "Ralph",
+      "symbol": "ן",
+      "owner_ss58": "5HeKCDfdTyk5gttniUXWVGvf6xSpbJJG86thJcZnqNZjThoU",
+      "owner_taostats": "https://taostats.io/account/5HeKCDfdTyk5gttniUXWVGvf6xSpbJJG86thJcZnqNZjThoU",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Ralph",
+        "github_repo": "https://github.com/RalphLabsAI/ralph",
+        "subnet_contact": "",
+        "subnet_url": "https://ralphlabs.ai",
+        "discord": "",
+        "description": "An open training recipe that gets better, forever.",
+        "logo_url": "https://www.ralphlabs.ai/brand/ralph-logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://ralphlabs.ai",
+        "contact": null,
+        "github": "https://github.com/RalphLabsAI/ralph",
+        "discord": null,
+        "x": null,
+        "docs": "https://github.com/RalphLabsAI/ralph/blob/main/docs/Ralph-Whitepaper-v1.3.pdf",
+        "description": "An open training recipe that gets better, forever."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/40"
+    },
+    {
+      "netuid": 41,
+      "name": "Almanac",
+      "symbol": "נ",
+      "owner_ss58": "5FCSevLkofmKZRixMawp6jyyjBty1AeSCLa7N5Fv892DYkXX",
+      "owner_taostats": "https://taostats.io/account/5FCSevLkofmKZRixMawp6jyyjBty1AeSCLa7N5Fv892DYkXX",
+      "owner_chain_identity": {
+        "name": "Sportstensor",
+        "url": "sportstensor.com",
+        "github": "github.com/sportstensor/sn41",
+        "image": "https://beta.almanac.market/assets/favicons/st-favicon-32x32.png",
+        "discord": "",
+        "description": "Beating the odds through collective intelligence.",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Almanac",
+        "github_repo": "https://github.com/corvxai/almanac",
+        "subnet_contact": "",
+        "subnet_url": "https://almnc.ai",
+        "discord": "",
+        "description": "Prediction market research and intelligence.",
+        "logo_url": "https://cdn.discordapp.com/icons/1263242016695783427/19e62da4ff8eb5a7c36d1ef24b9d911e.webp?size=1024",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://almnc.ai",
+        "contact": null,
+        "github": "https://github.com/corvxai/almanac",
+        "discord": null,
+        "x": null,
+        "docs": null,
+        "description": "Prediction market research and intelligence."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/41"
+    },
+    {
+      "netuid": 42,
+      "name": "Unknown",
+      "symbol": "ס",
+      "owner_ss58": "5EC5HHfLqgmr8cdt2MAW5nJMG9n3jKF1QhZb1gYTgiJGNMo5",
+      "owner_taostats": "https://taostats.io/account/5EC5HHfLqgmr8cdt2MAW5nJMG9n3jKF1QhZb1gYTgiJGNMo5",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Unknown",
+        "github_repo": "",
+        "subnet_contact": "",
+        "subnet_url": "",
+        "discord": "",
+        "description": "",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://developers.gopher-ai.com/",
+        "contact": null,
+        "github": "https://github.com/gopher-lab/subnet-42",
+        "discord": null,
+        "x": null,
+        "docs": "https://developers.gopher-ai.com/docs/subnet/intro",
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/42"
+    },
+    {
+      "netuid": 43,
+      "name": "Graphite",
+      "symbol": "ע",
+      "owner_ss58": "5HjMs5JDrLH3Hknmfm1gDq7nFYAv6M7t9v3EWMctSRXJS9HC",
+      "owner_taostats": "https://taostats.io/account/5HjMs5JDrLH3Hknmfm1gDq7nFYAv6M7t9v3EWMctSRXJS9HC",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Graphite",
+        "github_repo": "https://github.com/GraphiteAI/Graphite-Subnet",
+        "subnet_contact": "team@graphite-ai.net",
+        "subnet_url": "",
+        "discord": "",
+        "description": "",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://graphite-ai.net/",
+        "contact": "team@graphite-ai.net",
+        "github": "https://github.com/GraphiteAI/Graphite-Subnet",
+        "discord": null,
+        "x": "https://x.com/graphitesubnet",
+        "docs": null,
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/43"
+    },
+    {
+      "netuid": 44,
+      "name": "Score",
+      "symbol": "ף",
+      "owner_ss58": "5CaCekuxb9pKQyLoxh3jbkEXig8fxjkeS4AQ6UmZa12xfQ9H",
+      "owner_taostats": "https://taostats.io/account/5CaCekuxb9pKQyLoxh3jbkEXig8fxjkeS4AQ6UmZa12xfQ9H",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Score",
+        "github_repo": "https://github.com/score-technologies/turbovision",
+        "subnet_contact": "hello@wearescore.com",
+        "subnet_url": "https://www.wearescore.com/",
+        "discord": "",
+        "description": "Making every camera intelligent",
+        "logo_url": "https://www.wearescore.com/android-chrome-512x512.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.wearescore.com/",
+        "contact": "hello@wearescore.com",
+        "github": "https://github.com/score-technologies/turbovision",
+        "discord": null,
+        "x": "https://x.com/webuildscore",
+        "docs": null,
+        "description": "Making every camera intelligent"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/44"
+    },
+    {
+      "netuid": 45,
+      "name": "AlphaRidge.ai",
+      "symbol": "פ",
+      "owner_ss58": "5FbcZiAHA75i2bPVrF7wa9mFaxV1eM27HR63kJtbpb8spvmf",
+      "owner_taostats": "https://taostats.io/account/5FbcZiAHA75i2bPVrF7wa9mFaxV1eM27HR63kJtbpb8spvmf",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "AlphaRidge.ai",
+        "github_repo": "https://github.com/Team-Rizzo/alpharidge-ai",
+        "subnet_contact": "sn45@alpharidge.ai",
+        "subnet_url": "https://alpharidge.ai",
+        "discord": "canti_dev",
+        "description": "Real-time market intelligence across equities, FX, crypto, commodities and indices. AlphaRidge reads the conversations of 1,000+ news sources, X posts, Telegram feeds, scoring every post into structured signals: sentiment, impact, market outlook and more. See the why behind every move, screen any market, and get alerted the moment sentiment turns.",
+        "logo_url": "https://alpharidge.ai/logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://alpharidge.ai",
+        "contact": "sn45@alpharidge.ai",
+        "github": "https://github.com/Team-Rizzo/alpharidge-ai",
+        "discord": "canti_dev",
+        "x": "https://x.com/wearetalisman",
+        "docs": null,
+        "description": "Real-time market intelligence across equities, FX, crypto, commodities and indices. AlphaRidge reads the conversations of 1,000+ news sources, X posts, Telegram feeds, scoring every post into structured signals: sentiment, impact, market outlook and more. See the why behind every move, screen any market, and get alerted the moment sentiment turns."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/45"
+    },
+    {
+      "netuid": 46,
+      "name": "Instant",
+      "symbol": "ץ",
+      "owner_ss58": "5Ft9E2ovN52AVMczVA3713uXmmBPczvUboB4YQpupu3aEYg7",
+      "owner_taostats": "https://taostats.io/account/5Ft9E2ovN52AVMczVA3713uXmmBPczvUboB4YQpupu3aEYg7",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Instant",
+        "github_repo": "https://github.com/instant-subnet/instant-subnet",
+        "subnet_contact": "admin@instantsubnet.com",
+        "subnet_url": "https://instantsubnet.com",
+        "discord": "https://discord.gg/varcKnnW9S",
+        "description": "Lightning Fast Private Inference",
+        "logo_url": "https://instantsubnet.com/assets/instant-subnet-logo.png",
+        "additional": "Decentralized Marketplace for Specialized Inference"
+      },
+      "public": {
+        "website": "https://instantsubnet.com",
+        "contact": "admin@instantsubnet.com",
+        "github": "https://github.com/instant-subnet/instant-subnet",
+        "discord": "https://discord.gg/varcKnnW9S",
+        "x": "https://x.com/resilabsai",
+        "docs": null,
+        "description": "Lightning Fast Private Inference"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/46"
+    },
+    {
+      "netuid": 47,
+      "name": "Feval",
+      "symbol": "צ",
+      "owner_ss58": "5GBmFsPkMDGcEcKwL69rCcbSko2xX2WTUzs6riW7d8XVqTpv",
+      "owner_taostats": "https://taostats.io/account/5GBmFsPkMDGcEcKwL69rCcbSko2xX2WTUzs6riW7d8XVqTpv",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Feval",
+        "github_repo": "https://github.com/center196/feval",
+        "subnet_contact": "",
+        "subnet_url": "https://feval-center-leaderboard-web.hf.space",
+        "discord": "",
+        "description": "Scalable decentralized evaluation where miners perform expensive works and validators use lightweight verification.",
+        "logo_url": "https://raw.githubusercontent.com/center196/feval/refs/heads/main/docs/assets/logo_47.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://feval-center-leaderboard-web.hf.space",
+        "contact": null,
+        "github": "https://github.com/center196/feval",
+        "discord": null,
+        "x": null,
+        "docs": null,
+        "description": "Scalable decentralized evaluation where miners perform expensive works and validators use lightweight verification."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/47"
+    },
+    {
+      "netuid": 48,
+      "name": "Quantum Compute",
+      "symbol": "ק",
+      "owner_ss58": "5GNH5YMkcX8jEF1PukvxKafifcqz13jp18BT73jRL3AZc4Rc",
+      "owner_taostats": "https://taostats.io/account/5GNH5YMkcX8jEF1PukvxKafifcqz13jp18BT73jRL3AZc4Rc",
+      "owner_chain_identity": {
+        "name": "Quantum Compute",
+        "url": "https://www.qbittensorlabs.com/",
+        "github": "https://github.com/qbittensor-labs/quantum",
+        "image": "https://i.imgur.com/n7FcBCo.png",
+        "discord": "qbittensorlabs",
+        "description": "Quantum Computing",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Quantum Compute",
+        "github_repo": "https://github.com/qbittensor-labs/quantum-compute",
+        "subnet_contact": "qbittensorlabs@gmail.com",
+        "subnet_url": "https://www.qbittensorlabs.com/",
+        "discord": "qbittensorlabs",
+        "description": "Quantum Computing",
+        "logo_url": "https://qbittensorlabs.com/48.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.qbittensorlabs.com/",
+        "contact": "qbittensorlabs@gmail.com",
+        "github": "https://github.com/qbittensor-labs/quantum-compute",
+        "discord": "qbittensorlabs",
+        "x": "https://x.com/qbittensorlabs",
+        "docs": "https://docs.openquantum.com/",
+        "description": "Quantum Computing"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/48"
+    },
+    {
+      "netuid": 49,
+      "name": "Nepher Robotics",
+      "symbol": "ר",
+      "owner_ss58": "5FL781vfkLNnYBUi58JnhZ3r2waHDMiehxRhzcMaMWvKDfXf",
+      "owner_taostats": "https://taostats.io/account/5FL781vfkLNnYBUi58JnhZ3r2waHDMiehxRhzcMaMWvKDfXf",
+      "owner_chain_identity": {
+        "name": "Nepher Robotics",
+        "url": "https://www.nepher.ai",
+        "github": "https://github.com/nepher-ai/nepher-subnet",
+        "image": "https://avatars.githubusercontent.com/u/243286101?s=48&v=4",
+        "discord": "https://discord.gg/nepher",
+        "description": "Pioneering Simulation-First Robotics Development",
+        "additional": "https://x.com/nepher_robotics",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Nepher Robotics",
+        "github_repo": "https://github.com/nepher-ai/nepher-subnet",
+        "subnet_contact": "contact@nepher.ai",
+        "subnet_url": "https://www.nepher.ai/",
+        "discord": "https://discord.gg/qZUc3vdjVq",
+        "description": "Pioneering Simulation-First Robotics Development",
+        "logo_url": "https://avatars.githubusercontent.com/u/243286101?s=200&v=4",
+        "additional": "https://x.com/nepher_robotics"
+      },
+      "public": {
+        "website": "https://www.nepher.ai/",
+        "contact": "contact@nepher.ai",
+        "github": "https://github.com/nepher-ai/nepher-subnet",
+        "discord": "https://discord.gg/qZUc3vdjVq",
+        "x": "https://x.com/nepher_robotics",
+        "docs": "https://docs.nepher.ai/",
+        "description": "Pioneering Simulation-First Robotics Development"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/49"
+    },
+    {
+      "netuid": 50,
+      "name": "Synth",
+      "symbol": "ש",
+      "owner_ss58": "5DxyiWpGqN5xXiczXcEGph51BcgTqcYKD5GKZqoACuc2sJkD",
+      "owner_taostats": "https://taostats.io/account/5DxyiWpGqN5xXiczXcEGph51BcgTqcYKD5GKZqoACuc2sJkD",
+      "owner_chain_identity": {
+        "name": "Synth",
+        "url": "https://synthdata.co",
+        "github": "https://github.com/mode-network/synth-subnet",
+        "image": "https://taostats.io/images/subnets/50.webp?w=96&q=75",
+        "discord": "",
+        "description": "Predictive intelligence for financial markets and beyond",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Synth",
+        "github_repo": "https://github.com/mode-network/synth-subnet",
+        "subnet_contact": "",
+        "subnet_url": "https://synthdata.co",
+        "discord": "",
+        "description": "Predictive intelligence for financial markets and beyond",
+        "logo_url": "https://taostats.io/images/subnets/50.webp?w=96&q=75",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://synthdata.co",
+        "contact": null,
+        "github": "https://github.com/mode-network/synth-subnet",
+        "discord": null,
+        "x": null,
+        "docs": null,
+        "description": "Predictive intelligence for financial markets and beyond"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/50"
+    },
+    {
+      "netuid": 51,
+      "name": "lium.io",
+      "symbol": "ת",
+      "owner_ss58": "5FqACMtcegZxxopgu1g7TgyrnyD8skurr9QDPLPhxNQzsThe",
+      "owner_taostats": "https://taostats.io/account/5FqACMtcegZxxopgu1g7TgyrnyD8skurr9QDPLPhxNQzsThe",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "lium.io",
+        "github_repo": "https://github.com/Datura-ai/lium-io",
+        "subnet_contact": "",
+        "subnet_url": "lium.io",
+        "discord": "p383_54249",
+        "description": "revolutionizing the democratization of compute",
+        "logo_url": "https://raw.githubusercontent.com/Datura-ai/lium-logos/refs/heads/main/Celium_Icon_FullColor.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "lium.io",
+        "contact": null,
+        "github": "https://github.com/Datura-ai/lium-io",
+        "discord": "p383_54249",
+        "x": "https://x.com/lium_io",
+        "docs": null,
+        "description": "revolutionizing the democratization of compute"
+      },
+      "known_team": {
+        "org": "Datura / lium.io",
+        "public_face": "lium.io",
+        "notes": "GPU marketplace lineage."
+      },
+      "explorer": "https://subnetradar.com/research/subnets/51"
+    },
+    {
+      "netuid": 52,
+      "name": "Dojo",
+      "symbol": "ا",
+      "owner_ss58": "5Fv1ZvNPsEvUN6jfia6Mv3ZoefZ6KdoowGMjkPMX61QwRLXx",
+      "owner_taostats": "https://taostats.io/account/5Fv1ZvNPsEvUN6jfia6Mv3ZoefZ6KdoowGMjkPMX61QwRLXx",
+      "owner_chain_identity": {
+        "name": "Dojo Subnet",
+        "url": "https://dojo.tensorplex.ai/",
+        "github": "https://github.com/tensorplex-labs/dojo",
+        "image": "https://github.com/tensorplex-labs/dojo/blob/main/assets/dojo.png",
+        "discord": "https://discord.com/channels/799672011265015819/1213131262483628102",
+        "description": "~",
+        "additional": "~",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Dojo",
+        "github_repo": "https://github.com/tensorplex-labs/dojo",
+        "subnet_contact": "jarvis@tensorplex.ai",
+        "subnet_url": "",
+        "discord": "",
+        "description": "",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.tensorplex.ai/",
+        "contact": "jarvis@tensorplex.ai",
+        "github": "https://github.com/tensorplex-labs/dojo",
+        "discord": null,
+        "x": null,
+        "docs": "https://docs.tensorplex.ai/tensorplex-docs/tensorplex-dojo-bittensor-subnet/subnet-mechanism",
+        "description": null
+      },
+      "known_team": {
+        "org": "Tensorplex",
+        "public_face": "Tensorplex",
+        "notes": "Dojo. Contact jarvis@tensorplex.ai"
+      },
+      "explorer": "https://subnetradar.com/research/subnets/52"
+    },
+    {
+      "netuid": 53,
+      "name": "engy",
+      "symbol": "ب",
+      "owner_ss58": "5H8SFVCxk52ag1YSC5bQw7B84NRNhAtYWAP81jEPfuJ3VL8Q",
+      "owner_taostats": "https://taostats.io/account/5H8SFVCxk52ag1YSC5bQw7B84NRNhAtYWAP81jEPfuJ3VL8Q",
+      "owner_chain_identity": {
+        "name": "engy.ai",
+        "url": "https://engy.ai",
+        "github": "https://github.com/hanlinai/engy",
+        "image": "https://engy.ai/icon.svg",
+        "discord": "",
+        "description": "Verified inference for frontier open models.",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "engy",
+        "github_repo": "https://github.com/hanlinai/engy",
+        "subnet_contact": "ning@engy.ai",
+        "subnet_url": "https://engy.ai",
+        "discord": "",
+        "description": "Verified inference for frontier open models.",
+        "logo_url": "https://engy.ai/icon.svg",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://engy.ai",
+        "contact": "ning@engy.ai",
+        "github": "https://github.com/hanlinai/engy",
+        "discord": null,
+        "x": null,
+        "docs": null,
+        "description": "Verified inference for frontier open models."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/53"
+    },
+    {
+      "netuid": 54,
+      "name": "Yanez",
+      "symbol": "ت",
+      "owner_ss58": "5FUfruyVDoDsCty1Sh7tCmHVdpoC3XV1nUZYjhcpfe31Defk",
+      "owner_taostats": "https://taostats.io/account/5FUfruyVDoDsCty1Sh7tCmHVdpoC3XV1nUZYjhcpfe31Defk",
+      "owner_chain_identity": {
+        "name": "Yanez MIID",
+        "url": "www.yanez.ai",
+        "github": "https://github.com/yanez-compliance/MIID-subnet",
+        "image": "https://www.dropbox.com/scl/fi/rgf042e6uwfcnanljmme6/Symbol-Orange.png?rlkey=5ejg3tkfp02q4bk4zgtw6ua5a&st=rozhu9n2&dl=0",
+        "discord": "https://discord.com/channels/799672011265015819/1351934165964296232",
+        "description": "generates synthetic identities that can be used to test and train anti-fraud models and identity recognition algorithms.",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Yanez",
+        "github_repo": "https://github.com/yanez-compliance/MIID-subnet",
+        "subnet_contact": "jose@yanezcompliance.com",
+        "subnet_url": "www.yanez.ai",
+        "discord": "https://discord.com/channels/799672011265015819/1351934165964296232",
+        "description": "Yanez SN54 generates synthetic identities for challenging Yanez humanhood, presence, and uniqueness detection models.",
+        "logo_url": "https://raw.githubusercontent.com/yanez-compliance/MIID-subnet/main/Yanez%20AI%20Logo%20-%20Icon%20-%20Outline%20Glow.png",
+        "additional": "SN54 powers Yanez. Yanez is the infrastructure for Human Uniqueness. Turning what makes every person one-of-a-kind into their strongest layer of trust and integrity. Effective human detection requires models that can discern a real human from a synthetic one, models that can prove that a human is present, not an injection pretending to be the actual human, and models that can ensure that every human can be uniquely identified, so no one can hold multiple identities."
+      },
+      "public": {
+        "website": "www.yanez.ai",
+        "contact": "jose@yanezcompliance.com",
+        "github": "https://github.com/yanez-compliance/MIID-subnet",
+        "discord": "https://discord.com/channels/799672011265015819/1351934165964296232",
+        "x": "https://x.com/yanez__ai",
+        "docs": null,
+        "description": "Yanez SN54 generates synthetic identities for challenging Yanez humanhood, presence, and uniqueness detection models."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/54"
+    },
+    {
+      "netuid": 55,
+      "name": "NIOME",
+      "symbol": "ث",
+      "owner_ss58": "5GeWUxaFP6duJyNg8EUv6Jfcv6ZNkoERywAcbSw4FAuEMpDq",
+      "owner_taostats": "https://taostats.io/account/5GeWUxaFP6duJyNg8EUv6Jfcv6ZNkoERywAcbSw4FAuEMpDq",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "NIOME",
+        "github_repo": "https://github.com/genomesio/subnet-niome",
+        "subnet_contact": "info@genomes.io",
+        "subnet_url": "https://niome.genomes.io",
+        "discord": "https://discord.gg/7mJkaJZX",
+        "description": "NIOME is a decentralized AI subnet that enables privacy-safe genomic intelligence by replacing real human genomes with high-fidelity synthetic genomic profiles",
+        "logo_url": "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*pgi-9hji1nosR-l7taHQeA.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://niome.genomes.io",
+        "contact": "info@genomes.io",
+        "github": "https://github.com/genomesio/subnet-niome",
+        "discord": "https://discord.gg/7mJkaJZX",
+        "x": null,
+        "docs": null,
+        "description": "NIOME is a decentralized AI subnet that enables privacy-safe genomic intelligence by replacing real human genomes with high-fidelity synthetic genomic profiles"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/55"
+    },
+    {
+      "netuid": 56,
+      "name": "Gradients",
+      "symbol": "ج",
+      "owner_ss58": "5EJ1zbdwhumTRYFx3VCGnR6SW7CJWP28tEJCo2gw1dFbVL5g",
+      "owner_taostats": "https://taostats.io/account/5EJ1zbdwhumTRYFx3VCGnR6SW7CJWP28tEJCo2gw1dFbVL5g",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Gradients",
+        "github_repo": "https://github.com/gradients-ai/G.O.D",
+        "subnet_contact": "info@gradients.io",
+        "subnet_url": "https://www.gradients.io/",
+        "discord": "None",
+        "description": "Best AutoML plaftorm in the world",
+        "logo_url": "https://gradients-public.s3.eu-central-003.backblazeb2.com/gradientslogo.png",
+        "additional": "None"
+      },
+      "public": {
+        "website": "https://www.gradients.io/",
+        "contact": "info@gradients.io",
+        "github": "https://github.com/gradients-ai/G.O.D",
+        "discord": "None",
+        "x": null,
+        "docs": "https://api.gradients.io/docs",
+        "description": "Best AutoML plaftorm in the world"
+      },
+      "known_team": {
+        "org": "Gradients / Grads LLC (Rayon Labs contrib)",
+        "public_face": "gradients.io",
+        "notes": "Rayon Labs developed; legal owner is Grads LLC, not Rayon as a single company."
+      },
+      "explorer": "https://subnetradar.com/research/subnets/56"
+    },
+    {
+      "netuid": 57,
+      "name": "gaia",
+      "symbol": "ح",
+      "owner_ss58": "5HdpnCSYczg52ZaiBKmgwJPFnVpyyu27o1GHgLcj8217xxr7",
+      "owner_taostats": "https://taostats.io/account/5HdpnCSYczg52ZaiBKmgwJPFnVpyyu27o1GHgLcj8217xxr7",
+      "owner_chain_identity": null,
+      "subnet_identity": null,
+      "public": {
+        "website": "https://sparket.ai/",
+        "contact": null,
+        "github": "https://github.com/sparket-ai/sparket-ai",
+        "discord": null,
+        "x": null,
+        "docs": null,
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/57"
+    },
+    {
+      "netuid": 58,
+      "name": "greevils",
+      "symbol": "خ",
+      "owner_ss58": "5CLUzEqecEfGFxMwHSU5vbgzpFQCGZuC56DDX354JKe69gtJ",
+      "owner_taostats": "https://taostats.io/account/5CLUzEqecEfGFxMwHSU5vbgzpFQCGZuC56DDX354JKe69gtJ",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "greevils",
+        "github_repo": "https://github.com/greevils-ai/greevils-cli",
+        "subnet_contact": "atlas@greevils.ai",
+        "subnet_url": "https://www.greevils.ai",
+        "discord": "",
+        "description": "",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.greevils.ai",
+        "contact": "atlas@greevils.ai",
+        "github": "https://github.com/greevils-ai/greevils-cli",
+        "discord": null,
+        "x": "https://x.com/greevils_ai",
+        "docs": "https://handshake58.com/skill.md",
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/58"
+    },
+    {
+      "netuid": 59,
+      "name": "agent-arena",
+      "symbol": "د",
+      "owner_ss58": "5GzrQ2febBKynmJ4BrNFiEgnsMvVpz5bZtGcucGCKgfaRXep",
+      "owner_taostats": "https://taostats.io/account/5GzrQ2febBKynmJ4BrNFiEgnsMvVpz5bZtGcucGCKgfaRXep",
+      "owner_chain_identity": null,
+      "subnet_identity": null,
+      "public": {
+        "website": "https://babelbit.ai/",
+        "contact": "mk@babelbit.ai",
+        "github": "https://github.com/babelbit/babelbit_subnet",
+        "discord": null,
+        "x": "https://x.com/babelbit",
+        "docs": null,
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/59"
+    },
+    {
+      "netuid": 60,
+      "name": "Bitsec.ai",
+      "symbol": "ذ",
+      "owner_ss58": "5CXLwkK1Scd1uiMUrXYjJUTTPxqqyH2FTJQNLp9uXQhA9rhR",
+      "owner_taostats": "https://taostats.io/account/5CXLwkK1Scd1uiMUrXYjJUTTPxqqyH2FTJQNLp9uXQhA9rhR",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Bitsec.ai",
+        "github_repo": "https://github.com/Bitsec-AI/sandbox",
+        "subnet_contact": "john@bitsec.ai",
+        "subnet_url": "https://bitsec.ai",
+        "discord": "yubo",
+        "description": "find and fix exploits in codebases",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://bitsec.ai",
+        "contact": "john@bitsec.ai",
+        "github": "https://github.com/Bitsec-AI/sandbox",
+        "discord": "yubo",
+        "x": "https://x.com/bitsecai",
+        "docs": null,
+        "description": "find and fix exploits in codebases"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/60"
+    },
+    {
+      "netuid": 61,
+      "name": "RedTeam",
+      "symbol": "ر",
+      "owner_ss58": "5ECEsYL82fbXx9KfTZy7G2KXSurnScciJyAVMHZjekc8jUbn",
+      "owner_taostats": "https://taostats.io/account/5ECEsYL82fbXx9KfTZy7G2KXSurnScciJyAVMHZjekc8jUbn",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "RedTeam",
+        "github_repo": "https://github.com/RedTeamSubnet/RedTeam",
+        "subnet_contact": "oscar@theredteam.io",
+        "subnet_url": "https://www.theredteam.io/",
+        "discord": "https://discord.com/channels/799672011265015819/1319313447435108413",
+        "description": "\"The RedTeam subnet by Innerworks is a decentralized platform designed to drive innovation in cybersecurity through competitive programming challenges. The subnet incentivizes miners to develop and submit code solutions to various technical challenges, with a focus on enhancing security. These solutions can be integrated into real-world products to improve their security features.\"",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.theredteam.io/",
+        "contact": "oscar@theredteam.io",
+        "github": "https://github.com/RedTeamSubnet/RedTeam",
+        "discord": "https://discord.com/channels/799672011265015819/1319313447435108413",
+        "x": null,
+        "docs": "https://docs.theredteam.io/",
+        "description": "\"The RedTeam subnet by Innerworks is a decentralized platform designed to drive innovation in cybersecurity through competitive programming challenges. The subnet incentivizes miners to develop and submit code solutions to various technical challenges, with a focus on enhancing security. These solutions can be integrated into real-world products to improve their security features.\""
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/61"
+    },
+    {
+      "netuid": 62,
+      "name": "Ridges",
+      "symbol": "ز",
+      "owner_ss58": "5DhsVYewpCdQQUenHU52k5Cys1WsTWTt5V5m84D3n4L8FWDS",
+      "owner_taostats": "https://taostats.io/account/5DhsVYewpCdQQUenHU52k5Cys1WsTWTt5V5m84D3n4L8FWDS",
+      "owner_chain_identity": {
+        "name": "Ridges",
+        "url": "https://www.ridges.ai/",
+        "github": "https://github.com/ridgesai/ridges",
+        "image": "",
+        "discord": "",
+        "description": "AI Software Agent Marketplace, Powered By Bittensor",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Ridges",
+        "github_repo": "https://github.com/ridgesai/ridges",
+        "subnet_contact": "hello@ridges.ai",
+        "subnet_url": "https://www.ridges.ai/",
+        "discord": "https://discord.gg/WeDvTnYDad",
+        "description": "Software Engineering Agents",
+        "logo_url": "https://www.ridges.ai/logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.ridges.ai/",
+        "contact": "hello@ridges.ai",
+        "github": "https://github.com/ridgesai/ridges",
+        "discord": "https://discord.gg/WeDvTnYDad",
+        "x": null,
+        "docs": null,
+        "description": "Software Engineering Agents"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/62"
+    },
+    {
+      "netuid": 63,
+      "name": "Enigma",
+      "symbol": "س",
+      "owner_ss58": "5CqTmNfgDchxULD1bfoz8jvj9rDYSoq76kiq98oBUUEDpWqX",
+      "owner_taostats": "https://taostats.io/account/5CqTmNfgDchxULD1bfoz8jvj9rDYSoq76kiq98oBUUEDpWqX",
+      "owner_chain_identity": {
+        "name": "Alpha Trader Exchange",
+        "url": "https://www.alphatraderexchange.com/",
+        "github": "https://github.com/Nickel5-Inc/alpha-trader-exchange/",
+        "image": "",
+        "discord": "alphatraderexchange",
+        "description": "Incentivizing better trading strategies on Bittensor.",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Enigma",
+        "github_repo": "https://github.com/qbittensor-labs/enigma",
+        "subnet_contact": "qbittensorlabs@gmail.com",
+        "subnet_url": "https://www.qbittensorlabs.com/",
+        "discord": "qbittensorlabs",
+        "description": "Breaking today to build tomorrow",
+        "logo_url": "https://www.qbittensorlabs.com/63.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.qbittensorlabs.com/",
+        "contact": "qbittensorlabs@gmail.com",
+        "github": "https://github.com/qbittensor-labs/enigma",
+        "discord": "qbittensorlabs",
+        "x": "https://x.com/qbittensorlabs",
+        "docs": null,
+        "description": "Breaking today to build tomorrow"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/63"
+    },
+    {
+      "netuid": 64,
+      "name": "Chutes",
+      "symbol": "ش",
+      "owner_ss58": "5FRYKhbmfXPDoHdUUDMx27E3HuMvAzwjzFMMq3rNurUhAyS9",
+      "owner_taostats": "https://taostats.io/account/5FRYKhbmfXPDoHdUUDMx27E3HuMvAzwjzFMMq3rNurUhAyS9",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Chutes",
+        "github_repo": "https://github.com/chutesai/chutes",
+        "subnet_contact": "support@chutes.ai",
+        "subnet_url": "https://chutes.ai",
+        "discord": "https://discord.gg/chutes",
+        "description": "Breakthrough Serverless Compute for AI, At Scale.",
+        "logo_url": "https://storage.googleapis.com/chutes-random/logo-chutes.png",
+        "additional": "Chutes is a subnet operated by Chutes Global Corp, an International Business Corporation registered in Nevis with registration number C 61974"
+      },
+      "public": {
+        "website": "https://chutes.ai",
+        "contact": "support@chutes.ai",
+        "github": "https://github.com/chutesai/chutes",
+        "discord": "https://discord.gg/chutes",
+        "x": "https://x.com/chutes_ai",
+        "docs": "https://chutes.ai/docs",
+        "description": "Breakthrough Serverless Compute for AI, At Scale."
+      },
+      "known_team": {
+        "org": "Chutes / Chutes Global Corp (Rayon Labs contrib)",
+        "public_face": "chutes.ai",
+        "notes": "Rayon Labs developed; legal owner is Chutes Global Corp."
+      },
+      "explorer": "https://subnetradar.com/research/subnets/64"
+    },
+    {
+      "netuid": 65,
+      "name": "True Performance Network",
+      "symbol": "ص",
+      "owner_ss58": "5GxEEHxLWpvcAGghL8LG7xNjrxZk4SEPW1VT43hGPZ2TP9mZ",
+      "owner_taostats": "https://taostats.io/account/5GxEEHxLWpvcAGghL8LG7xNjrxZk4SEPW1VT43hGPZ2TP9mZ",
+      "owner_chain_identity": {
+        "name": "True Performance Network",
+        "url": "https://www.trueperformancenetwork.com",
+        "github": "https://github.com/taofu-labs/true-performance-network",
+        "image": "https://taofu-labs.github.io/truepn-branding/assets/img/logo-mark.png",
+        "discord": "https://discord.com/invite/GRVZyPYd6G",
+        "description": "Distributed AI model compression & optimization engine",
+        "additional": "404 page not found!",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "True Performance Network",
+        "github_repo": "https://github.com/taofu-labs/true-performance-network",
+        "subnet_contact": "info@trueperformancenetwork.com",
+        "subnet_url": "https://www.trueperformancenetwork.com/",
+        "discord": "https://discord.com/invite/GRVZyPYd6G",
+        "description": "Distributed AI model compression & optimization engine",
+        "logo_url": "https://taofu-labs.github.io/truepn-branding/assets/img/logo-mark.png",
+        "additional": "404 page not found!"
+      },
+      "public": {
+        "website": "https://www.trueperformancenetwork.com/",
+        "contact": "info@trueperformancenetwork.com",
+        "github": "https://github.com/taofu-labs/true-performance-network",
+        "discord": "https://discord.com/invite/GRVZyPYd6G",
+        "x": "https://x.com/tpn_labs",
+        "docs": null,
+        "description": "Distributed AI model compression & optimization engine"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/65"
+    },
+    {
+      "netuid": 66,
+      "name": "conjectures",
+      "symbol": "ض",
+      "owner_ss58": "5CJCRGep3iyMUoaRb1FVNqXSuU8bcijfDBwVvZiQHSmGPTjT",
+      "owner_taostats": "https://taostats.io/account/5CJCRGep3iyMUoaRb1FVNqXSuU8bcijfDBwVvZiQHSmGPTjT",
+      "owner_chain_identity": {
+        "name": "Arbos",
+        "url": " ",
+        "github": " ",
+        "image": "https://raw.githubusercontent.com/unarbos/tau/main/arbos-logo.png",
+        "discord": " ",
+        "description": " ",
+        "additional": " ",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "conjectures",
+        "github_repo": "https://github.com/conjectures-io/conjectures-validator",
+        "subnet_contact": "charlie@conjectures.io",
+        "subnet_url": "https://conjectures.io",
+        "discord": "wejh",
+        "description": "Incentivizing breakthroughs on decades-old open mathematical conjectures",
+        "logo_url": "https://conjectures.io/favicon.svg",
+        "additional": "agent repo: https://github.com/ninja-subnet/ninja"
+      },
+      "public": {
+        "website": "https://conjectures.io",
+        "contact": "charlie@conjectures.io",
+        "github": "https://github.com/conjectures-io/conjectures-validator",
+        "discord": "wejh",
+        "x": null,
+        "docs": "https://github.com/ninja-subnet/ninja/blob/main/README.md",
+        "description": "Incentivizing breakthroughs on decades-old open mathematical conjectures"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/66"
+    },
+    {
+      "netuid": 67,
+      "name": "Harnyx",
+      "symbol": "ط",
+      "owner_ss58": "5HEAv3TU1yNei4GwiTsxfmDCDW9pMCKLeDVky9iaVJfYiVeY",
+      "owner_taostats": "https://taostats.io/account/5HEAv3TU1yNei4GwiTsxfmDCDW9pMCKLeDVky9iaVJfYiVeY",
+      "owner_chain_identity": {
+        "name": "Harnyx",
+        "url": "https://harnyx.ai/",
+        "github": "https://github.com/harnyx/harnyx",
+        "image": "https://harnyx.ai/favicon.svg",
+        "discord": "https://discord.com/channels/799672011265015819/1457737666316472351",
+        "description": "Deep research as a commodity. Faster, cheaper, traceable research — produced by a competitive swarm of miners on Bittensor SN67.",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Harnyx",
+        "github_repo": "https://github.com/harnyx/harnyx",
+        "subnet_contact": "harnyx@brightmount.co",
+        "subnet_url": "https://harnyx.ai/",
+        "discord": "https://discord.com/channels/799672011265015819/1457737666316472351",
+        "description": "Deep research as a commodity. Faster, cheaper, traceable research — produced by a competitive swarm of miners on Bittensor SN67.",
+        "logo_url": "https://harnyx.ai/favicon.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://harnyx.ai/",
+        "contact": "harnyx@brightmount.co",
+        "github": "https://github.com/harnyx/harnyx",
+        "discord": "https://discord.com/channels/799672011265015819/1457737666316472351",
+        "x": "https://x.com/harnyx_ai",
+        "docs": null,
+        "description": "Deep research as a commodity. Faster, cheaper, traceable research — produced by a competitive swarm of miners on Bittensor SN67."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/67"
+    },
+    {
+      "netuid": 68,
+      "name": "NOVA",
+      "symbol": "ظ",
+      "owner_ss58": "5EcdJLAeYoxM3Tsf5VZ3NQPenPku218gqnjSoo3iJNy4V12V",
+      "owner_taostats": "https://taostats.io/account/5EcdJLAeYoxM3Tsf5VZ3NQPenPku218gqnjSoo3iJNy4V12V",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "NOVA",
+        "github_repo": "https://github.com/metanova-labs/nova/",
+        "subnet_contact": "",
+        "subnet_url": "https://www.metanova-labs.ai",
+        "discord": "",
+        "description": "Accelerating drug discovery.",
+        "logo_url": "https://raw.githubusercontent.com/metanova-labs/nova/refs/heads/main/assets/subnet-logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.metanova-labs.ai",
+        "contact": null,
+        "github": "https://github.com/metanova-labs/nova/",
+        "discord": null,
+        "x": "https://x.com/metanova_labs",
+        "docs": null,
+        "description": "Accelerating drug discovery."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/68"
+    },
+    {
+      "netuid": 69,
+      "name": "Herald",
+      "symbol": "ع",
+      "owner_ss58": "5HBPFVcJxuhT6PFg93s5B5qa9GZjMQWRBWWEssZMDAMmRAvc",
+      "owner_taostats": "https://taostats.io/account/5HBPFVcJxuhT6PFg93s5B5qa9GZjMQWRBWWEssZMDAMmRAvc",
+      "owner_chain_identity": {
+        "name": "DSV Vali",
+        "url": "",
+        "github": "",
+        "image": "",
+        "discord": "",
+        "description": "",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Herald",
+        "github_repo": "https://github.com/HeraldMedia/herald",
+        "subnet_contact": "",
+        "subnet_url": "https://www.heraldmedia.ai",
+        "discord": "https://discord.gg/kQpeef9EPe",
+        "description": "Incentivising Mainstream Media via PR Firms",
+        "logo_url": "https://www.heraldmedia.ai/brand/logo-mark.svg",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.heraldmedia.ai",
+        "contact": null,
+        "github": "https://github.com/HeraldMedia/herald",
+        "discord": "https://discord.gg/kQpeef9EPe",
+        "x": null,
+        "docs": null,
+        "description": "Incentivising Mainstream Media via PR Firms"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/69"
+    },
+    {
+      "netuid": 70,
+      "name": "ghayn",
+      "symbol": "غ",
+      "owner_ss58": "5EP42hSodDgwNnXx1BrNwkJZ4ScMf22SJSqNqAq3SyjZib5E",
+      "owner_taostats": "https://taostats.io/account/5EP42hSodDgwNnXx1BrNwkJZ4ScMf22SJSqNqAq3SyjZib5E",
+      "owner_chain_identity": null,
+      "subnet_identity": null,
+      "public": {
+        "website": "https://www.nexisgen.ai/",
+        "contact": null,
+        "github": "https://github.com/RendixNetwork/nexisgen",
+        "discord": null,
+        "x": "https://x.com/nexisgen_ai",
+        "docs": null,
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/70"
+    },
+    {
+      "netuid": 71,
+      "name": "Leadpoet",
+      "symbol": "ㄴ",
+      "owner_ss58": "5DwHzMhBXPGPSSxnPzp3J8Y12UyYmU17nppQ8oHum6yrRjSk",
+      "owner_taostats": "https://taostats.io/account/5DwHzMhBXPGPSSxnPzp3J8Y12UyYmU17nppQ8oHum6yrRjSk",
+      "owner_chain_identity": {
+        "name": "Leadpoet / SN71 Primary Validator",
+        "url": "https://leadpoet.com",
+        "github": "https://github.com/leadpoet/leadpoet",
+        "image": "https://leadpoet.com/leadpoet-social-logo.png",
+        "discord": "",
+        "description": "",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Leadpoet",
+        "github_repo": "https://github.com/leadpoet/leadpoet",
+        "subnet_contact": "hello@leadpoet.com",
+        "subnet_url": "https://leadpoet.com",
+        "discord": "",
+        "description": "Intent-driven AI for modern sales teams.",
+        "logo_url": "https://leadpoet.com/leadpoet-social-logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://leadpoet.com",
+        "contact": "hello@leadpoet.com",
+        "github": "https://github.com/leadpoet/leadpoet",
+        "discord": null,
+        "x": "https://x.com/leadpoetai",
+        "docs": null,
+        "description": "Intent-driven AI for modern sales teams."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/71"
+    },
+    {
+      "netuid": 72,
+      "name": "StreetVision by NATIX",
+      "symbol": "ق",
+      "owner_ss58": "5FjP8fFbMb6pEHfRZyRegsmwRUMDuLFNcaBu1TerWMPEKgNh",
+      "owner_taostats": "https://taostats.io/account/5FjP8fFbMb6pEHfRZyRegsmwRUMDuLFNcaBu1TerWMPEKgNh",
+      "owner_chain_identity": {
+        "name": "WinnerTAO",
+        "url": "http://winnertao.com",
+        "github": "",
+        "image": "",
+        "discord": "",
+        "description": "",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "StreetVision by NATIX",
+        "github_repo": "https://github.com/natixnetwork/streetvision-subnet",
+        "subnet_contact": "",
+        "subnet_url": "https://www.natix.network/?utm_source=bittensor",
+        "discord": "https://discord.com/channels/799672011265015819/1349122541754515538",
+        "description": "Powered by NATIX’s Internet of Cameras, StreetVision is advancing autonomous driving, Physical AI, and map-making.",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.natix.network/?utm_source=bittensor",
+        "contact": null,
+        "github": "https://github.com/natixnetwork/streetvision-subnet",
+        "discord": "https://discord.com/channels/799672011265015819/1349122541754515538",
+        "x": "https://x.com/natixnetwork",
+        "docs": "https://docs.natix.network/whitepaper",
+        "description": "Powered by NATIX’s Internet of Cameras, StreetVision is advancing autonomous driving, Physical AI, and map-making."
+      },
+      "known_team": {
+        "org": "NATIX",
+        "public_face": "NATIX Network",
+        "notes": "StreetVision."
+      },
+      "explorer": "https://subnetradar.com/research/subnets/72"
+    },
+    {
+      "netuid": 73,
+      "name": "Parked",
+      "symbol": "ك",
+      "owner_ss58": "5Fvs6HPWUKNkqQka8yZi1anaTu339fKVws64BnJBRTQhKzak",
+      "owner_taostats": "https://taostats.io/account/5Fvs6HPWUKNkqQka8yZi1anaTu339fKVws64BnJBRTQhKzak",
+      "owner_chain_identity": {
+        "name": "fx-integral",
+        "url": "",
+        "github": "",
+        "image": "",
+        "discord": "()",
+        "description": "()",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Parked",
+        "github_repo": "",
+        "subnet_contact": "",
+        "subnet_url": "",
+        "discord": "",
+        "description": "",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": null,
+        "contact": null,
+        "github": null,
+        "discord": null,
+        "x": null,
+        "docs": null,
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/73"
+    },
+    {
+      "netuid": 74,
+      "name": "Gittensor",
+      "symbol": "ل",
+      "owner_ss58": "5D1VXeeSdrfyrBdMe4SNwKnRsmzrjXES9dhx6kQkCHhJUPvS",
+      "owner_taostats": "https://taostats.io/account/5D1VXeeSdrfyrBdMe4SNwKnRsmzrjXES9dhx6kQkCHhJUPvS",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Gittensor",
+        "github_repo": "https://github.com/entrius/gittensor/tree/main",
+        "subnet_contact": " ",
+        "subnet_url": "https://gittensor.io",
+        "discord": " ",
+        "description": "autonomous software development",
+        "logo_url": "https://gittensor.s3.us-east-2.amazonaws.com/gt-logo-white.png",
+        "additional": " "
+      },
+      "public": {
+        "website": "https://gittensor.io",
+        "contact": " ",
+        "github": "https://github.com/entrius/gittensor/tree/main",
+        "discord": " ",
+        "x": "https://x.com/gittensor_io",
+        "docs": "https://docs.gittensor.io/",
+        "description": "autonomous software development"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/74"
+    },
+    {
+      "netuid": 75,
+      "name": "Hippius",
+      "symbol": "م",
+      "owner_ss58": "5DAQpczEK4vzBn1waHkC4BZGqGPZ1dwPxKVsj36JDofHAw3a",
+      "owner_taostats": "https://taostats.io/account/5DAQpczEK4vzBn1waHkC4BZGqGPZ1dwPxKVsj36JDofHAw3a",
+      "owner_chain_identity": {
+        "name": "Hippius",
+        "url": "https://hippius.com",
+        "github": "https://github.com/orgs/thenervelab",
+        "image": "https://docs.hippius.com/img/logo.png",
+        "discord": "https://discord.hippius.com",
+        "description": "Transparent, Decentralized, Anonymous Cloud Storage.",
+        "additional": "backed by a blockchain.",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Hippius",
+        "github_repo": "https://github.com/thenervelab/thebrain",
+        "subnet_contact": "hello@hippius.com",
+        "subnet_url": "https://hippius.com/",
+        "discord": "",
+        "description": "Blockchain-backed cloud: storage, VMs, and apps with unmatched transparency, trust, and power.",
+        "logo_url": "https://hippius.com/logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://hippius.com/",
+        "contact": "hello@hippius.com",
+        "github": "https://github.com/thenervelab/thebrain",
+        "discord": null,
+        "x": "https://x.com/hippius_subnet",
+        "docs": "https://docs.hippius.com/",
+        "description": "Blockchain-backed cloud: storage, VMs, and apps with unmatched transparency, trust, and power."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/75"
+    },
+    {
+      "netuid": 76,
+      "name": "nun",
+      "symbol": "ن",
+      "owner_ss58": "5CLWmDjLwkDtLQ86y9aiwfzrUCrtnnSWS9oEXianj2jMDCAo",
+      "owner_taostats": "https://taostats.io/account/5CLWmDjLwkDtLQ86y9aiwfzrUCrtnnSWS9oEXianj2jMDCAo",
+      "owner_chain_identity": null,
+      "subnet_identity": null,
+      "public": {
+        "website": "https://www.byzantiumai.net/",
+        "contact": null,
+        "github": "https://github.com/praxi-labs/phylax-subnet",
+        "discord": null,
+        "x": "https://x.com/byzantiumai",
+        "docs": null,
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/76"
+    },
+    {
+      "netuid": 77,
+      "name": "Liquidity",
+      "symbol": "ه",
+      "owner_ss58": "5GxxsUeYRyJSJKCuPeG1jZZiCummHJttmTNsfgDRSfxVnhGi",
+      "owner_taostats": "https://taostats.io/account/5GxxsUeYRyJSJKCuPeG1jZZiCummHJttmTNsfgDRSfxVnhGi",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Liquidity",
+        "github_repo": "https://github.com/creativebuilds/sn77",
+        "subnet_contact": "",
+        "subnet_url": "https://sn77.xyz",
+        "discord": "CreativeBuilds",
+        "description": "Supply liquidity on external chains via uniswap, incentivize any project",
+        "logo_url": "https://sn77.xyz/assets/Logo.svg",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://sn77.xyz",
+        "contact": null,
+        "github": "https://github.com/creativebuilds/sn77",
+        "discord": "CreativeBuilds",
+        "x": null,
+        "docs": null,
+        "description": "Supply liquidity on external chains via uniswap, incentivize any project"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/77"
+    },
+    {
+      "netuid": 78,
+      "name": "Umi",
+      "symbol": "و",
+      "owner_ss58": "5GvYz1tBVJdVGtdeJFAcDbiRQcmKDcXicT98pxnKzU3cxVQ3",
+      "owner_taostats": "https://taostats.io/account/5GvYz1tBVJdVGtdeJFAcDbiRQcmKDcXicT98pxnKzU3cxVQ3",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Umi",
+        "github_repo": "https://github.com/Umi-BitSign/umi",
+        "subnet_contact": "",
+        "subnet_url": "https://www.umi.vision",
+        "discord": "https://discord.gg/8pexneWef",
+        "description": "Universal motion to meaning",
+        "logo_url": "https://www.umi.vision/logo-white.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.umi.vision",
+        "contact": null,
+        "github": "https://github.com/Umi-BitSign/umi",
+        "discord": "https://discord.gg/8pexneWef",
+        "x": null,
+        "docs": null,
+        "description": "Universal motion to meaning"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/78"
+    },
+    {
+      "netuid": 79,
+      "name": "MVTRX",
+      "symbol": "ي",
+      "owner_ss58": "5Fxp7QBG81X7PLdMkAe1RLCvqqfQSw9rJC5ppEQs9FP8qez9",
+      "owner_taostats": "https://taostats.io/account/5Fxp7QBG81X7PLdMkAe1RLCvqqfQSw9rJC5ppEQs9FP8qez9",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "MVTRX",
+        "github_repo": "https://github.com/taos-im/sn-79",
+        "subnet_contact": "to@mvtrx.fi",
+        "subnet_url": "https://taos.im",
+        "discord": "",
+        "description": "Building a SOTA Exchange for dTAO and Beyond",
+        "logo_url": "https://assets.mvtrx.fi/logo.png",
+        "additional": "Powered by TAOS Matrix of Simulations Sandbox"
+      },
+      "public": {
+        "website": "https://taos.im",
+        "contact": "to@mvtrx.fi",
+        "github": "https://github.com/taos-im/sn-79",
+        "discord": null,
+        "x": "https://x.com/taos_im",
+        "docs": "https://simulate.trading/taos-im-paper",
+        "description": "Building a SOTA Exchange for dTAO and Beyond"
+      },
+      "known_team": {
+        "org": "Rayleigh Research Oy / TAOS",
+        "public_face": "Tommi Antero Vuorenmaa (7/.)",
+        "notes": "MVTRX. Scoring/validator: Chris Mathwin (6/.). Contact to@mvtrx.fi. Owner lock is the largest on the network."
+      },
+      "explorer": "https://subnetradar.com/research/subnets/79"
+    },
+    {
+      "netuid": 80,
+      "name": "OpenRoboto",
+      "symbol": "ى",
+      "owner_ss58": "5CG1eFiaZkWTCUEjD23i7Uiu6AjTkLkgkCu3EyXKFFAkkT2T",
+      "owner_taostats": "https://taostats.io/account/5CG1eFiaZkWTCUEjD23i7Uiu6AjTkLkgkCu3EyXKFFAkkT2T",
+      "owner_chain_identity": {
+        "name": "OpenRoboto",
+        "url": "https://www.openroboto.ai/",
+        "github": "https://github.com/openroboto-ai/openroboto-subnet",
+        "image": "https://www.openroboto.ai/logo.png",
+        "discord": "",
+        "description": "An open competition on Bittensor for continuously improving robotics models",
+        "additional": "Official X: https://x.com/openroboto",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "OpenRoboto",
+        "github_repo": "https://github.com/openroboto-ai/openroboto-subnet",
+        "subnet_contact": "riccardo@openroboto.ai",
+        "subnet_url": "https://www.openroboto.ai/",
+        "discord": "",
+        "description": "An open competition on Bittensor for continuously improving robotics models",
+        "logo_url": "https://www.openroboto.ai/logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.openroboto.ai/",
+        "contact": "riccardo@openroboto.ai",
+        "github": "https://github.com/openroboto-ai/openroboto-subnet",
+        "discord": null,
+        "x": null,
+        "docs": "https://github.com/dogelayer-ai/dogelayer/blob/main/docs/proxy-api.md",
+        "description": "An open competition on Bittensor for continuously improving robotics models"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/80"
+    },
+    {
+      "netuid": 81,
+      "name": "Reliquary",
+      "symbol": "ᚠ",
+      "owner_ss58": "5GnpQR4Nt3f5AQqBXuhf7GkkaEHhAVQrVk4EsK4daZDmkAQT",
+      "owner_taostats": "https://taostats.io/account/5GnpQR4Nt3f5AQqBXuhf7GkkaEHhAVQrVk4EsK4daZDmkAQT",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Reliquary",
+        "github_repo": "https://github.com/reliquadotai/reliquary",
+        "subnet_contact": "RomAI",
+        "subnet_url": "https://www.reliqua.ai/",
+        "discord": "https://discord.com/channels/799672011265015819/1493247592551678012",
+        "description": "The RL layer of Bittensor",
+        "logo_url": "https://www.reliqua.ai/reliquary-logo.png",
+        "additional": "0"
+      },
+      "public": {
+        "website": "https://www.reliqua.ai/",
+        "contact": "RomAI",
+        "github": "https://github.com/reliquadotai/reliquary",
+        "discord": "https://discord.com/channels/799672011265015819/1493247592551678012",
+        "x": null,
+        "docs": "https://github.com/one-covenant/grail/tree/main/docs",
+        "description": "The RL layer of Bittensor"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/81"
+    },
+    {
+      "netuid": 82,
+      "name": "Compelle",
+      "symbol": "ᚢ",
+      "owner_ss58": "5H6h1PUDfTFdTV5kRCgywGR7xjLo63LHMiP6wJ4qBU8A9zPs",
+      "owner_taostats": "https://taostats.io/account/5H6h1PUDfTFdTV5kRCgywGR7xjLo63LHMiP6wJ4qBU8A9zPs",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Compelle",
+        "github_repo": "https://github.com/compelle/compelle-validator",
+        "subnet_contact": "",
+        "subnet_url": "https://compelle.com",
+        "discord": "",
+        "description": "AIs debate until they are AGI.",
+        "logo_url": "https://compelle.com/launch/logo-512.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://compelle.com",
+        "contact": null,
+        "github": "https://github.com/compelle/compelle-validator",
+        "discord": null,
+        "x": null,
+        "docs": null,
+        "description": "AIs debate until they are AGI."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/82"
+    },
+    {
+      "netuid": 83,
+      "name": "CliqueAI",
+      "symbol": "ᚦ",
+      "owner_ss58": "5DqEjRLyNN8k3WbEXhA36tyGG4YpWyPEcVSTa47XxspNHhc3",
+      "owner_taostats": "https://taostats.io/account/5DqEjRLyNN8k3WbEXhA36tyGG4YpWyPEcVSTa47XxspNHhc3",
+      "owner_chain_identity": {
+        "name": "CliqueAI",
+        "url": "https://cliqueai.toptensor.ai/",
+        "github": "https://github.com/toptensor/CliqueAI",
+        "image": "",
+        "discord": "toptensor",
+        "description": "CliqueAI - AI-Powered Maximum Clique Solver Network",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "CliqueAI",
+        "github_repo": "https://github.com/toptensor/CliqueAI",
+        "subnet_contact": "CliqueAI@toptensor.ai",
+        "subnet_url": "https://cliqueai.toptensor.ai/",
+        "discord": "https://discord.com/channels/799672011265015819/1355560253076410428",
+        "description": "CliqueAI - AI-Powered Maximum Clique Solver Network",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://cliqueai.toptensor.ai/",
+        "contact": "CliqueAI@toptensor.ai",
+        "github": "https://github.com/toptensor/CliqueAI",
+        "discord": "https://discord.com/channels/799672011265015819/1355560253076410428",
+        "x": null,
+        "docs": null,
+        "description": "CliqueAI - AI-Powered Maximum Clique Solver Network"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/83"
+    },
+    {
+      "netuid": 84,
+      "name": "ansuz",
+      "symbol": "ᚨ",
+      "owner_ss58": "5G1hDNpPA8pRZUMJRBcELthCaHVPQcHZb1X3jbeyQ9zUtbbd",
+      "owner_taostats": "https://taostats.io/account/5G1hDNpPA8pRZUMJRBcELthCaHVPQcHZb1X3jbeyQ9zUtbbd",
+      "owner_chain_identity": null,
+      "subnet_identity": null,
+      "public": {
+        "website": "https://www.chipforge.io/",
+        "contact": null,
+        "github": "https://github.com/TatsuProject/ChipForge_SN84",
+        "discord": null,
+        "x": null,
+        "docs": "https://docs.chipforge.io/",
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/84"
+    },
+    {
+      "netuid": 85,
+      "name": "Vidaio",
+      "symbol": "ᚱ",
+      "owner_ss58": "5GTPBjA4uXhuQ51SJB7Jd55JwY6dKEnbnjCrsSSEXy3MN63z",
+      "owner_taostats": "https://taostats.io/account/5GTPBjA4uXhuQ51SJB7Jd55JwY6dKEnbnjCrsSSEXy3MN63z",
+      "owner_chain_identity": {
+        "name": "Vidaio",
+        "url": "https://vidaio.io/",
+        "github": "https://github.com/vidaio-subnet/vidaio-subnet",
+        "image": "",
+        "discord": "https://discord.gg/xhn4jxJMEX",
+        "description": "Video-processing subnet built on Bittensor, powered by decentralized AI",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Vidaio",
+        "github_repo": "https://github.com/vidaio-subnet/vidaio-subnet",
+        "subnet_contact": "Vidaio@vidaio.io",
+        "subnet_url": "https://vidaio.io/",
+        "discord": "https://discord.gg/xhn4jxJMEX",
+        "description": "Next-Generation Video Processing Powered By AI",
+        "logo_url": "https://raw.githubusercontent.com/vidAio-subnet/brand-assets/main/logos/320x320.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://vidaio.io/",
+        "contact": "Vidaio@vidaio.io",
+        "github": "https://github.com/vidaio-subnet/vidaio-subnet",
+        "discord": "https://discord.gg/xhn4jxJMEX",
+        "x": "https://x.com/vidaio_",
+        "docs": null,
+        "description": "Next-Generation Video Processing Powered By AI"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/85"
+    },
+    {
+      "netuid": 86,
+      "name": "kaunan",
+      "symbol": "ᚳ",
+      "owner_ss58": "5F4XAWGzcwpHjGdLUDfWiCvKnqeNPQHn3SwooBQcYcP7mWXJ",
+      "owner_taostats": "https://taostats.io/account/5F4XAWGzcwpHjGdLUDfWiCvKnqeNPQHn3SwooBQcYcP7mWXJ",
+      "owner_chain_identity": null,
+      "subnet_identity": null,
+      "public": {
+        "website": null,
+        "contact": null,
+        "github": null,
+        "discord": null,
+        "x": null,
+        "docs": null,
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/86"
+    },
+    {
+      "netuid": 87,
+      "name": "Provenonce",
+      "symbol": "Ы",
+      "owner_ss58": "5HartH15eyQoKJk98jTMwhY9nW4JRfWEznqLRD1oQJuwdBHV",
+      "owner_taostats": "https://taostats.io/account/5HartH15eyQoKJk98jTMwhY9nW4JRfWEznqLRD1oQJuwdBHV",
+      "owner_chain_identity": {
+        "name": "Luminar",
+        "url": "https://luminar.network",
+        "github": "",
+        "image": "https://i.ibb.co/8nXxKTVf/5-Mc-VFISU-400x400-1-modified.png",
+        "discord": "",
+        "description": "",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Provenonce",
+        "github_repo": "",
+        "subnet_contact": "",
+        "subnet_url": "https://provenonce.ai",
+        "discord": "https://discord.com/channels/799672011265015819/1521124924759080972",
+        "description": "verified execution of agentic workflows for enterprise, delivering Proof of Assurance",
+        "logo_url": "https://provenonce.ai/apple-touch-icon.png",
+        "additional": "Will O'Brien, founder https://x.com/willobrien"
+      },
+      "public": {
+        "website": "https://provenonce.ai",
+        "contact": null,
+        "github": "https://github.com/Luminar-Network/luminar-sn",
+        "discord": "https://discord.com/channels/799672011265015819/1521124924759080972",
+        "x": "https://x.com/willobrien",
+        "docs": "https://docs.luminar.network/",
+        "description": "verified execution of agentic workflows for enterprise, delivering Proof of Assurance"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/87"
+    },
+    {
+      "netuid": 88,
+      "name": "Investing",
+      "symbol": "ᛉ",
+      "owner_ss58": "5FhMsGJS7WYdwBzcgsTWxEtY7UCYLZdmBVLcNPmCxr3ppiKS",
+      "owner_taostats": "https://taostats.io/account/5FhMsGJS7WYdwBzcgsTWxEtY7UCYLZdmBVLcNPmCxr3ppiKS",
+      "owner_chain_identity": {
+        "name": "88",
+        "url": "https://Investing88.ai",
+        "github": "https://github.com/mobiusfund/investing",
+        "image": "https://Investing88.ai/logo.png",
+        "discord": "",
+        "description": "Decentralized AUM",
+        "additional": "https://x.com/Investing88ai",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Investing",
+        "github_repo": "https://github.com/mobiusfund/investing",
+        "subnet_contact": "",
+        "subnet_url": "https://Investing88.ai",
+        "discord": "",
+        "description": "Decentralized AUM",
+        "logo_url": "https://Investing88.ai/logo.png",
+        "additional": "https://x.com/Investing88ai"
+      },
+      "public": {
+        "website": "https://Investing88.ai",
+        "contact": null,
+        "github": "https://github.com/mobiusfund/investing",
+        "discord": null,
+        "x": "https://x.com/Investing88ai",
+        "docs": null,
+        "description": "Decentralized AUM"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/88"
+    },
+    {
+      "netuid": 89,
+      "name": "InfiniteQuant",
+      "symbol": "ᛒ",
+      "owner_ss58": "5Dc5NmEUptDeMLrxDSvg8kfCToxJkiF47apAYSVTycAVvDN4",
+      "owner_taostats": "https://taostats.io/account/5Dc5NmEUptDeMLrxDSvg8kfCToxJkiF47apAYSVTycAVvDN4",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "InfiniteQuant",
+        "github_repo": "https://github.com/DeltaCompute24/InfiniteQuant-Subnet",
+        "subnet_contact": "support@infinitequant.app",
+        "subnet_url": "https://infinitequant.app",
+        "discord": "",
+        "description": "Proof of Edge - Trading signals",
+        "logo_url": "https://raw.githubusercontent.com/DeltaCompute24/InfiniteQuant-Subnet/master/docs/assets/iq_logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://infinitequant.app",
+        "contact": "support@infinitequant.app",
+        "github": "https://github.com/DeltaCompute24/InfiniteQuant-Subnet",
+        "discord": null,
+        "x": null,
+        "docs": "https://github.com/backend-developers-ltd/InfiniteHash/blob/master/docs/subnet_auction_incentive_system.md",
+        "description": "Proof of Edge - Trading signals"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/89"
+    },
+    {
+      "netuid": 90,
+      "name": "KubeTEE",
+      "symbol": "テ",
+      "owner_ss58": "5C9y6fnLPSzBeh1Np7f4DnGen42xV29nL9qZTDuwpVC4iTEE",
+      "owner_taostats": "https://taostats.io/account/5C9y6fnLPSzBeh1Np7f4DnGen42xV29nL9qZTDuwpVC4iTEE",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "KubeTEE",
+        "github_repo": "https://github.com/KubeTEE-AI/kubetee-subnet",
+        "subnet_contact": "pierre@kubetee.ai",
+        "subnet_url": "https://kubetee.ai",
+        "discord": "https://discord.gg/KUeXm9XQG4",
+        "description": "KubeTEE AI Factory: Confidential Computing TEE Multi-Cluster K8s",
+        "logo_url": "https://kubetee.ai/logo.png",
+        "additional": "https://x.com/KubeTEEAI — Enterprise-Grade AIaaS with FIPS-140-3 Federal-Grade Security"
+      },
+      "public": {
+        "website": "https://kubetee.ai",
+        "contact": "pierre@kubetee.ai",
+        "github": "https://github.com/KubeTEE-AI/kubetee-subnet",
+        "discord": "https://discord.gg/KUeXm9XQG4",
+        "x": "https://x.com/KubeTEEAI",
+        "docs": null,
+        "description": "KubeTEE AI Factory: Confidential Computing TEE Multi-Cluster K8s"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/90"
+    },
+    {
+      "netuid": 91,
+      "name": "cascade",
+      "symbol": "ᚁ",
+      "owner_ss58": "5HEe7NjS4exuP9SptWZdwWqWrMrGTTEHf5ieQH8yZXA3zXtW",
+      "owner_taostats": "https://taostats.io/account/5HEe7NjS4exuP9SptWZdwWqWrMrGTTEHf5ieQH8yZXA3zXtW",
+      "owner_chain_identity": {
+        "name": "cascade",
+        "url": "https://bitstarter.ai/",
+        "github": "https://github.com/TensorLink-AI/cascade",
+        "image": "https://i.ibb.co/NnnPC8yz/Bitstarter-Icon-Pixel-1-8x.png",
+        "discord": "officialneeve",
+        "description": "SOTA Time Series Foundation Models",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "cascade",
+        "github_repo": "https://github.com/TensorLink-AI/cascade",
+        "subnet_contact": "chris@tensor-link.com",
+        "subnet_url": "cascadesub.net",
+        "discord": "christensor_49068",
+        "description": "SOTA Time Series Foundation Models",
+        "logo_url": "https://raw.githubusercontent.com/TensorLink-AI/cascade/main/cascade/website/favicon-512.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "cascadesub.net",
+        "contact": "chris@tensor-link.com",
+        "github": "https://github.com/TensorLink-AI/cascade",
+        "discord": "christensor_49068",
+        "x": "https://x.com/bitstarterai",
+        "docs": "https://app.bitstarter.ai/how-it-works/",
+        "description": "SOTA Time Series Foundation Models"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/91"
+    },
+    {
+      "netuid": 92,
+      "name": "MicroTensor",
+      "symbol": "ᚂ",
+      "owner_ss58": "5E9LPDS2E5RFzoqRsF2D7NgJTFH3N2DVqeAodTksPJP7CT4x",
+      "owner_taostats": "https://taostats.io/account/5E9LPDS2E5RFzoqRsF2D7NgJTFH3N2DVqeAodTksPJP7CT4x",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "MicroTensor",
+        "github_repo": "https://github.com/microtensor-io/microtensor-subnet",
+        "subnet_contact": "",
+        "subnet_url": "https://microtensor.vercel.app",
+        "discord": "92",
+        "description": "A model factory and deployment layer for verified specialist AI",
+        "logo_url": "https://microtensor.vercel.app/logo.png",
+        "additional": "https://taostats.io/subnets/92"
+      },
+      "public": {
+        "website": "https://microtensor.vercel.app",
+        "contact": null,
+        "github": "https://github.com/microtensor-io/microtensor-subnet",
+        "discord": "92",
+        "x": null,
+        "docs": "https://github.com/tensorplex-labs/subnet-docs/tree/main/data/92",
+        "description": "A model factory and deployment layer for verified specialist AI"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/92"
+    },
+    {
+      "netuid": 93,
+      "name": "Bitcast",
+      "symbol": "ᚃ",
+      "owner_ss58": "5EbY1SebUuz189w1G96JN4mmHnShAECA6JefCRYhSLqyYg2c",
+      "owner_taostats": "https://taostats.io/account/5EbY1SebUuz189w1G96JN4mmHnShAECA6JefCRYhSLqyYg2c",
+      "owner_chain_identity": {
+        "name": "Bitcast",
+        "url": "bitcast.network",
+        "github": "https://github.com/bitcast-network/bitcast-deploy",
+        "image": "",
+        "discord": "mizutx",
+        "description": "Bitcast validator",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Bitcast",
+        "github_repo": "https://github.com/bitcast-network/bitcast",
+        "subnet_contact": "",
+        "subnet_url": "https://stats.bitcast.network/",
+        "discord": "",
+        "description": "The Decentralized Creators Economy",
+        "logo_url": "https://raw.githubusercontent.com/bitcast-network/bitcast/main/assets/multi_logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://stats.bitcast.network/",
+        "contact": null,
+        "github": "https://github.com/bitcast-network/bitcast",
+        "discord": null,
+        "x": null,
+        "docs": "https://www.bitcast.network/whitepaper.pdf",
+        "description": "The Decentralized Creators Economy"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/93"
+    },
+    {
+      "netuid": 94,
+      "name": "pending...",
+      "symbol": "ᚄ",
+      "owner_ss58": "5CnwnkkCxrrNDuhy8Vvptd6j6ebrv9Z6mrTzD479f7uAiYat",
+      "owner_taostats": "https://taostats.io/account/5CnwnkkCxrrNDuhy8Vvptd6j6ebrv9Z6mrTzD479f7uAiYat",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "pending...",
+        "github_repo": "https://github.com/AlveusLabs/SN94-BitSota",
+        "subnet_contact": "info@bitsota.ai",
+        "subnet_url": "pending...",
+        "discord": "pending...",
+        "description": "pending...",
+        "logo_url": "pending...",
+        "additional": "pending..."
+      },
+      "public": {
+        "website": "pending...",
+        "contact": "info@bitsota.ai",
+        "github": "https://github.com/AlveusLabs/SN94-BitSota",
+        "discord": "pending...",
+        "x": "https://x.com/bitsota",
+        "docs": "https://autoresearch.bitsota.com/api/v1/disclaimer.md",
+        "description": "pending..."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/94"
+    },
+    {
+      "netuid": 95,
+      "name": "Actual",
+      "symbol": "ᚅ",
+      "owner_ss58": "5D5UhUuc6cC47CXUBHyBkpDBrdeyeL6bpWGAreZgNm5WTyrg",
+      "owner_taostats": "https://taostats.io/account/5D5UhUuc6cC47CXUBHyBkpDBrdeyeL6bpWGAreZgNm5WTyrg",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Actual",
+        "github_repo": "https://github.com/actual-computer/actual-subnet-95",
+        "subnet_contact": "subnet@actual.inc",
+        "subnet_url": "https://actual.inc",
+        "discord": "",
+        "description": "Heterogeneous inference network by Actual Computer Inc.",
+        "logo_url": "https://public-assets.actual.inc/red-mask-512.png",
+        "additional": "Inference time from machines running Actual"
+      },
+      "public": {
+        "website": "https://actual.inc",
+        "contact": "subnet@actual.inc",
+        "github": "https://github.com/actual-computer/actual-subnet-95",
+        "discord": null,
+        "x": null,
+        "docs": null,
+        "description": "Heterogeneous inference network by Actual Computer Inc."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/95"
+    },
+    {
+      "netuid": 96,
+      "name": "Verathos",
+      "symbol": "᚛",
+      "owner_ss58": "5CGq1JQhmZmR8w3pXFqycUgX9mcLt8bPwMZ8YDJbEmELpw7X",
+      "owner_taostats": "https://taostats.io/account/5CGq1JQhmZmR8w3pXFqycUgX9mcLt8bPwMZ8YDJbEmELpw7X",
+      "owner_chain_identity": {
+        "name": "Verathos",
+        "url": "https://verathos.ai",
+        "github": "https://github.com/verathos-ai/verathos",
+        "image": "",
+        "discord": "",
+        "description": "Verified AI inference and training subnet.",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Verathos",
+        "github_repo": "https://github.com/verathos-ai/verathos",
+        "subnet_contact": "info@verathos.ai",
+        "subnet_url": "https://verathos.ai",
+        "discord": "",
+        "description": "Verified AI inference and training subnet.",
+        "logo_url": "https://raw.githubusercontent.com/verathos-ai/verathos/main/assets/logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://verathos.ai",
+        "contact": "info@verathos.ai",
+        "github": "https://github.com/verathos-ai/verathos",
+        "discord": null,
+        "x": null,
+        "docs": "https://verathos.ai/docs",
+        "description": "Verified AI inference and training subnet."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/96"
+    },
+    {
+      "netuid": 97,
+      "name": "Albedo",
+      "symbol": "ა",
+      "owner_ss58": "5GnW8owmMGn83WqL9JNYytmw458UYrTT6Ra5fH8TTUkzEbTb",
+      "owner_taostats": "https://taostats.io/account/5GnW8owmMGn83WqL9JNYytmw458UYrTT6Ra5fH8TTUkzEbTb",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Albedo",
+        "github_repo": "https://github.com/unarbos/albedo",
+        "subnet_contact": "arbos@bittensor.com",
+        "subnet_url": "https://us-east-1.hippius.com/albedo/index.html",
+        "discord": "@arbos",
+        "description": "Alchemical intelligence",
+        "logo_url": "https://us-east-1.hippius.com/albedo/favicon.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://us-east-1.hippius.com/albedo/index.html",
+        "contact": "arbos@bittensor.com",
+        "github": "https://github.com/unarbos/albedo",
+        "discord": "@arbos",
+        "x": null,
+        "docs": null,
+        "description": "Alchemical intelligence"
+      },
+      "known_team": {
+        "org": "Albedo / advertised operator Arbos",
+        "public_face": "Jacob Robert Steeves (Const) + Arbos",
+        "notes": "KOTH coding/distillation. Contact arbos@bittensor.com. Same human as Affine SN120."
+      },
+      "explorer": "https://subnetradar.com/research/subnets/97"
+    },
+    {
+      "netuid": 98,
+      "name": "NeverPlayAlone",
+      "symbol": "ბ",
+      "owner_ss58": "5EWzZCNsJe72k44Jd9oPUXRRkxVgFAtjyohgSwmTu6F8MBHM",
+      "owner_taostats": "https://taostats.io/account/5EWzZCNsJe72k44Jd9oPUXRRkxVgFAtjyohgSwmTu6F8MBHM",
+      "owner_chain_identity": {
+        "name": "NeverPlayAlone",
+        "url": "https://neverplayalone.ai",
+        "github": "https://github.com/neverplayalone/neverplayalone_subnet",
+        "image": "https://raw.githubusercontent.com/neverplayalone/neverplayalone_subnet/main/logo.png",
+        "discord": "https://discord.gg/8XuGcpY2w4",
+        "description": "",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "NeverPlayAlone",
+        "github_repo": "https://github.com/neverplayalone/neverplayalone_subnet",
+        "subnet_contact": "contact@neverplayalone.ai",
+        "subnet_url": "https://neverplayalone.ai",
+        "discord": "https://discord.com/invite/MG3nkhayjh",
+        "description": "Living AI Companions that create memories alongside you",
+        "logo_url": "https://raw.githubusercontent.com/neverplayalone/neverplayalone_subnet/main/logo.png",
+        "additional": "Minecraft Low Latency Agents"
+      },
+      "public": {
+        "website": "https://neverplayalone.ai",
+        "contact": "contact@neverplayalone.ai",
+        "github": "https://github.com/neverplayalone/neverplayalone_subnet",
+        "discord": "https://discord.com/invite/MG3nkhayjh",
+        "x": "https://x.com/forevermoney_ai",
+        "docs": null,
+        "description": "Living AI Companions that create memories alongside you"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/98"
+    },
+    {
+      "netuid": 99,
+      "name": "Thirty Spokes",
+      "symbol": "გ",
+      "owner_ss58": "5DebFXsw76JvoG5j6qQRoyNK79qBEvd6A2trULrA6DGgQLYX",
+      "owner_taostats": "https://taostats.io/account/5DebFXsw76JvoG5j6qQRoyNK79qBEvd6A2trULrA6DGgQLYX",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Thirty Spokes",
+        "github_repo": "",
+        "subnet_contact": "",
+        "subnet_url": "https://www.thirtyspokes.ai",
+        "discord": "",
+        "description": "",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.thirtyspokes.ai",
+        "contact": null,
+        "github": null,
+        "discord": null,
+        "x": null,
+        "docs": "https://www.thirtyspokes.ai/docs",
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/99"
+    },
+    {
+      "netuid": 100,
+      "name": "Cortex",
+      "symbol": "დ",
+      "owner_ss58": "5FX6kmhYwTYRFaZjxEo7k9DaG8qRmqrJtLTMGRgnfjRcXiWU",
+      "owner_taostats": "https://taostats.io/account/5FX6kmhYwTYRFaZjxEo7k9DaG8qRmqrJtLTMGRgnfjRcXiWU",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Cortex",
+        "github_repo": "https://github.com/CortexLM/cortex",
+        "subnet_contact": "team@cortex.foundation",
+        "subnet_url": "https://cortex.foundation",
+        "discord": "",
+        "description": "The open alternative to frontier AI.",
+        "logo_url": "https://cortex.foundation/logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://cortex.foundation",
+        "contact": "team@cortex.foundation",
+        "github": "https://github.com/CortexLM/cortex",
+        "discord": null,
+        "x": "https://x.com/platformnet",
+        "docs": "https://www.platform.network/docs",
+        "description": "The open alternative to frontier AI."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/100"
+    },
+    {
+      "netuid": 101,
+      "name": "Tag101",
+      "symbol": "ე",
+      "owner_ss58": "5H8dNvi1jZRe1dcYN2FdknWKxfGx6u1o9pYm5zRMCZyy2Ex3",
+      "owner_taostats": "https://taostats.io/account/5H8dNvi1jZRe1dcYN2FdknWKxfGx6u1o9pYm5zRMCZyy2Ex3",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Tag101",
+        "github_repo": "https://github.com/tag101-ai/tag101",
+        "subnet_contact": "",
+        "subnet_url": "http://tag101.ai",
+        "discord": "Tag101",
+        "description": "Tag101 is a Bittensor subnet for decentralized social post tagging",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": "http://tag101.ai",
+        "contact": null,
+        "github": "https://github.com/tag101-ai/tag101",
+        "discord": "Tag101",
+        "x": null,
+        "docs": null,
+        "description": "Tag101 is a Bittensor subnet for decentralized social post tagging"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/101"
+    },
+    {
+      "netuid": 102,
+      "name": "ConnitoAI",
+      "symbol": "ვ",
+      "owner_ss58": "5HBc11rCaAj2UtUTeC3oK8zHbU7jQCQZWpRQvsawqxH8qkTm",
+      "owner_taostats": "https://taostats.io/account/5HBc11rCaAj2UtUTeC3oK8zHbU7jQCQZWpRQvsawqxH8qkTm",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "ConnitoAI",
+        "github_repo": "https://github.com/Connito-AI/Connito",
+        "subnet_contact": "isabella@connito.ai",
+        "subnet_url": "https://connito.ai/",
+        "discord": "isabella618033",
+        "description": "Contributors train specialized expert modules that are aggregated into powerful AI systems, without massive centralized compute.",
+        "logo_url": "https://connito.ai/images/logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://connito.ai/",
+        "contact": "isabella@connito.ai",
+        "github": "https://github.com/Connito-AI/Connito",
+        "discord": "isabella618033",
+        "x": "https://x.com/connitoai",
+        "docs": null,
+        "description": "Contributors train specialized expert modules that are aggregated into powerful AI systems, without massive centralized compute."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/102"
+    },
+    {
+      "netuid": 103,
+      "name": "Capcomp",
+      "symbol": "Ա",
+      "owner_ss58": "5H3SQ4du9ThumJcUQb1VL2dixRBDKtt8hDRWLyPuANhHon7Y",
+      "owner_taostats": "https://taostats.io/account/5H3SQ4du9ThumJcUQb1VL2dixRBDKtt8hDRWLyPuANhHon7Y",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Capcomp",
+        "github_repo": "https://github.com/orgs/Capcomp-AI/repositories",
+        "subnet_contact": "",
+        "subnet_url": "http://capcomp.ai/",
+        "discord": "",
+        "description": "Capability Composition Subnet",
+        "logo_url": "https://raw.githubusercontent.com/Capcomp-AI/capability-composition-subnet/main/assets/logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "http://capcomp.ai/",
+        "contact": "info@djinn.gg",
+        "github": "https://github.com/orgs/Capcomp-AI/repositories",
+        "discord": null,
+        "x": "https://x.com/djinn_gg",
+        "docs": null,
+        "description": "Capability Composition Subnet"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/103"
+    },
+    {
+      "netuid": 104,
+      "name": "TAOstatus",
+      "symbol": "Բ",
+      "owner_ss58": "5HBb3F1bmDzdwQ5WTweXUvnKETTzu6aWNAH811vrLkvSdQAn",
+      "owner_taostats": "https://taostats.io/account/5HBb3F1bmDzdwQ5WTweXUvnKETTzu6aWNAH811vrLkvSdQAn",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "TAOstatus",
+        "github_repo": "https://github.com/taostatus/taostatus-subnet",
+        "subnet_contact": "admin@taostatus.com",
+        "subnet_url": "https://taostatus.com/",
+        "discord": "https://discord.gg/t8k9vm4KMG",
+        "description": "Predictive Intelligence Layer for Bittensor",
+        "logo_url": "https://x.com/taostatus_ai/photo",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://taostatus.com/",
+        "contact": "admin@taostatus.com",
+        "github": "https://github.com/taostatus/taostatus-subnet",
+        "discord": "https://discord.gg/t8k9vm4KMG",
+        "x": null,
+        "docs": null,
+        "description": "Predictive Intelligence Layer for Bittensor"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/104"
+    },
+    {
+      "netuid": 105,
+      "name": "Beam",
+      "symbol": "Գ",
+      "owner_ss58": "5G3ic2pAzVu1gZmeUQfKGox3P8TetJw87asvyAdkb2o8aCCX",
+      "owner_taostats": "https://taostats.io/account/5G3ic2pAzVu1gZmeUQfKGox3P8TetJw87asvyAdkb2o8aCCX",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Beam",
+        "github_repo": "https://github.com/orgs/Beam-Network/repositories",
+        "subnet_contact": "info@b1m.ai",
+        "subnet_url": "https://b1m.ai",
+        "discord": "https://discord.com/channels/799672011265015819/1437473346026475702",
+        "description": "Decentralized bandwidth. A global network. Powering the open internet.",
+        "logo_url": "https://pbs.twimg.com/profile_images/2029345851412185088/vd2bTk4L_400x400.jpg",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://b1m.ai",
+        "contact": "info@b1m.ai",
+        "github": "https://github.com/orgs/Beam-Network/repositories",
+        "discord": "https://discord.com/channels/799672011265015819/1437473346026475702",
+        "x": "https://x.com/b1m_ai",
+        "docs": "https://data.b1m.ai/guide/api-reference",
+        "description": "Decentralized bandwidth. A global network. Powering the open internet."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/105"
+    },
+    {
+      "netuid": 106,
+      "name": "Nodexo",
+      "symbol": "Դ",
+      "owner_ss58": "5CTdHCps1vJ9LrZ3SPM8ZweXWtgg6vgEqEb5W8xzuZHQHXpA",
+      "owner_taostats": "https://taostats.io/account/5CTdHCps1vJ9LrZ3SPM8ZweXWtgg6vgEqEb5W8xzuZHQHXpA",
+      "owner_chain_identity": {
+        "name": "Nodexo",
+        "url": "https://nodexo.ai",
+        "github": "https://github.com/nodexo-ai/nodexo",
+        "image": "https://nodexo.ai/icons/nodexo-icon-512.png",
+        "discord": "https://discord.gg/fwjBwxUcdX",
+        "description": "tokenized ai compute",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Nodexo",
+        "github_repo": "https://github.com/nodexo-ai/nodexo",
+        "subnet_contact": "https://discord.com/channels/799672011265015819/1174835090539433994",
+        "subnet_url": "https://nodexo.ai",
+        "discord": "https://discord.gg/fwjBwxUcdX",
+        "description": "tokenized ai compute",
+        "logo_url": "https://nodexo.ai/icons/nodexo-icon-512.png",
+        "additional": "API: https://nodexo.ai/api Docs: https://nodexo.ai/docs"
+      },
+      "public": {
+        "website": "https://nodexo.ai",
+        "contact": "https://discord.com/channels/799672011265015819/1174835090539433994",
+        "github": "https://github.com/nodexo-ai/nodexo",
+        "discord": "https://discord.gg/fwjBwxUcdX",
+        "x": "https://x.com/nodex0_",
+        "docs": "https://docs.nodexo.ai/",
+        "description": "tokenized ai compute"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/106"
+    },
+    {
+      "netuid": 107,
+      "name": "Minos",
+      "symbol": "ミ",
+      "owner_ss58": "5DA2vLrSXZxnT9G4Yrywx1Fpi4RXwMH1Ah7r8DTTWS7UZZBM",
+      "owner_taostats": "https://taostats.io/account/5DA2vLrSXZxnT9G4Yrywx1Fpi4RXwMH1Ah7r8DTTWS7UZZBM",
+      "owner_chain_identity": {
+        "name": "Minos",
+        "url": "https://theminos.ai/",
+        "github": "",
+        "image": "https://theminos.ai/logo.png",
+        "discord": "https://discord.com/channels/799672011265015819/1467949024769478793",
+        "description": "",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Minos",
+        "github_repo": "https://github.com/minos-protocol/minos_subnet",
+        "subnet_contact": "contact@theminos.ai",
+        "subnet_url": "https://theminos.ai",
+        "discord": "https://discord.com/channels/799672011265015819/1467949024769478793",
+        "description": "The Foundational Layer of Genomics",
+        "logo_url": "https://theminos.ai/logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://theminos.ai",
+        "contact": "contact@theminos.ai",
+        "github": "https://github.com/minos-protocol/minos_subnet",
+        "discord": "https://discord.com/channels/799672011265015819/1467949024769478793",
+        "x": "https://x.com/theminos_ai",
+        "docs": null,
+        "description": "The Foundational Layer of Genomics"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/107"
+    },
+    {
+      "netuid": 108,
+      "name": "Prometheon",
+      "symbol": "Զ",
+      "owner_ss58": "5GpmtjiGfHojYdyM4bc85XCAGZo15xS7Y5gbNS17Wgjwv23e",
+      "owner_taostats": "https://taostats.io/account/5GpmtjiGfHojYdyM4bc85XCAGZo15xS7Y5gbNS17Wgjwv23e",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Prometheon",
+        "github_repo": "https://github.com/BitSpaceorganization/prometheon_v2",
+        "subnet_contact": "coolaisaworld@gmail.com",
+        "subnet_url": "www.bitfan.ai",
+        "discord": "https://discord.gg/uCFFaE3mj",
+        "description": "AI-driven Platform Operations Automation",
+        "logo_url": "https://www.bitfan.ai/prometheon_logo.svg",
+        "additional": ""
+      },
+      "public": {
+        "website": "www.bitfan.ai",
+        "contact": "coolaisaworld@gmail.com",
+        "github": "https://github.com/BitSpaceorganization/prometheon_v2",
+        "discord": "https://discord.gg/uCFFaE3mj",
+        "x": "https://x.com/talkheadai",
+        "docs": null,
+        "description": "AI-driven Platform Operations Automation"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/108"
+    },
+    {
+      "netuid": 109,
+      "name": "Finsight",
+      "symbol": "՞",
+      "owner_ss58": "5FqZqKFxfm3VWmc47UdEjaFyVrSfkGd4HcXwFoxH8vBGXKmv",
+      "owner_taostats": "https://taostats.io/account/5FqZqKFxfm3VWmc47UdEjaFyVrSfkGd4HcXwFoxH8vBGXKmv",
+      "owner_chain_identity": {
+        "name": "Finsight",
+        "url": "",
+        "github": "",
+        "image": "",
+        "discord": "",
+        "description": "",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Finsight",
+        "github_repo": "",
+        "subnet_contact": "hello@finsight.tech",
+        "subnet_url": "https://finsight.tech/",
+        "discord": "",
+        "description": "Finsight is a decentralized personal investment intelligence. Turn the financial news, filings, and market data that touch an investor's holdings into scored, portfolio-aware signals. Bittensor powers finsight.tech, a Canada-first portfolio platform with native TFSA/RRSP logic, CRA-ready cost-basis tracking, and superficial-loss awareness. Built for Canadians by Canadians.",
+        "logo_url": "https://finsight.tech/",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://finsight.tech/",
+        "contact": "hello@finsight.tech",
+        "github": "https://github.com/fx-integral/academia",
+        "discord": null,
+        "x": null,
+        "docs": null,
+        "description": "Finsight is a decentralized personal investment intelligence. Turn the financial news, filings, and market data that touch an investor's holdings into scored, portfolio-aware signals. Bittensor powers finsight.tech, a Canada-first portfolio platform with native TFSA/RRSP logic, CRA-ready cost-basis tracking, and superficial-loss awareness. Built for Canadians by Canadians."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/109"
+    },
+    {
+      "netuid": 110,
+      "name": "Green Compute",
+      "symbol": "Ѐ",
+      "owner_ss58": "5D53sX6AwAzXUB24G85Ch35hYr5rCpXjYFWpFTe4uzBb75sL",
+      "owner_taostats": "https://taostats.io/account/5D53sX6AwAzXUB24G85Ch35hYr5rCpXjYFWpFTe4uzBb75sL",
+      "owner_chain_identity": {
+        "name": "Green Compute",
+        "url": "",
+        "github": "",
+        "image": "",
+        "discord": "",
+        "description": "",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Green Compute",
+        "github_repo": "",
+        "subnet_contact": "",
+        "subnet_url": "https://www.green-compute.com/",
+        "discord": "",
+        "description": "Enterprise Inference Hardware, 100% Green Energy",
+        "logo_url": "https://www.green-compute.com/green.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.green-compute.com/",
+        "contact": null,
+        "github": "https://github.com/Rich-Kids-of-TAO/rkt-subnet",
+        "discord": null,
+        "x": "https://x.com/vocence_bt",
+        "docs": "https://github.com/e35ventura/taopedia-articles/blob/main/content/pages/subnet_110/index.mdx",
+        "description": "Enterprise Inference Hardware, 100% Green Energy"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/110"
+    },
+    {
+      "netuid": 111,
+      "name": "Claims",
+      "symbol": "Ё",
+      "owner_ss58": "5CGTryXjAmwmb3mAFD6B5ba2iBXZBcS5dN9pHLBxRoeonigv",
+      "owner_taostats": "https://taostats.io/account/5CGTryXjAmwmb3mAFD6B5ba2iBXZBcS5dN9pHLBxRoeonigv",
+      "owner_chain_identity": {
+        "name": "Claims",
+        "url": "",
+        "github": "",
+        "image": "https://www.dropbox.com/scl/fi/712kuof7877598tlvx3ep/Main-Logo_Dark_Claims.svg?rlkey=zhpmlbyirvdez3gm4j05gb0lk&st=xfm4tx9t&e=1&dl=0",
+        "discord": "906091411542278174",
+        "description": "Subnet 111 Owner Validator",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Claims",
+        "github_repo": "https://github.com/DeSciClaims/Claims",
+        "subnet_contact": "",
+        "subnet_url": "",
+        "discord": "https://discord.com/channels/799672011265015819/1515007366016401599",
+        "description": "Turning scientific literature into a structured claim-evidence graph",
+        "logo_url": "https://www.dropbox.com/scl/fi/712kuof7877598tlvx3ep/Main-Logo_Dark_Claims.svg?rlkey=zhpmlbyirvdez3gm4j05gb0lk&st=xfm4tx9t&dl=0",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://oneoneone.io/",
+        "contact": "support@oneoneone.io",
+        "github": "https://github.com/DeSciClaims/Claims",
+        "discord": "https://discord.com/channels/799672011265015819/1515007366016401599",
+        "x": null,
+        "docs": null,
+        "description": "Turning scientific literature into a structured claim-evidence graph"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/111"
+    },
+    {
+      "netuid": 112,
+      "name": "parked",
+      "symbol": "Ђ",
+      "owner_ss58": "5GyUNPbbBYanVFpaaysgvwni5tFMpjFBDu6K1kRpnX4Mepeh",
+      "owner_taostats": "https://taostats.io/account/5GyUNPbbBYanVFpaaysgvwni5tFMpjFBDu6K1kRpnX4Mepeh",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "parked",
+        "github_repo": "",
+        "subnet_contact": "",
+        "subnet_url": "",
+        "discord": "",
+        "description": "",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://minotaursubnet.com/",
+        "contact": null,
+        "github": "https://github.com/subnet112/minotaur_subnet",
+        "discord": null,
+        "x": "https://x.com/minotaursubnet",
+        "docs": null,
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/112"
+    },
+    {
+      "netuid": 113,
+      "name": "TensorUSD",
+      "symbol": "Ѓ",
+      "owner_ss58": "5GndoVhMAr8mF5zv1gPVLQYbXzmXe3Xh3kF37nt8qy5CaXTP",
+      "owner_taostats": "https://taostats.io/account/5GndoVhMAr8mF5zv1gPVLQYbXzmXe3Xh3kF37nt8qy5CaXTP",
+      "owner_chain_identity": {
+        "name": "ActiveTUSDT",
+        "url": "",
+        "github": "",
+        "image": "https://avatars.githubusercontent.com/u/228006888?s=200&v=4",
+        "discord": "",
+        "description": "Validator of TensorUSD",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "TensorUSD",
+        "github_repo": "https://github.com/TensorUSD/subnet",
+        "subnet_contact": "admin@tensorusd.com",
+        "subnet_url": "https://tensorusd.com",
+        "discord": "https://discord.com/invite/fAHB6N92Qd",
+        "description": "A reserve-backed stablecoin designed to support 1:1 redeemability for US Dollar within the Bittensor ecosystem.",
+        "logo_url": "https://avatars.githubusercontent.com/u/228006888?s=200&v=4",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://tensorusd.com",
+        "contact": "admin@tensorusd.com",
+        "github": "https://github.com/TensorUSD/subnet",
+        "discord": "https://discord.com/invite/fAHB6N92Qd",
+        "x": "https://x.com/tensorusd",
+        "docs": "https://docs.tensorusd.com/components/subnet",
+        "description": "A reserve-backed stablecoin designed to support 1:1 redeemability for US Dollar within the Bittensor ecosystem."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/113"
+    },
+    {
+      "netuid": 114,
+      "name": "SOMA",
+      "symbol": "Є",
+      "owner_ss58": "5FHrQMjzzAhmL5zS9ys87ZrGCwG3vsVT9hXAUWZQ8SNdRqig",
+      "owner_taostats": "https://taostats.io/account/5FHrQMjzzAhmL5zS9ys87ZrGCwG3vsVT9hXAUWZQ8SNdRqig",
+      "owner_chain_identity": {
+        "name": "SOMA",
+        "url": "https://thesoma.ai",
+        "github": "https://github.com/DendriteHQ/SOMA",
+        "image": "https://thesoma.ai/images/1200x1200.png",
+        "discord": "https://discord.gg/durr4Sg6sM",
+        "description": "Official validator of the SOMA subnet",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "SOMA",
+        "github_repo": "https://github.com/DendriteHQ/SOMA",
+        "subnet_contact": "https://x.com/SomaSubnet",
+        "subnet_url": "https://thesoma.ai",
+        "discord": "https://discord.gg/durr4Sg6sM",
+        "description": "Context compression layer delivered through MCP infrastructure",
+        "logo_url": "https://thesoma.ai/images/1200x1200.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://thesoma.ai",
+        "contact": "https://x.com/SomaSubnet",
+        "github": "https://github.com/DendriteHQ/SOMA",
+        "discord": "https://discord.gg/durr4Sg6sM",
+        "x": "https://x.com/somasubnet",
+        "docs": null,
+        "description": "Context compression layer delivered through MCP infrastructure"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/114"
+    },
+    {
+      "netuid": 115,
+      "name": "MoirAI",
+      "symbol": "Ѕ",
+      "owner_ss58": "5EkNnrTjnMYaj4x1gNxAnJne9UvKgfU6NZNjhm6XFWMstbdG",
+      "owner_taostats": "https://taostats.io/account/5EkNnrTjnMYaj4x1gNxAnJne9UvKgfU6NZNjhm6XFWMstbdG",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "MoirAI",
+        "github_repo": "https://github.com/moirai115/MoirAI",
+        "subnet_contact": "",
+        "subnet_url": "",
+        "discord": "https://discord.com/channels/799672011265015819/1379143301478744064",
+        "description": "An evolving AIGC Harness for creators & agents.From idea to finished work.",
+        "logo_url": "https://raw.githubusercontent.com/moirai115/MoirAI/refs/heads/main/assets/logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": null,
+        "contact": "hashichain@outlook.com",
+        "github": "https://github.com/moirai115/MoirAI",
+        "discord": "https://discord.com/channels/799672011265015819/1379143301478744064",
+        "x": null,
+        "docs": null,
+        "description": "An evolving AIGC Harness for creators & agents.From idea to finished work."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/115"
+    },
+    {
+      "netuid": 116,
+      "name": "Memo",
+      "symbol": "ъ",
+      "owner_ss58": "5F48aA3Pw1vFRfnhhfu7EJKqzrj8y9VBWtS4PE9xJ1chHXqB",
+      "owner_taostats": "https://taostats.io/account/5F48aA3Pw1vFRfnhhfu7EJKqzrj8y9VBWtS4PE9xJ1chHXqB",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Memo",
+        "github_repo": "",
+        "subnet_contact": "",
+        "subnet_url": "",
+        "discord": "",
+        "description": "",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://taolend.io/",
+        "contact": null,
+        "github": null,
+        "discord": null,
+        "x": null,
+        "docs": null,
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/116"
+    },
+    {
+      "netuid": 117,
+      "name": "glyph",
+      "symbol": "Ⲁ",
+      "owner_ss58": "5HdThE9WvusfeFpk7R3Lnc9wfP4zsDje3GeRew6mrQHNNFiY",
+      "owner_taostats": "https://taostats.io/account/5HdThE9WvusfeFpk7R3Lnc9wfP4zsDje3GeRew6mrQHNNFiY",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "glyph",
+        "github_repo": "https://github.com/glyph-research/glyph-subnet",
+        "subnet_contact": "contact@glyph-research.org",
+        "subnet_url": "https://glyph-research.org",
+        "discord": "https://discord.com/channels/799672011265015819/1499147039924031508",
+        "description": "decentralized Hutter Prize",
+        "logo_url": "https://avatars.githubusercontent.com/u/287793536?s=400&u=8c748698b63ca6d26390c2f5571b0767888be67e&v=4",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://glyph-research.org",
+        "contact": "contact@glyph-research.org",
+        "github": "https://github.com/glyph-research/glyph-subnet",
+        "discord": "https://discord.com/channels/799672011265015819/1499147039924031508",
+        "x": "https://x.com/glyphresearch",
+        "docs": null,
+        "description": "decentralized Hutter Prize"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/117"
+    },
+    {
+      "netuid": 118,
+      "name": "Ditto",
+      "symbol": "ⲁ",
+      "owner_ss58": "5HGXqHbQjEmwnQsnnMa8pm13VUv9PP2jB4Vuv9nw7NwUYiAN",
+      "owner_taostats": "https://taostats.io/account/5HGXqHbQjEmwnQsnnMa8pm13VUv9PP2jB4Vuv9nw7NwUYiAN",
+      "owner_chain_identity": {
+        "name": "Ditto",
+        "url": "https://heyditto.ai",
+        "github": "https://github.com/orgs/ditto-assistant/repositories",
+        "image": "https://f005.backblazeb2.com/file/ditto-assets/ditto-logo.png",
+        "discord": "https://discord.gg/g5vgCws6Mg",
+        "description": "Open Source Claude Cowork",
+        "additional": "Ditto agent OS and model harness enable SOTA memory, healing, and speed for 1/100th of the frontier cost.",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Ditto",
+        "github_repo": "https://github.com/orgs/ditto-assistant/repositories",
+        "subnet_contact": "peyton@omniaura.ai",
+        "subnet_url": "https://heyditto.ai",
+        "discord": "https://discord.gg/qNKYZEMpkD",
+        "description": "Open-Source Claude Cowork",
+        "logo_url": "https://f005.backblazeb2.com/file/ditto-assets/ditto-logo.png",
+        "additional": "The Ditto Agent OS and Harness enable SOTA memory, healing, and speed for 1/100th of the frontier cost."
+      },
+      "public": {
+        "website": "https://heyditto.ai",
+        "contact": "peyton@omniaura.ai",
+        "github": "https://github.com/orgs/ditto-assistant/repositories",
+        "discord": "https://discord.gg/qNKYZEMpkD",
+        "x": "https://x.com/heydittoai",
+        "docs": "https://heyditto.ai/docs/",
+        "description": "Open-Source Claude Cowork"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/118"
+    },
+    {
+      "netuid": 119,
+      "name": "Satori",
+      "symbol": "Ⲃ",
+      "owner_ss58": "5GbLENPLG8Takn1puaz5HorPmrFtDT7i2PojiJsqutbaGwWu",
+      "owner_taostats": "https://taostats.io/account/5GbLENPLG8Takn1puaz5HorPmrFtDT7i2PojiJsqutbaGwWu",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Satori",
+        "github_repo": "https://github.com/Satori119/Satori",
+        "subnet_contact": "Akihabara119@outlook.com",
+        "subnet_url": "",
+        "discord": "",
+        "description": "Satori constructs a persistent 'Second Life' in Japan. We merge deep AI companionship with authentic Digital Residency, creating a seamless bridge where virtual emotional connections unlock real-world value and physical experiences.",
+        "logo_url": "https://raw.githubusercontent.com/Satori119/Satori/refs/heads/main/assets/logo.png",
+        "additional": ""
+      },
+      "public": {
+        "website": null,
+        "contact": "Akihabara119@outlook.com",
+        "github": "https://github.com/Satori119/Satori",
+        "discord": null,
+        "x": null,
+        "docs": null,
+        "description": "Satori constructs a persistent 'Second Life' in Japan. We merge deep AI companionship with authentic Digital Residency, creating a seamless bridge where virtual emotional connections unlock real-world value and physical experiences."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/119"
+    },
+    {
+      "netuid": 120,
+      "name": "Affine",
+      "symbol": "ⴷ",
+      "owner_ss58": "5EfNFhH2s9hJoVuK8qkQRx8bkpNncRifhbCHBFKs6qKqknak",
+      "owner_taostats": "https://taostats.io/account/5EfNFhH2s9hJoVuK8qkQRx8bkpNncRifhbCHBFKs6qKqknak",
+      "owner_chain_identity": {
+        "name": "const",
+        "url": "",
+        "github": "unconst",
+        "image": "",
+        "discord": "consttt",
+        "description": "missionary from the church of rao",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Affine",
+        "github_repo": "https://github.com/AffineFoundation/affine",
+        "subnet_contact": "hello@affine.io",
+        "subnet_url": "www.affine.io",
+        "discord": "consttt",
+        "description": "Reason Mining",
+        "logo_url": "https://raw.githubusercontent.com/AffineFoundation/affine/main/affine.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "www.affine.io",
+        "contact": "hello@affine.io",
+        "github": "https://github.com/AffineFoundation/affine",
+        "discord": "consttt",
+        "x": null,
+        "docs": null,
+        "description": "Reason Mining"
+      },
+      "known_team": {
+        "org": "Affine Foundation",
+        "public_face": "Jacob Robert Steeves (Const)",
+        "notes": "On-chain identity name is 'const'. Reasoning/RL. https://affine.io"
+      },
+      "explorer": "https://subnetradar.com/research/subnets/120"
+    },
+    {
+      "netuid": 121,
+      "name": "sundae_bar",
+      "symbol": "Ⲅ",
+      "owner_ss58": "5CXGaDJsffVeBK4CDhBNMVK6MH7fHbL7AbnjzZ8XP6QzFLWm",
+      "owner_taostats": "https://taostats.io/account/5CXGaDJsffVeBK4CDhBNMVK6MH7fHbL7AbnjzZ8XP6QzFLWm",
+      "owner_chain_identity": {
+        "name": "sundae_bar",
+        "url": "https://sundaebar.ai/",
+        "github": "",
+        "image": "https://sundaebar.ai/apple-icon.png",
+        "discord": "",
+        "description": "",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "sundae_bar",
+        "github_repo": "https://github.com/sundae-bar/bittensor-subnet",
+        "subnet_contact": "hello@sundaebar.ai",
+        "subnet_url": "https://www.sundaebar.ai/",
+        "discord": "",
+        "description": "An enterprise AI platform that turns real business needs into ready-to-use AI solutions.",
+        "logo_url": "https://www.sundaebar.ai/apple-icon.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.sundaebar.ai/",
+        "contact": "hello@sundaebar.ai",
+        "github": "https://github.com/sundae-bar/bittensor-subnet",
+        "discord": null,
+        "x": "https://x.com/sundae_bar_",
+        "docs": null,
+        "description": "An enterprise AI platform that turns real business needs into ready-to-use AI solutions."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/121"
+    },
+    {
+      "netuid": 122,
+      "name": "CookingTAO",
+      "symbol": "ⲅ",
+      "owner_ss58": "5F3uH1G4QNyT8UR6D2Zf2zmXa6WAxYC3MfaiSGgg5pScWfY9",
+      "owner_taostats": "https://taostats.io/account/5F3uH1G4QNyT8UR6D2Zf2zmXa6WAxYC3MfaiSGgg5pScWfY9",
+      "owner_chain_identity": {
+        "name": "CookingTAO",
+        "url": "https://cookingtao.com",
+        "github": "https://github.com/CookingTao",
+        "image": "https://raw.githubusercontent.com/CookingTao/assets/refs/heads/main/logo-circle.png",
+        "discord": "",
+        "description": "Democratizing Bittensor Mining.",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "CookingTAO",
+        "github_repo": "https://github.com/CookingTao",
+        "subnet_contact": "",
+        "subnet_url": "https://cookingtao.com/",
+        "discord": "",
+        "description": "Democratizing Bittensor Mining.",
+        "logo_url": "https://raw.githubusercontent.com/CookingTao/assets/refs/heads/main/logo-circle.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://cookingtao.com/",
+        "contact": null,
+        "github": "https://github.com/CookingTao",
+        "discord": null,
+        "x": "https://x.com/cookingtao_",
+        "docs": "https://bitrecs.gitbook.io/bitrecs-docs/",
+        "description": "Democratizing Bittensor Mining."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/122"
+    },
+    {
+      "netuid": 123,
+      "name": "MANTIS",
+      "symbol": "𑀀",
+      "owner_ss58": "5HVuEdEGMYisecwjkWC7dKDPEzgs9cECdsdCQagfPRVf6FxZ",
+      "owner_taostats": "https://taostats.io/account/5HVuEdEGMYisecwjkWC7dKDPEzgs9cECdsdCQagfPRVf6FxZ",
+      "owner_chain_identity": {
+        "name": "MANTIS",
+        "url": "",
+        "github": "https://github.com/Barbariandev/MANTIS",
+        "image": "",
+        "discord": "Barbarian_alt_account",
+        "description": "Incentivizing Cooperative Prediction",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "MANTIS",
+        "github_repo": "https://github.com/Barbariandev/MANTIS",
+        "subnet_contact": "",
+        "subnet_url": "https://mantis123.com",
+        "discord": "",
+        "description": "Incentivizing cooperative prediction",
+        "logo_url": "",
+        "additional": "https//mantis123.com/dashboard/"
+      },
+      "public": {
+        "website": "https://mantis123.com",
+        "contact": null,
+        "github": "https://github.com/Barbariandev/MANTIS",
+        "discord": null,
+        "x": null,
+        "docs": null,
+        "description": "Incentivizing cooperative prediction"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/123"
+    },
+    {
+      "netuid": 124,
+      "name": "Swarm",
+      "symbol": "𑀁",
+      "owner_ss58": "5HKYqfJrUFKYPMRFZZ7kfhUNEyHUbY2ZyEjQqKJf2RKVpeXM",
+      "owner_taostats": "https://taostats.io/account/5HKYqfJrUFKYPMRFZZ7kfhUNEyHUbY2ZyEjQqKJf2RKVpeXM",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "Swarm",
+        "github_repo": "https://github.com/swarm-subnet/swarm",
+        "subnet_contact": "admin@swarm124.com",
+        "subnet_url": "www.swarm124.com",
+        "discord": "",
+        "description": "",
+        "logo_url": "https://raw.githubusercontent.com/swarm-subnet/swarm/refs/heads/main/swarm/assets/Swarm.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "www.swarm124.com",
+        "contact": "admin@swarm124.com",
+        "github": "https://github.com/swarm-subnet/swarm",
+        "discord": null,
+        "x": "https://x.com/swarmsubnet",
+        "docs": null,
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/124"
+    },
+    {
+      "netuid": 125,
+      "name": "8 Ball",
+      "symbol": "𑀂",
+      "owner_ss58": "5DTzv2rL6YGQjCDNiWQJz2nE23fK1mDccH9eQimgiieyL3C4",
+      "owner_taostats": "https://taostats.io/account/5DTzv2rL6YGQjCDNiWQJz2nE23fK1mDccH9eQimgiieyL3C4",
+      "owner_chain_identity": null,
+      "subnet_identity": {
+        "subnet_name": "8 Ball",
+        "github_repo": "",
+        "subnet_contact": "",
+        "subnet_url": "",
+        "discord": "",
+        "description": "",
+        "logo_url": "",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://8ball125.com/",
+        "contact": null,
+        "github": "https://github.com/Barbariandev/8Ball_miner",
+        "discord": null,
+        "x": null,
+        "docs": "https://github.com/Barbariandev/8Ball_miner#readme",
+        "description": null
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/125"
+    },
+    {
+      "netuid": 126,
+      "name": "Poker44",
+      "symbol": "𑀃",
+      "owner_ss58": "5DqrUa2z6E9taJdY8FGiPCrtCswsEjHjPbVo5xcTw2GqvKZm",
+      "owner_taostats": "https://taostats.io/account/5DqrUa2z6E9taJdY8FGiPCrtCswsEjHjPbVo5xcTw2GqvKZm",
+      "owner_chain_identity": {
+        "name": "Poker44",
+        "url": "poker44.net",
+        "github": "https://github.com/Poker44/Poker44-subnet",
+        "image": "https://raw.githubusercontent.com/Poker44/Poker44-subnet/refs/heads/main/poker44/assets/logo.jpeg",
+        "discord": "",
+        "description": "",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Poker44",
+        "github_repo": "https://github.com/Poker44/Poker44-subnet",
+        "subnet_contact": "admin@poker44.net",
+        "subnet_url": "https://poker44.net",
+        "discord": "",
+        "description": "Decentralized Poker Platform with Bot Dection",
+        "logo_url": "https://raw.githubusercontent.com/Poker44/Poker44-subnet/refs/heads/main/poker44/assets/logo.jpeg",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://poker44.net",
+        "contact": "admin@poker44.net",
+        "github": "https://github.com/Poker44/Poker44-subnet",
+        "discord": null,
+        "x": "https://x.com/poker44subnet",
+        "docs": "https://poker44.net/Poker44_Whitepaper.pdf",
+        "description": "Decentralized Poker Platform with Bot Dection"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/126"
+    },
+    {
+      "netuid": 127,
+      "name": "Astrid",
+      "symbol": "𑀅",
+      "owner_ss58": "5FU4uxAdrZsaWaezWwXEK93MwPX5gw2566BQK2WwrGUudfSH",
+      "owner_taostats": "https://taostats.io/account/5FU4uxAdrZsaWaezWwXEK93MwPX5gw2566BQK2WwrGUudfSH",
+      "owner_chain_identity": {
+        "name": "Astrid / SN127 Official Validator",
+        "url": "https://arena.astrid.global/",
+        "github": "",
+        "image": "",
+        "discord": "",
+        "description": "The capital axis for Bittensor.",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "Astrid",
+        "github_repo": "https://github.com/astridintelligence/sn-127",
+        "subnet_contact": "",
+        "subnet_url": "https://www.astrid.global/",
+        "discord": "",
+        "description": "The capital axis for Bittensor.",
+        "logo_url": "https://cdn.prod.website-files.com/68b07769f32da8fcc36dc172/69f2325c06235848691480b7_Astrid%20Square.png",
+        "additional": ""
+      },
+      "public": {
+        "website": "https://www.astrid.global/",
+        "contact": null,
+        "github": "https://github.com/astridintelligence/sn-127",
+        "discord": null,
+        "x": null,
+        "docs": null,
+        "description": "The capital axis for Bittensor."
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/127"
+    },
+    {
+      "netuid": 128,
+      "name": "ByteLeap",
+      "symbol": "න",
+      "owner_ss58": "5GgMeLFN4YssT6f9i9pZpRmczt8GYDsCZ1nYPiGRcTPWn3AA",
+      "owner_taostats": "https://taostats.io/account/5GgMeLFN4YssT6f9i9pZpRmczt8GYDsCZ1nYPiGRcTPWn3AA",
+      "owner_chain_identity": {
+        "name": "ByteLeap",
+        "url": "ByteLeap.ai",
+        "github": "https://github.com/byteleapai/byteleap-subnet",
+        "image": "https://avatars.githubusercontent.com/u/217718200",
+        "discord": "byteleap",
+        "description": "Pioneering the Future of Cloud & Blockchain",
+        "additional": "",
+        "generic_placeholder": false
+      },
+      "subnet_identity": {
+        "subnet_name": "ByteLeap",
+        "github_repo": "https://github.com/byteleapai/byteleap-Miner",
+        "subnet_contact": "byteleap.ai@gmail.com",
+        "subnet_url": "ByteLeap.ai",
+        "discord": "https://discord.com/channels/799672011265015819/1387438124132733110",
+        "description": "Pioneering the Future of Cloud & Blockchain",
+        "logo_url": "https://avatars.githubusercontent.com/u/217718200",
+        "additional": ""
+      },
+      "public": {
+        "website": "ByteLeap.ai",
+        "contact": "byteleap.ai@gmail.com",
+        "github": "https://github.com/byteleapai/byteleap-Miner",
+        "discord": "https://discord.com/channels/799672011265015819/1387438124132733110",
+        "x": null,
+        "docs": null,
+        "description": "Pioneering the Future of Cloud & Blockchain"
+      },
+      "known_team": null,
+      "explorer": "https://subnetradar.com/research/subnets/128"
+    }
+  ]
+}

@@ -1,0 +1,784 @@
+{
+  "meta": {
+    "capture_w": 15,
+    "w_make": 0.3,
+    "floor_scale": 0.5,
+    "floor": 0.02666666666655715
+  },
+  "books": {
+    "0": {
+      "invn": 36,
+      "drift": 0.5600000000000023,
+      "p_first": 299.99,
+      "p_last": 300.55
+    },
+    "1": {
+      "invn": 36,
+      "drift": 0.5600000000000023,
+      "p_first": 299.99,
+      "p_last": 300.55
+    },
+    "2": {
+      "invn": 36,
+      "drift": 0.5600000000000023,
+      "p_first": 299.99,
+      "p_last": 300.55
+    },
+    "3": {
+      "invn": 36,
+      "drift": 0.5600000000000023,
+      "p_first": 299.99,
+      "p_last": 300.55
+    },
+    "4": {
+      "invn": 36,
+      "drift": 0.5600000000000023,
+      "p_first": 299.99,
+      "p_last": 300.55
+    },
+    "5": {
+      "invn": 36,
+      "drift": 0.5600000000000023,
+      "p_first": 299.99,
+      "p_last": 300.55
+    },
+    "6": {
+      "invn": 36,
+      "drift": 0.5600000000000023,
+      "p_first": 299.99,
+      "p_last": 300.55
+    },
+    "7": {
+      "invn": 36,
+      "drift": 0.5600000000000023,
+      "p_first": 299.99,
+      "p_last": 300.55
+    }
+  },
+  "uids": {
+    "0": {
+      "books": {
+        "0": {
+          "buy_cap": 0.11999999999989086,
+          "sell_cap": 0.11999999999989086,
+          "mtm": 0.23999999999978172,
+          "invsum": 12.0,
+          "mean_inv": 0.3333333333333333,
+          "alpha": 0.0533333333331143,
+          "inv_end": 0.0
+        },
+        "1": {
+          "buy_cap": 0.11999999999989086,
+          "sell_cap": 0.11999999999989086,
+          "mtm": 0.23999999999978172,
+          "invsum": 12.0,
+          "mean_inv": 0.3333333333333333,
+          "alpha": 0.0533333333331143,
+          "inv_end": 0.0
+        },
+        "2": {
+          "buy_cap": 0.11999999999989086,
+          "sell_cap": 0.11999999999989086,
+          "mtm": 0.23999999999978172,
+          "invsum": 12.0,
+          "mean_inv": 0.3333333333333333,
+          "alpha": 0.0533333333331143,
+          "inv_end": 0.0
+        },
+        "3": {
+          "buy_cap": 0.11999999999989086,
+          "sell_cap": 0.11999999999989086,
+          "mtm": 0.23999999999978172,
+          "invsum": 12.0,
+          "mean_inv": 0.3333333333333333,
+          "alpha": 0.0533333333331143,
+          "inv_end": 0.0
+        },
+        "4": {
+          "buy_cap": 0.11999999999989086,
+          "sell_cap": 0.11999999999989086,
+          "mtm": 0.23999999999978172,
+          "invsum": 12.0,
+          "mean_inv": 0.3333333333333333,
+          "alpha": 0.0533333333331143,
+          "inv_end": 0.0
+        },
+        "5": {
+          "buy_cap": 0.11999999999989086,
+          "sell_cap": 0.11999999999989086,
+          "mtm": 0.23999999999978172,
+          "invsum": 12.0,
+          "mean_inv": 0.3333333333333333,
+          "alpha": 0.0533333333331143,
+          "inv_end": 0.0
+        },
+        "6": {
+          "buy_cap": 0.11999999999989086,
+          "sell_cap": 0.11999999999989086,
+          "mtm": 0.23999999999978172,
+          "invsum": 12.0,
+          "mean_inv": 0.3333333333333333,
+          "alpha": 0.0533333333331143,
+          "inv_end": 0.0
+        },
+        "7": {
+          "buy_cap": 0.11999999999989086,
+          "sell_cap": 0.11999999999989086,
+          "mtm": 0.23999999999978172,
+          "invsum": 12.0,
+          "mean_inv": 0.3333333333333333,
+          "alpha": 0.0533333333331143,
+          "inv_end": 0.0
+        }
+      },
+      "totals": {
+        "buy_cap": 0.9599999999991269,
+        "sell_cap": 0.9599999999991269,
+        "making_magnitude": 1.9199999999982538,
+        "making_rank": 1.0,
+        "skill": 10.000000000000007,
+        "skill_rank": 1.0,
+        "combined": 1.0,
+        "qualifying_books": 8
+      }
+    },
+    "1": {
+      "books": {
+        "0": {
+          "buy_cap": 0.0,
+          "sell_cap": 0.0,
+          "mtm": -3.300000000000125,
+          "invsum": -210.0,
+          "mean_inv": -5.833333333333333,
+          "alpha": -0.033333333333445125,
+          "inv_end": -12.0
+        },
+        "1": {
+          "buy_cap": 0.0,
+          "sell_cap": 0.0,
+          "mtm": -3.300000000000125,
+          "invsum": -210.0,
+          "mean_inv": -5.833333333333333,
+          "alpha": -0.033333333333445125,
+          "inv_end": -12.0
+        },
+        "2": {
+          "buy_cap": 0.0,
+          "sell_cap": 0.0,
+          "mtm": -3.300000000000125,
+          "invsum": -210.0,
+          "mean_inv": -5.833333333333333,
+          "alpha": -0.033333333333445125,
+          "inv_end": -12.0
+        },
+        "3": {
+          "buy_cap": 0.0,
+          "sell_cap": 0.0,
+          "mtm": -3.300000000000125,
+          "invsum": -210.0,
+          "mean_inv": -5.833333333333333,
+          "alpha": -0.033333333333445125,
+          "inv_end": -12.0
+        },
+        "4": {
+          "buy_cap": 0.0,
+          "sell_cap": 0.0,
+          "mtm": -3.300000000000125,
+          "invsum": -210.0,
+          "mean_inv": -5.833333333333333,
+          "alpha": -0.033333333333445125,
+          "inv_end": -12.0
+        },
+        "5": {
+          "buy_cap": 0.0,
+          "sell_cap": 0.0,
+          "mtm": -3.300000000000125,
+          "invsum": -210.0,
+          "mean_inv": -5.833333333333333,
+          "alpha": -0.033333333333445125,
+          "inv_end": -12.0
+        },
+        "6": {
+          "buy_cap": 0.0,
+          "sell_cap": 0.0,
+          "mtm": -3.300000000000125,
+          "invsum": -210.0,
+          "mean_inv": -5.833333333333333,
+          "alpha": -0.033333333333445125,
+          "inv_end": -12.0
+        },
+        "7": {
+          "buy_cap": 0.0,
+          "sell_cap": 0.0,
+          "mtm": -3.300000000000125,
+          "invsum": -210.0,
+          "mean_inv": -5.833333333333333,
+          "alpha": -0.033333333333445125,
+          "inv_end": -12.0
+        }
+      },
+      "totals": {
+        "buy_cap": 0,
+        "sell_cap": 0.0,
+        "making_magnitude": 0.0,
+        "making_rank": 0.0,
+        "skill": -0.9996668887161944,
+        "skill_rank": 0.0,
+        "combined": 0.0,
+        "qualifying_books": 8
+      }
+    },
+    "10": {
+      "books": {
+        "0": {
+          "buy_cap": 0.0,
+          "sell_cap": -0.11999999999989086,
+          "mtm": -3.420000000000016,
+          "invsum": -234.0,
+          "mean_inv": -6.5,
+          "alpha": 0.21999999999999886,
+          "inv_end": -12.0
+        }
+      },
+      "totals": {
+        "buy_cap": 0,
+        "sell_cap": -0.11999999999989086,
+        "making_magnitude": 0.0,
+        "making_rank": 0.04,
+        "skill": 0.0,
+        "skill_rank": 0.04,
+        "combined": 0.039999999999999994,
+        "qualifying_books": 1
+      }
+    },
+    "11": {
+      "books": {
+        "1": {
+          "buy_cap": 0.0,
+          "sell_cap": -0.11999999999989086,
+          "mtm": -3.420000000000016,
+          "invsum": -234.0,
+          "mean_inv": -6.5,
+          "alpha": 0.21999999999999886,
+          "inv_end": -12.0
+        }
+      },
+      "totals": {
+        "buy_cap": 0,
+        "sell_cap": -0.11999999999989086,
+        "making_magnitude": 0.0,
+        "making_rank": 0.08,
+        "skill": 0.0,
+        "skill_rank": 0.08,
+        "combined": 0.07999999999999999,
+        "qualifying_books": 1
+      }
+    },
+    "12": {
+      "books": {
+        "2": {
+          "buy_cap": 0.0,
+          "sell_cap": -0.11999999999989086,
+          "mtm": -3.420000000000016,
+          "invsum": -234.0,
+          "mean_inv": -6.5,
+          "alpha": 0.21999999999999886,
+          "inv_end": -12.0
+        }
+      },
+      "totals": {
+        "buy_cap": 0,
+        "sell_cap": -0.11999999999989086,
+        "making_magnitude": 0.0,
+        "making_rank": 0.12,
+        "skill": 0.0,
+        "skill_rank": 0.12,
+        "combined": 0.12,
+        "qualifying_books": 1
+      }
+    },
+    "13": {
+      "books": {
+        "3": {
+          "buy_cap": 0.0,
+          "sell_cap": -0.11999999999989086,
+          "mtm": -3.420000000000016,
+          "invsum": -234.0,
+          "mean_inv": -6.5,
+          "alpha": 0.21999999999999886,
+          "inv_end": -12.0
+        }
+      },
+      "totals": {
+        "buy_cap": 0,
+        "sell_cap": -0.11999999999989086,
+        "making_magnitude": 0.0,
+        "making_rank": 0.16,
+        "skill": 0.0,
+        "skill_rank": 0.16,
+        "combined": 0.15999999999999998,
+        "qualifying_books": 1
+      }
+    },
+    "14": {
+      "books": {
+        "4": {
+          "buy_cap": 0.0,
+          "sell_cap": -0.11999999999989086,
+          "mtm": -3.420000000000016,
+          "invsum": -234.0,
+          "mean_inv": -6.5,
+          "alpha": 0.21999999999999886,
+          "inv_end": -12.0
+        }
+      },
+      "totals": {
+        "buy_cap": 0,
+        "sell_cap": -0.11999999999989086,
+        "making_magnitude": 0.0,
+        "making_rank": 0.2,
+        "skill": 0.0,
+        "skill_rank": 0.2,
+        "combined": 0.19999999999999998,
+        "qualifying_books": 1
+      }
+    },
+    "15": {
+      "books": {
+        "5": {
+          "buy_cap": 0.0,
+          "sell_cap": -0.11999999999989086,
+          "mtm": -3.420000000000016,
+          "invsum": -234.0,
+          "mean_inv": -6.5,
+          "alpha": 0.21999999999999886,
+          "inv_end": -12.0
+        }
+      },
+      "totals": {
+        "buy_cap": 0,
+        "sell_cap": -0.11999999999989086,
+        "making_magnitude": 0.0,
+        "making_rank": 0.24,
+        "skill": 0.0,
+        "skill_rank": 0.24,
+        "combined": 0.24,
+        "qualifying_books": 1
+      }
+    },
+    "16": {
+      "books": {
+        "6": {
+          "buy_cap": 0.0,
+          "sell_cap": -0.11999999999989086,
+          "mtm": -3.420000000000016,
+          "invsum": -234.0,
+          "mean_inv": -6.5,
+          "alpha": 0.21999999999999886,
+          "inv_end": -12.0
+        }
+      },
+      "totals": {
+        "buy_cap": 0,
+        "sell_cap": -0.11999999999989086,
+        "making_magnitude": 0.0,
+        "making_rank": 0.28,
+        "skill": 0.0,
+        "skill_rank": 0.28,
+        "combined": 0.28,
+        "qualifying_books": 1
+      }
+    },
+    "17": {
+      "books": {
+        "7": {
+          "buy_cap": 0.0,
+          "sell_cap": -0.11999999999989086,
+          "mtm": -3.420000000000016,
+          "invsum": -234.0,
+          "mean_inv": -6.5,
+          "alpha": 0.21999999999999886,
+          "inv_end": -12.0
+        }
+      },
+      "totals": {
+        "buy_cap": 0,
+        "sell_cap": -0.11999999999989086,
+        "making_magnitude": 0.0,
+        "making_rank": 0.32,
+        "skill": 0.0,
+        "skill_rank": 0.32,
+        "combined": 0.31999999999999995,
+        "qualifying_books": 1
+      }
+    },
+    "20": {
+      "books": {
+        "0": {
+          "buy_cap": -0.11999999999989086,
+          "sell_cap": 0.0,
+          "mtm": 3.180000000000234,
+          "invsum": 222.0,
+          "mean_inv": 6.166666666666667,
+          "alpha": -0.27333333333311316,
+          "inv_end": 12.0
+        }
+      },
+      "totals": {
+        "buy_cap": -0.11999999999989086,
+        "sell_cap": 0,
+        "making_magnitude": 0.0,
+        "making_rank": 0.36,
+        "skill": 0.0,
+        "skill_rank": 0.36,
+        "combined": 0.36,
+        "qualifying_books": 1
+      }
+    },
+    "21": {
+      "books": {
+        "1": {
+          "buy_cap": -0.11999999999989086,
+          "sell_cap": 0.0,
+          "mtm": 3.180000000000234,
+          "invsum": 222.0,
+          "mean_inv": 6.166666666666667,
+          "alpha": -0.27333333333311316,
+          "inv_end": 12.0
+        }
+      },
+      "totals": {
+        "buy_cap": -0.11999999999989086,
+        "sell_cap": 0,
+        "making_magnitude": 0.0,
+        "making_rank": 0.4,
+        "skill": 0.0,
+        "skill_rank": 0.4,
+        "combined": 0.39999999999999997,
+        "qualifying_books": 1
+      }
+    },
+    "22": {
+      "books": {
+        "2": {
+          "buy_cap": -0.11999999999989086,
+          "sell_cap": 0.0,
+          "mtm": 3.180000000000234,
+          "invsum": 222.0,
+          "mean_inv": 6.166666666666667,
+          "alpha": -0.27333333333311316,
+          "inv_end": 12.0
+        }
+      },
+      "totals": {
+        "buy_cap": -0.11999999999989086,
+        "sell_cap": 0,
+        "making_magnitude": 0.0,
+        "making_rank": 0.44,
+        "skill": 0.0,
+        "skill_rank": 0.44,
+        "combined": 0.44,
+        "qualifying_books": 1
+      }
+    },
+    "23": {
+      "books": {
+        "3": {
+          "buy_cap": -0.11999999999989086,
+          "sell_cap": 0.0,
+          "mtm": 3.180000000000234,
+          "invsum": 222.0,
+          "mean_inv": 6.166666666666667,
+          "alpha": -0.27333333333311316,
+          "inv_end": 12.0
+        }
+      },
+      "totals": {
+        "buy_cap": -0.11999999999989086,
+        "sell_cap": 0,
+        "making_magnitude": 0.0,
+        "making_rank": 0.48,
+        "skill": 0.0,
+        "skill_rank": 0.48,
+        "combined": 0.48,
+        "qualifying_books": 1
+      }
+    },
+    "24": {
+      "books": {
+        "4": {
+          "buy_cap": -0.11999999999989086,
+          "sell_cap": 0.0,
+          "mtm": 3.180000000000234,
+          "invsum": 222.0,
+          "mean_inv": 6.166666666666667,
+          "alpha": -0.27333333333311316,
+          "inv_end": 12.0
+        }
+      },
+      "totals": {
+        "buy_cap": -0.11999999999989086,
+        "sell_cap": 0,
+        "making_magnitude": 0.0,
+        "making_rank": 0.52,
+        "skill": 0.0,
+        "skill_rank": 0.52,
+        "combined": 0.52,
+        "qualifying_books": 1
+      }
+    },
+    "25": {
+      "books": {
+        "5": {
+          "buy_cap": -0.11999999999989086,
+          "sell_cap": 0.0,
+          "mtm": 3.180000000000234,
+          "invsum": 222.0,
+          "mean_inv": 6.166666666666667,
+          "alpha": -0.27333333333311316,
+          "inv_end": 12.0
+        }
+      },
+      "totals": {
+        "buy_cap": -0.11999999999989086,
+        "sell_cap": 0,
+        "making_magnitude": 0.0,
+        "making_rank": 0.56,
+        "skill": 0.0,
+        "skill_rank": 0.56,
+        "combined": 0.56,
+        "qualifying_books": 1
+      }
+    },
+    "26": {
+      "books": {
+        "6": {
+          "buy_cap": -0.11999999999989086,
+          "sell_cap": 0.0,
+          "mtm": 3.180000000000234,
+          "invsum": 222.0,
+          "mean_inv": 6.166666666666667,
+          "alpha": -0.27333333333311316,
+          "inv_end": 12.0
+        }
+      },
+      "totals": {
+        "buy_cap": -0.11999999999989086,
+        "sell_cap": 0,
+        "making_magnitude": 0.0,
+        "making_rank": 0.6,
+        "skill": 0.0,
+        "skill_rank": 0.6,
+        "combined": 0.6,
+        "qualifying_books": 1
+      }
+    },
+    "27": {
+      "books": {
+        "7": {
+          "buy_cap": -0.11999999999989086,
+          "sell_cap": 0.0,
+          "mtm": 3.180000000000234,
+          "invsum": 222.0,
+          "mean_inv": 6.166666666666667,
+          "alpha": -0.27333333333311316,
+          "inv_end": 12.0
+        }
+      },
+      "totals": {
+        "buy_cap": -0.11999999999989086,
+        "sell_cap": 0,
+        "making_magnitude": 0.0,
+        "making_rank": 0.64,
+        "skill": 0.0,
+        "skill_rank": 0.64,
+        "combined": 0.6399999999999999,
+        "qualifying_books": 1
+      }
+    },
+    "30": {
+      "books": {
+        "0": {
+          "buy_cap": 0.0,
+          "sell_cap": 0.0,
+          "mtm": 3.300000000000125,
+          "invsum": 210.0,
+          "mean_inv": 5.833333333333333,
+          "alpha": 0.033333333333445125,
+          "inv_end": 12.0
+        }
+      },
+      "totals": {
+        "buy_cap": 0.0,
+        "sell_cap": 0,
+        "making_magnitude": 0.0,
+        "making_rank": 0.68,
+        "skill": 0.0,
+        "skill_rank": 0.68,
+        "combined": 0.6799999999999999,
+        "qualifying_books": 1
+      }
+    },
+    "31": {
+      "books": {
+        "1": {
+          "buy_cap": 0.0,
+          "sell_cap": 0.0,
+          "mtm": 3.300000000000125,
+          "invsum": 210.0,
+          "mean_inv": 5.833333333333333,
+          "alpha": 0.033333333333445125,
+          "inv_end": 12.0
+        }
+      },
+      "totals": {
+        "buy_cap": 0.0,
+        "sell_cap": 0,
+        "making_magnitude": 0.0,
+        "making_rank": 0.72,
+        "skill": 0.0,
+        "skill_rank": 0.72,
+        "combined": 0.72,
+        "qualifying_books": 1
+      }
+    },
+    "32": {
+      "books": {
+        "2": {
+          "buy_cap": 0.0,
+          "sell_cap": 0.0,
+          "mtm": 3.300000000000125,
+          "invsum": 210.0,
+          "mean_inv": 5.833333333333333,
+          "alpha": 0.033333333333445125,
+          "inv_end": 12.0
+        }
+      },
+      "totals": {
+        "buy_cap": 0.0,
+        "sell_cap": 0,
+        "making_magnitude": 0.0,
+        "making_rank": 0.76,
+        "skill": 0.0,
+        "skill_rank": 0.76,
+        "combined": 0.7599999999999999,
+        "qualifying_books": 1
+      }
+    },
+    "33": {
+      "books": {
+        "3": {
+          "buy_cap": 0.0,
+          "sell_cap": 0.0,
+          "mtm": 3.300000000000125,
+          "invsum": 210.0,
+          "mean_inv": 5.833333333333333,
+          "alpha": 0.033333333333445125,
+          "inv_end": 12.0
+        }
+      },
+      "totals": {
+        "buy_cap": 0.0,
+        "sell_cap": 0,
+        "making_magnitude": 0.0,
+        "making_rank": 0.8,
+        "skill": 0.0,
+        "skill_rank": 0.8,
+        "combined": 0.7999999999999999,
+        "qualifying_books": 1
+      }
+    },
+    "34": {
+      "books": {
+        "4": {
+          "buy_cap": 0.0,
+          "sell_cap": 0.0,
+          "mtm": 3.300000000000125,
+          "invsum": 210.0,
+          "mean_inv": 5.833333333333333,
+          "alpha": 0.033333333333445125,
+          "inv_end": 12.0
+        }
+      },
+      "totals": {
+        "buy_cap": 0.0,
+        "sell_cap": 0,
+        "making_magnitude": 0.0,
+        "making_rank": 0.84,
+        "skill": 0.0,
+        "skill_rank": 0.84,
+        "combined": 0.84,
+        "qualifying_books": 1
+      }
+    },
+    "35": {
+      "books": {
+        "5": {
+          "buy_cap": 0.0,
+          "sell_cap": 0.0,
+          "mtm": 3.300000000000125,
+          "invsum": 210.0,
+          "mean_inv": 5.833333333333333,
+          "alpha": 0.033333333333445125,
+          "inv_end": 12.0
+        }
+      },
+      "totals": {
+        "buy_cap": 0.0,
+        "sell_cap": 0,
+        "making_magnitude": 0.0,
+        "making_rank": 0.88,
+        "skill": 0.0,
+        "skill_rank": 0.88,
+        "combined": 0.88,
+        "qualifying_books": 1
+      }
+    },
+    "36": {
+      "books": {
+        "6": {
+          "buy_cap": 0.0,
+          "sell_cap": 0.0,
+          "mtm": 3.300000000000125,
+          "invsum": 210.0,
+          "mean_inv": 5.833333333333333,
+          "alpha": 0.033333333333445125,
+          "inv_end": 12.0
+        }
+      },
+      "totals": {
+        "buy_cap": 0.0,
+        "sell_cap": 0,
+        "making_magnitude": 0.0,
+        "making_rank": 0.92,
+        "skill": 0.0,
+        "skill_rank": 0.92,
+        "combined": 0.92,
+        "qualifying_books": 1
+      }
+    },
+    "37": {
+      "books": {
+        "7": {
+          "buy_cap": 0.0,
+          "sell_cap": 0.0,
+          "mtm": 3.300000000000125,
+          "invsum": 210.0,
+          "mean_inv": 5.833333333333333,
+          "alpha": 0.033333333333445125,
+          "inv_end": 12.0
+        }
+      },
+      "totals": {
+        "buy_cap": 0.0,
+        "sell_cap": 0,
+        "making_magnitude": 0.0,
+        "making_rank": 0.96,
+        "skill": 0.0,
+        "skill_rank": 0.96,
+        "combined": 0.96,
+        "qualifying_books": 1
+      }
+    }
+  }
+}

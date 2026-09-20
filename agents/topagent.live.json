@@ -1,0 +1,35 @@
+{
+  "open_books": [],
+  "stop_books": [
+  
+  ],
+  "close_quantity": 50,
+  "open_dust_stop_threshold": 0.01,
+  "open_quantity": 50,
+  "open_depth_qty": 5,
+  "open_depth_levels": 21,
+  "use_depth_qty": false,
+  "bracket_ticks": 50,
+  "recharge_times": 10,
+  "acquire_open_books": 1,
+  "target_book_count": 4,
+  "acquire_bracket_ticks": 50,
+  "acquire_quantity": 50,
+  "acquire_max_touch_qty": 10,
+  "restore_stop_books": 1,
+  "restore_bracket_ticks": 50,
+  "restore_quantity": 50,
+  "restore_min_spread": 0.5,
+  "restore_max_touch_qty": 20,
+  "restore_cooldown_minutes": 30,
+  "alpha_baseline_max_age_sec": 900,
+  "expiry_period": 200000000000,
+  "live_config": 1,
+  "general_ticks": 10,
+  "general_quantity": 0.25,
+  "general_books": [],
+  "force_adopt_book_lists": 1,
+  "portfolio_flatten_init": 0,
+  "open_fills_epoch": {
+  }
+}

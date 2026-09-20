@@ -1,0 +1,130 @@
+netuid	name	owner_ss58	org	contact	website	github	x
+0	root	5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM	Opentensor / root		https://bittensor.com	https://github.com/opentensor/subtensor	
+1	Apex	5HCFWvRqzSHWRPecN7q8J6c7aKQnrCZTMHstPv39xL1wgDHh	Macrocosmos	hello@macrocosmos.ai	https://apex.macrocosmos.ai	https://github.com/macrocosm-os/apex	https://x.com/macrocosmosai
+2	DSperse	5EcYQ3W77ndrmMWdvVQusoFqY8doxfP3U2zrh7xZQiaz7avY	Inference Labs		https://subnet2.inferencelabs.com	https://github.com/inference-labs-inc/subnet-2	https://x.com/inference_labs
+3	Teutonic	5GsGUrd21bnkNxQsH2grv474y4gcDwCmp5xJ72KeokspZ2bg	Templar / one-covenant	arbos@bittensor.com	https://www.teutonic.ai/	https://github.com/unarbos/teutonic	https://x.com/tplr_ai
+4	Targon	5CXGPMnq9RCCLUEvp9G2iUuabw69TSFM155UVS1S4Zmusaxv	Manifold	devs@manifold.inc	https://targon.com	https://github.com/manifold-inc/targon	https://x.com/targoncompute
+5	Hone	5GurNtB3yQFCh6CSmfH7LrYJDsvzup4diHZiaYtKe274nrMX	Manifold	devs@manifold.inc	https://honedashboard.com	https://github.com/hone-subnet-org/hone-subnet	
+6	Numinous	5CfSg4e23Z3aTXvc2XZie8ZE1xkqRPoyVRFdWUuyyjGxJrMA		marc@infinitemech.io	https://numinouslabs.io/	https://github.com/numinouslabs/numinous	https://x.com/numinous_ai
+7	Allways	5CAc19iETJmWD2rYVX1ht58ghCpyHq86MoBNdx5TzLfinzcx		 	https://all-ways.io/	https://github.com/entrius/allways	
+8	Vanta	5F6tnxzAAxbhaWRmeUmB63JEM3VXBNSmqb3AwYJVDStQjw8y	Taoshi		https://www.vantanetwork.io/	https://github.com/taoshidev/vanta-network	https://x.com/taoshiio
+9	iota	5FsbubeciqtB5Nik3umL2iD4fG8FcC9GbT9nHJfXMj4mJJZ9	Macrocosmos	hello@macrocosmos.ai	https://iota.macrocosmos.ai/	https://github.com/macrocosm-os/iota	
+10	Pareton	5HK5714cfComgoVg9UfQswQHad6wJV4RnGvp6PQvTkLUUFt5	Pareton		https://www.pareton.ai/	https://github.com/Pareton-ai/pareton	
+11	TrajectoryRL	5D2Jhtbnm7iAdKfjRk6DisXBnr1MEsYat8kXqaPNrVqJP3uE	trajrl.com	trajectoryrl@gmail.com	https://trajrl.com	https://github.com/trajectoryRL/trajectoryRL	https://x.com/trajectoryrl
+12	Compute Horde	5ELzhHvgUqmnAYs74vFWjMMehXNeHkRtkreAa3g8QQS96PCp			https://computehorde.io/	https://github.com/backend-developers-ltd/ComputeHorde/	
+13	Data Universe	5HBswBt1A9Ahx6U76abXXGd7VmabmCNBGhSK2vrP71GSxtgZ	Macrocosmos	hello@macrocosmos.ai	https://datauniverse.macrocosmos.ai/	https://github.com/macrocosm-os/data-universe	https://x.com/macrocosmosai
+14	Cacheon	5CKhH8nKAhXLmqxwaXzFtVFgxqwwnyckXG8qLpmGtzVJH9Ri		hello@cacheon.ai	https://cacheon.ai	https://github.com/latent-to/cacheon	https://x.com/cacheon_ai
+15	ORO	5EHdase3QHY1FSU2KoxzpbnkzGhxBZEVcWU85zyjrxG62KTK		team@oroagents.com	https://oroagents.com	https://github.com/ORO-AI/oro	https://x.com/oroagents
+16	trav	5FkKY8WJKm1fsUXuVNeoX7ayENaSmR6L2KNoJN48ZAJwtWeU				https://github.com/study-service/BitAds.ai	https://x.com/bitkoop
+17	404—GEN	5E7a4a7QETrNjoZ2SbVSJMaavrQeyTEaHgjBPDUDxBKjUaMZ		404@404.xyz	https://www.404.xyz	https://github.com/404-Repo/404-gen-subnet	https://x.com/404gen_
+18	Zeus	5GgvCi6h7dNsC489T8UnUMv912SoEXpEUDVt71VJU1Td7WKh	Ørpheus AI		https://www.zeussubnet.com/	https://github.com/Orpheus-AI/Zeus	https://x.com/zeussubnet
+19	blockmachine	5FWh37LfVV5LE9dZA91STzbtebh6vxYa3MH71c621sYafo1L	blockmachine	team@blockmachine.io	blockmachine.io	https://github.com/taostat/blockmachine/	https://x.com/blockmachine_io
+20	ChronoSeek	5CFVA7aPkGRYhYThumb9UQkPPZv7kzm2ieREHVjxecaYqi3u	ChronoSeek	connor@chronoseek.org	https://chronoseek.org/	https://github.com/chronoseek/bittensor-subnet	https://x.com/groundlayerhq
+21	AdTAO	5HjCYVfrWSkzTfJM5rkWBW3qTTJqXEFUzZrKty5hodpgfjyW		sn21@adtao.io	https://adtao.io	https://github.com/ippcteam/SN21-adtao	https://x.com/ppcrebel
+22	Desearch	5DFuaMasyQtPhXcsuoYEyJmCVSRtzKxsTKFTA4SrpcGXBxJn		giga@desearch.ai	https://desearch.ai	https://github.com/datura-ai/desearch	https://x.com/desearch_ai
+23	Trishool	5CqTRwoFmme25YAbbwovR9rEic1UY7hYBLHxSk1PSfZ2jpmN	Trishool	nav@astroware.ai	https://trishool.ai	https://github.com/TrishoolAI/trishool-phase2	https://x.com/trishoolai
+24	Quasar	5ELutYW7EdFUS38CPGkDnbwkeMrpppi6ujEC825jTP7maAuL		-	https://silxinc.com/	https://github.com/SILX-LABS/QUASAR-SUBNET/	https://x.com/quasarmodels
+25	UR	5HTeZ5168DjjGWZgbvzGfysEAj9fnexF24gYFKJHENU5cc8a	Macrocosmos	brien@ur.io	https://ur.xyz/	https://github.com/urfoundation/sn	https://x.com/macrocosmosai
+26	Perturb	5FsVAEPMpkAo3eP7xTNJYLyBndi2oT5GPxVPzFT1DzSD82qx		hello@perturbai.io	https://www.perturbai.io/	https://github.com/0xsigurd/Perturb	https://x.com/perturbaix
+27	Orion	5GLT9wjWzyFqwsfgvNiy9xdAkaVsHPUwAHJ34hVgbW8hy7hT	Orion			https://github.com/SILX-LABS/Orion	
+28	SayGM	5CA6rwAytZvvyZhLYEzo79627QEV422Q8kD51DEnTaRQxm45		hi@saygm.com	https://saygm.com/	https://github.com/taostat/gm-miner	https://x.com/say_gm_
+29	hoτfloaτ	5HHHHHzgLnYRvnKkHd45cRUDMHXTSwx7MjUzxBrKbY4JfZWn			http://hotfloat.io	https://github.com/coldint/hotfloat	
+30	Endure Network	5HTogQKFuDaLq5ifWNhL2owMpLPHM3TAmujUUaTVj7FWzf6p			https://endure.network		https://x.com/endurenet
+31	rec4ll	5H3mfhC8DS853nezGzh73rRnrFqPaPXtaCR8jDtgkSCHrfvb	rec4ll				
+32	ItsAI	5DWgkCSvq4brWSNLDU9FBgTk1ZpAQ2y6t3ky97CvEVuS9Qad		support@its-ai.org	https://its-ai.org/en	https://github.com/It-s-AI/llm-detection	https://x.com/ai_detection
+33	ReadyAI	5HinUfk5SqBUAbkMtgdNoum3VJvwrLgdvwW5sbXA1UPYZ8uB	ReadyAI	david@readyai.ai	https://readyai.ai/	https://github.com/afterpartyai/bittensor-conversation-genome-project	
+34	BitMind	5DthmKBR83sUdudSfgFnsxBkTYtYTFLJUgovNfb1TSKVLiTH	BitMind	intern@bitmind.ai	https://bitmind.ai/	https://github.com/BitMind-AI/bitmind-subnet	
+35	OxMarkets	5EqZVDbW5sKXE5qB5zVaH6SQT2sud3LkmFBo2dn79NdY9RTr		contact@0xmarkets.io	https://www.0xmarkets.io/	https://github.com/General-Tao-Ventures/cartha-validator	https://x.com/0x_Markets
+36	automata	5DCjvVt6LbtM5YhMd3McczwSQpu4w85Gq5ENqSsyXjwgJxpZ			https://leoma.ai/	https://github.com/RendixNetwork/leoma	https://x.com/leoma_ai
+37	Aurelius	5GRBbS3aDep7cvR1NRm9Awp5HAF1o4HC7t59Y8HoheLZ6ZaP	Aurelius	aurelius.subnet@gmail.com	https://aureliusaligned.ai	https://github.com/Aurelius-Protocol/Aurelius-Protocol	https://x.com/aureliusaligned
+38	ChronoLLM	5GeWgtBAu2ezYo83sPM7VyEigAfEc3vnqqxRzbMXYVYwEV62		crew@crunchdao.com	https://chronollm.crunchdao.com/	https://github.com/chronollm/sn38	https://x.com/chronollm
+39	deprecated	5DkwfxC9mZTTCsRUt6nrnwQEWVrhsmY13SBRparj6cpAVxVY	Datura	deprecated@gmail.com	https://www.basilica.ai/	https://github.com/deprecated/deprecated	
+40	Ralph	5HeKCDfdTyk5gttniUXWVGvf6xSpbJJG86thJcZnqNZjThoU			https://ralphlabs.ai	https://github.com/RalphLabsAI/ralph	
+41	Almanac	5FCSevLkofmKZRixMawp6jyyjBty1AeSCLa7N5Fv892DYkXX	Sportstensor		https://almnc.ai	https://github.com/corvxai/almanac	
+42	Unknown	5EC5HHfLqgmr8cdt2MAW5nJMG9n3jKF1QhZb1gYTgiJGNMo5			https://developers.gopher-ai.com/	https://github.com/gopher-lab/subnet-42	
+43	Graphite	5HjMs5JDrLH3Hknmfm1gDq7nFYAv6M7t9v3EWMctSRXJS9HC		team@graphite-ai.net	https://graphite-ai.net/	https://github.com/GraphiteAI/Graphite-Subnet	https://x.com/graphitesubnet
+44	Score	5CaCekuxb9pKQyLoxh3jbkEXig8fxjkeS4AQ6UmZa12xfQ9H		hello@wearescore.com	https://www.wearescore.com/	https://github.com/score-technologies/turbovision	https://x.com/webuildscore
+45	AlphaRidge.ai	5FbcZiAHA75i2bPVrF7wa9mFaxV1eM27HR63kJtbpb8spvmf		sn45@alpharidge.ai	https://alpharidge.ai	https://github.com/Team-Rizzo/alpharidge-ai	https://x.com/wearetalisman
+46	Instant	5Ft9E2ovN52AVMczVA3713uXmmBPczvUboB4YQpupu3aEYg7		admin@instantsubnet.com	https://instantsubnet.com	https://github.com/instant-subnet/instant-subnet	https://x.com/resilabsai
+47	Feval	5GBmFsPkMDGcEcKwL69rCcbSko2xX2WTUzs6riW7d8XVqTpv			https://feval-center-leaderboard-web.hf.space	https://github.com/center196/feval	
+48	Quantum Compute	5GNH5YMkcX8jEF1PukvxKafifcqz13jp18BT73jRL3AZc4Rc	Quantum Compute	qbittensorlabs@gmail.com	https://www.qbittensorlabs.com/	https://github.com/qbittensor-labs/quantum-compute	https://x.com/qbittensorlabs
+49	Nepher Robotics	5FL781vfkLNnYBUi58JnhZ3r2waHDMiehxRhzcMaMWvKDfXf	Nepher Robotics	contact@nepher.ai	https://www.nepher.ai/	https://github.com/nepher-ai/nepher-subnet	https://x.com/nepher_robotics
+50	Synth	5DxyiWpGqN5xXiczXcEGph51BcgTqcYKD5GKZqoACuc2sJkD	Synth		https://synthdata.co	https://github.com/mode-network/synth-subnet	
+51	lium.io	5FqACMtcegZxxopgu1g7TgyrnyD8skurr9QDPLPhxNQzsThe	Datura / lium.io		lium.io	https://github.com/Datura-ai/lium-io	https://x.com/lium_io
+52	Dojo	5Fv1ZvNPsEvUN6jfia6Mv3ZoefZ6KdoowGMjkPMX61QwRLXx	Tensorplex	jarvis@tensorplex.ai	https://www.tensorplex.ai/	https://github.com/tensorplex-labs/dojo	
+53	engy	5H8SFVCxk52ag1YSC5bQw7B84NRNhAtYWAP81jEPfuJ3VL8Q	engy.ai	ning@engy.ai	https://engy.ai	https://github.com/hanlinai/engy	
+54	Yanez	5FUfruyVDoDsCty1Sh7tCmHVdpoC3XV1nUZYjhcpfe31Defk	Yanez MIID	jose@yanezcompliance.com	www.yanez.ai	https://github.com/yanez-compliance/MIID-subnet	https://x.com/yanez__ai
+55	NIOME	5GeWUxaFP6duJyNg8EUv6Jfcv6ZNkoERywAcbSw4FAuEMpDq		info@genomes.io	https://niome.genomes.io	https://github.com/genomesio/subnet-niome	
+56	Gradients	5EJ1zbdwhumTRYFx3VCGnR6SW7CJWP28tEJCo2gw1dFbVL5g	Gradients / Grads LLC (Rayon Labs contrib)	info@gradients.io	https://www.gradients.io/	https://github.com/gradients-ai/G.O.D	
+57	gaia	5HdpnCSYczg52ZaiBKmgwJPFnVpyyu27o1GHgLcj8217xxr7			https://sparket.ai/	https://github.com/sparket-ai/sparket-ai	
+58	greevils	5CLUzEqecEfGFxMwHSU5vbgzpFQCGZuC56DDX354JKe69gtJ		atlas@greevils.ai	https://www.greevils.ai	https://github.com/greevils-ai/greevils-cli	https://x.com/greevils_ai
+59	agent-arena	5GzrQ2febBKynmJ4BrNFiEgnsMvVpz5bZtGcucGCKgfaRXep		mk@babelbit.ai	https://babelbit.ai/	https://github.com/babelbit/babelbit_subnet	https://x.com/babelbit
+60	Bitsec.ai	5CXLwkK1Scd1uiMUrXYjJUTTPxqqyH2FTJQNLp9uXQhA9rhR		john@bitsec.ai	https://bitsec.ai	https://github.com/Bitsec-AI/sandbox	https://x.com/bitsecai
+61	RedTeam	5ECEsYL82fbXx9KfTZy7G2KXSurnScciJyAVMHZjekc8jUbn		oscar@theredteam.io	https://www.theredteam.io/	https://github.com/RedTeamSubnet/RedTeam	
+62	Ridges	5DhsVYewpCdQQUenHU52k5Cys1WsTWTt5V5m84D3n4L8FWDS	Ridges	hello@ridges.ai	https://www.ridges.ai/	https://github.com/ridgesai/ridges	
+63	Enigma	5CqTmNfgDchxULD1bfoz8jvj9rDYSoq76kiq98oBUUEDpWqX	Alpha Trader Exchange	qbittensorlabs@gmail.com	https://www.qbittensorlabs.com/	https://github.com/qbittensor-labs/enigma	https://x.com/qbittensorlabs
+64	Chutes	5FRYKhbmfXPDoHdUUDMx27E3HuMvAzwjzFMMq3rNurUhAyS9	Chutes / Chutes Global Corp (Rayon Labs contrib)	support@chutes.ai	https://chutes.ai	https://github.com/chutesai/chutes	https://x.com/chutes_ai
+65	True Performance Network	5GxEEHxLWpvcAGghL8LG7xNjrxZk4SEPW1VT43hGPZ2TP9mZ	True Performance Network	info@trueperformancenetwork.com	https://www.trueperformancenetwork.com/	https://github.com/taofu-labs/true-performance-network	https://x.com/tpn_labs
+66	conjectures	5CJCRGep3iyMUoaRb1FVNqXSuU8bcijfDBwVvZiQHSmGPTjT	Arbos	charlie@conjectures.io	https://conjectures.io	https://github.com/conjectures-io/conjectures-validator	
+67	Harnyx	5HEAv3TU1yNei4GwiTsxfmDCDW9pMCKLeDVky9iaVJfYiVeY	Harnyx	harnyx@brightmount.co	https://harnyx.ai/	https://github.com/harnyx/harnyx	https://x.com/harnyx_ai
+68	NOVA	5EcdJLAeYoxM3Tsf5VZ3NQPenPku218gqnjSoo3iJNy4V12V			https://www.metanova-labs.ai	https://github.com/metanova-labs/nova/	https://x.com/metanova_labs
+69	Herald	5HBPFVcJxuhT6PFg93s5B5qa9GZjMQWRBWWEssZMDAMmRAvc	DSV Vali		https://www.heraldmedia.ai	https://github.com/HeraldMedia/herald	
+70	ghayn	5EP42hSodDgwNnXx1BrNwkJZ4ScMf22SJSqNqAq3SyjZib5E			https://www.nexisgen.ai/	https://github.com/RendixNetwork/nexisgen	https://x.com/nexisgen_ai
+71	Leadpoet	5DwHzMhBXPGPSSxnPzp3J8Y12UyYmU17nppQ8oHum6yrRjSk	Leadpoet / SN71 Primary Validator	hello@leadpoet.com	https://leadpoet.com	https://github.com/leadpoet/leadpoet	https://x.com/leadpoetai
+72	StreetVision by NATIX	5FjP8fFbMb6pEHfRZyRegsmwRUMDuLFNcaBu1TerWMPEKgNh	NATIX		https://www.natix.network/?utm_source=bittensor	https://github.com/natixnetwork/streetvision-subnet	https://x.com/natixnetwork
+73	Parked	5Fvs6HPWUKNkqQka8yZi1anaTu339fKVws64BnJBRTQhKzak	fx-integral				
+74	Gittensor	5D1VXeeSdrfyrBdMe4SNwKnRsmzrjXES9dhx6kQkCHhJUPvS		 	https://gittensor.io	https://github.com/entrius/gittensor/tree/main	https://x.com/gittensor_io
+75	Hippius	5DAQpczEK4vzBn1waHkC4BZGqGPZ1dwPxKVsj36JDofHAw3a	Hippius	hello@hippius.com	https://hippius.com/	https://github.com/thenervelab/thebrain	https://x.com/hippius_subnet
+76	nun	5CLWmDjLwkDtLQ86y9aiwfzrUCrtnnSWS9oEXianj2jMDCAo			https://www.byzantiumai.net/	https://github.com/praxi-labs/phylax-subnet	https://x.com/byzantiumai
+77	Liquidity	5GxxsUeYRyJSJKCuPeG1jZZiCummHJttmTNsfgDRSfxVnhGi			https://sn77.xyz	https://github.com/creativebuilds/sn77	
+78	Umi	5GvYz1tBVJdVGtdeJFAcDbiRQcmKDcXicT98pxnKzU3cxVQ3			https://www.umi.vision	https://github.com/Umi-BitSign/umi	
+79	MVTRX	5Fxp7QBG81X7PLdMkAe1RLCvqqfQSw9rJC5ppEQs9FP8qez9	Rayleigh Research Oy / TAOS	to@mvtrx.fi	https://taos.im	https://github.com/taos-im/sn-79	https://x.com/taos_im
+80	OpenRoboto	5CG1eFiaZkWTCUEjD23i7Uiu6AjTkLkgkCu3EyXKFFAkkT2T	OpenRoboto	riccardo@openroboto.ai	https://www.openroboto.ai/	https://github.com/openroboto-ai/openroboto-subnet	
+81	Reliquary	5GnpQR4Nt3f5AQqBXuhf7GkkaEHhAVQrVk4EsK4daZDmkAQT		RomAI	https://www.reliqua.ai/	https://github.com/reliquadotai/reliquary	
+82	Compelle	5H6h1PUDfTFdTV5kRCgywGR7xjLo63LHMiP6wJ4qBU8A9zPs			https://compelle.com	https://github.com/compelle/compelle-validator	
+83	CliqueAI	5DqEjRLyNN8k3WbEXhA36tyGG4YpWyPEcVSTa47XxspNHhc3	CliqueAI	CliqueAI@toptensor.ai	https://cliqueai.toptensor.ai/	https://github.com/toptensor/CliqueAI	
+84	ansuz	5G1hDNpPA8pRZUMJRBcELthCaHVPQcHZb1X3jbeyQ9zUtbbd			https://www.chipforge.io/	https://github.com/TatsuProject/ChipForge_SN84	
+85	Vidaio	5GTPBjA4uXhuQ51SJB7Jd55JwY6dKEnbnjCrsSSEXy3MN63z	Vidaio	Vidaio@vidaio.io	https://vidaio.io/	https://github.com/vidaio-subnet/vidaio-subnet	https://x.com/vidaio_
+86	kaunan	5F4XAWGzcwpHjGdLUDfWiCvKnqeNPQHn3SwooBQcYcP7mWXJ					
+87	Provenonce	5HartH15eyQoKJk98jTMwhY9nW4JRfWEznqLRD1oQJuwdBHV	Luminar		https://provenonce.ai	https://github.com/Luminar-Network/luminar-sn	https://x.com/willobrien
+88	Investing	5FhMsGJS7WYdwBzcgsTWxEtY7UCYLZdmBVLcNPmCxr3ppiKS	88		https://Investing88.ai	https://github.com/mobiusfund/investing	https://x.com/Investing88ai
+89	InfiniteQuant	5Dc5NmEUptDeMLrxDSvg8kfCToxJkiF47apAYSVTycAVvDN4		support@infinitequant.app	https://infinitequant.app	https://github.com/DeltaCompute24/InfiniteQuant-Subnet	
+90	KubeTEE	5C9y6fnLPSzBeh1Np7f4DnGen42xV29nL9qZTDuwpVC4iTEE		pierre@kubetee.ai	https://kubetee.ai	https://github.com/KubeTEE-AI/kubetee-subnet	https://x.com/KubeTEEAI
+91	cascade	5HEe7NjS4exuP9SptWZdwWqWrMrGTTEHf5ieQH8yZXA3zXtW	cascade	chris@tensor-link.com	cascadesub.net	https://github.com/TensorLink-AI/cascade	https://x.com/bitstarterai
+92	MicroTensor	5E9LPDS2E5RFzoqRsF2D7NgJTFH3N2DVqeAodTksPJP7CT4x			https://microtensor.vercel.app	https://github.com/microtensor-io/microtensor-subnet	
+93	Bitcast	5EbY1SebUuz189w1G96JN4mmHnShAECA6JefCRYhSLqyYg2c	Bitcast		https://stats.bitcast.network/	https://github.com/bitcast-network/bitcast	
+94	pending...	5CnwnkkCxrrNDuhy8Vvptd6j6ebrv9Z6mrTzD479f7uAiYat		info@bitsota.ai	pending...	https://github.com/AlveusLabs/SN94-BitSota	https://x.com/bitsota
+95	Actual	5D5UhUuc6cC47CXUBHyBkpDBrdeyeL6bpWGAreZgNm5WTyrg		subnet@actual.inc	https://actual.inc	https://github.com/actual-computer/actual-subnet-95	
+96	Verathos	5CGq1JQhmZmR8w3pXFqycUgX9mcLt8bPwMZ8YDJbEmELpw7X	Verathos	info@verathos.ai	https://verathos.ai	https://github.com/verathos-ai/verathos	
+97	Albedo	5GnW8owmMGn83WqL9JNYytmw458UYrTT6Ra5fH8TTUkzEbTb	Albedo / advertised operator Arbos	arbos@bittensor.com	https://us-east-1.hippius.com/albedo/index.html	https://github.com/unarbos/albedo	
+98	NeverPlayAlone	5EWzZCNsJe72k44Jd9oPUXRRkxVgFAtjyohgSwmTu6F8MBHM	NeverPlayAlone	contact@neverplayalone.ai	https://neverplayalone.ai	https://github.com/neverplayalone/neverplayalone_subnet	https://x.com/forevermoney_ai
+99	Thirty Spokes	5DebFXsw76JvoG5j6qQRoyNK79qBEvd6A2trULrA6DGgQLYX			https://www.thirtyspokes.ai		
+100	Cortex	5FX6kmhYwTYRFaZjxEo7k9DaG8qRmqrJtLTMGRgnfjRcXiWU		team@cortex.foundation	https://cortex.foundation	https://github.com/CortexLM/cortex	https://x.com/platformnet
+101	Tag101	5H8dNvi1jZRe1dcYN2FdknWKxfGx6u1o9pYm5zRMCZyy2Ex3			http://tag101.ai	https://github.com/tag101-ai/tag101	
+102	ConnitoAI	5HBc11rCaAj2UtUTeC3oK8zHbU7jQCQZWpRQvsawqxH8qkTm		isabella@connito.ai	https://connito.ai/	https://github.com/Connito-AI/Connito	https://x.com/connitoai
+103	Capcomp	5H3SQ4du9ThumJcUQb1VL2dixRBDKtt8hDRWLyPuANhHon7Y		info@djinn.gg	http://capcomp.ai/	https://github.com/orgs/Capcomp-AI/repositories	https://x.com/djinn_gg
+104	TAOstatus	5HBb3F1bmDzdwQ5WTweXUvnKETTzu6aWNAH811vrLkvSdQAn		admin@taostatus.com	https://taostatus.com/	https://github.com/taostatus/taostatus-subnet	
+105	Beam	5G3ic2pAzVu1gZmeUQfKGox3P8TetJw87asvyAdkb2o8aCCX		info@b1m.ai	https://b1m.ai	https://github.com/orgs/Beam-Network/repositories	https://x.com/b1m_ai
+106	Nodexo	5CTdHCps1vJ9LrZ3SPM8ZweXWtgg6vgEqEb5W8xzuZHQHXpA	Nodexo	https://discord.com/channels/799672011265015819/1174835090539433994	https://nodexo.ai	https://github.com/nodexo-ai/nodexo	https://x.com/nodex0_
+107	Minos	5DA2vLrSXZxnT9G4Yrywx1Fpi4RXwMH1Ah7r8DTTWS7UZZBM	Minos	contact@theminos.ai	https://theminos.ai	https://github.com/minos-protocol/minos_subnet	https://x.com/theminos_ai
+108	Prometheon	5GpmtjiGfHojYdyM4bc85XCAGZo15xS7Y5gbNS17Wgjwv23e		coolaisaworld@gmail.com	www.bitfan.ai	https://github.com/BitSpaceorganization/prometheon_v2	https://x.com/talkheadai
+109	Finsight	5FqZqKFxfm3VWmc47UdEjaFyVrSfkGd4HcXwFoxH8vBGXKmv	Finsight	hello@finsight.tech	https://finsight.tech/	https://github.com/fx-integral/academia	
+110	Green Compute	5D53sX6AwAzXUB24G85Ch35hYr5rCpXjYFWpFTe4uzBb75sL	Green Compute		https://www.green-compute.com/	https://github.com/Rich-Kids-of-TAO/rkt-subnet	https://x.com/vocence_bt
+111	Claims	5CGTryXjAmwmb3mAFD6B5ba2iBXZBcS5dN9pHLBxRoeonigv	Claims	support@oneoneone.io	https://oneoneone.io/	https://github.com/DeSciClaims/Claims	
+112	parked	5GyUNPbbBYanVFpaaysgvwni5tFMpjFBDu6K1kRpnX4Mepeh			https://minotaursubnet.com/	https://github.com/subnet112/minotaur_subnet	https://x.com/minotaursubnet
+113	TensorUSD	5GndoVhMAr8mF5zv1gPVLQYbXzmXe3Xh3kF37nt8qy5CaXTP	ActiveTUSDT	admin@tensorusd.com	https://tensorusd.com	https://github.com/TensorUSD/subnet	https://x.com/tensorusd
+114	SOMA	5FHrQMjzzAhmL5zS9ys87ZrGCwG3vsVT9hXAUWZQ8SNdRqig	SOMA	https://x.com/SomaSubnet	https://thesoma.ai	https://github.com/DendriteHQ/SOMA	https://x.com/somasubnet
+115	MoirAI	5EkNnrTjnMYaj4x1gNxAnJne9UvKgfU6NZNjhm6XFWMstbdG		hashichain@outlook.com		https://github.com/moirai115/MoirAI	
+116	Memo	5F48aA3Pw1vFRfnhhfu7EJKqzrj8y9VBWtS4PE9xJ1chHXqB			https://taolend.io/		
+117	glyph	5HdThE9WvusfeFpk7R3Lnc9wfP4zsDje3GeRew6mrQHNNFiY		contact@glyph-research.org	https://glyph-research.org	https://github.com/glyph-research/glyph-subnet	https://x.com/glyphresearch
+118	Ditto	5HGXqHbQjEmwnQsnnMa8pm13VUv9PP2jB4Vuv9nw7NwUYiAN	Ditto	peyton@omniaura.ai	https://heyditto.ai	https://github.com/orgs/ditto-assistant/repositories	https://x.com/heydittoai
+119	Satori	5GbLENPLG8Takn1puaz5HorPmrFtDT7i2PojiJsqutbaGwWu		Akihabara119@outlook.com		https://github.com/Satori119/Satori	
+120	Affine	5EfNFhH2s9hJoVuK8qkQRx8bkpNncRifhbCHBFKs6qKqknak	Affine Foundation	hello@affine.io	www.affine.io	https://github.com/AffineFoundation/affine	
+121	sundae_bar	5CXGaDJsffVeBK4CDhBNMVK6MH7fHbL7AbnjzZ8XP6QzFLWm	sundae_bar	hello@sundaebar.ai	https://www.sundaebar.ai/	https://github.com/sundae-bar/bittensor-subnet	https://x.com/sundae_bar_
+122	CookingTAO	5F3uH1G4QNyT8UR6D2Zf2zmXa6WAxYC3MfaiSGgg5pScWfY9	CookingTAO		https://cookingtao.com/	https://github.com/CookingTao	https://x.com/cookingtao_
+123	MANTIS	5HVuEdEGMYisecwjkWC7dKDPEzgs9cECdsdCQagfPRVf6FxZ	MANTIS		https://mantis123.com	https://github.com/Barbariandev/MANTIS	
+124	Swarm	5HKYqfJrUFKYPMRFZZ7kfhUNEyHUbY2ZyEjQqKJf2RKVpeXM		admin@swarm124.com	www.swarm124.com	https://github.com/swarm-subnet/swarm	https://x.com/swarmsubnet
+125	8 Ball	5DTzv2rL6YGQjCDNiWQJz2nE23fK1mDccH9eQimgiieyL3C4			https://8ball125.com/	https://github.com/Barbariandev/8Ball_miner	
+126	Poker44	5DqrUa2z6E9taJdY8FGiPCrtCswsEjHjPbVo5xcTw2GqvKZm	Poker44	admin@poker44.net	https://poker44.net	https://github.com/Poker44/Poker44-subnet	https://x.com/poker44subnet
+127	Astrid	5FU4uxAdrZsaWaezWwXEK93MwPX5gw2566BQK2WwrGUudfSH	Astrid / SN127 Official Validator		https://www.astrid.global/	https://github.com/astridintelligence/sn-127	
+128	ByteLeap	5GgMeLFN4YssT6f9i9pZpRmczt8GYDsCZ1nYPiGRcTPWn3AA	ByteLeap	byteleap.ai@gmail.com	ByteLeap.ai	https://github.com/byteleapai/byteleap-Miner	
