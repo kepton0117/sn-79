@@ -32,14 +32,15 @@ struct convert<taosim::process::RNG>
         if (!seed) {
             throw taosim::serialization::MsgPackError{};
         }
-        v = taosim::process::RNG{*seed};
 
-        const auto callCount = taosim::serialization::msgpackFindMap<uint32_t>(o, "callCount");
+        // Read as 64-bit: a checkpoint written by the 32-bit counter still reads, and a long run's count
+        // does not wrap. restored() keeps the count, so the NEXT checkpoint records the true position.
+        const auto callCount = taosim::serialization::msgpackFindMap<uint64_t>(o, "callCount");
         if (!callCount) {
             throw taosim::serialization::MsgPackError{};
         }
-        v.discard(*callCount);
-        
+        v = taosim::process::RNG::restored(*seed, *callCount);
+
         return o;
     }
 };

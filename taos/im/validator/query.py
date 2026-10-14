@@ -23,6 +23,7 @@ import aiohttp
 from taos.im.protocol import STP
 from taos.im.protocol.instructions import PlaceOrderInstruction
 from taos.im.protocol import MarketSimulationStateUpdate
+from taos.im.utils.compress import reply_bounds
 # Optional component; not part of this tree. Import is guarded, and the parse_dict branch below that uses
 # ExchangeStateUpdate is gated on exchange-mode requests.
 try:
@@ -53,6 +54,22 @@ def _query_fanout_enabled():
     except Exception:
         pass
     return os.environ.get("QUERY_FANOUT", "1") != "0"
+
+
+def _queryable_axons(metagraph_axons, own_uid, own_hotkey):
+    """(uid, axon_data) for every published axon (non-zero IP) except this validator's own.
+
+    The validator's own uid is published at its external IP but nothing serves it,
+    so a query there can reach whatever listens on that port. Same rule as the
+    GenTRX delivery filter (hotkey != my_hotkey), in both engine modes.
+    """
+    return [
+        (uid, axon_data)
+        for uid, axon_data in enumerate(metagraph_axons)
+        if axon_data['ip'] != "0.0.0.0"
+        and uid != own_uid
+        and axon_data['hotkey'] != own_hotkey
+    ]
 
 
 def _log_query_profile(tag, offsets, durations):
@@ -290,6 +307,7 @@ class QueryService:
             book_count = request_data.get('book_count', len(request_data['books']))
             capital_turnover_cap = request_data.get('capital_turnover_cap', 10.0)
             max_instructions_per_book = request_data.get('max_instructions_per_book', 100)
+            max_reply_instructions, max_reply_bytes = reply_bounds(book_count, max_instructions_per_book)
 
             book_ids = request_data.get('book_ids')
             engine_mode = request_data.get('engine_mode', 'simulation')
@@ -333,9 +351,11 @@ class QueryService:
                 success += 1
                 
                 if synapse.compressed:
-                    synapse.decompress()
-                    if synapse.compressed:
-                        bt.logging.warning(f"Failed to decompress response for {uid}!")
+                    refused = synapse.decompress_reply(
+                        version=request_data['version'], max_bytes=max_reply_bytes,
+                        max_instructions=max_reply_instructions)
+                    if refused:
+                        bt.logging.warning(f"Reply from UID {uid} dropped: {refused}")
                         continue
                 if not synapse.response:
                     bt.logging.debug(f"UID {uid} failed to respond: {synapse.dendrite.status_message}")
@@ -666,7 +686,10 @@ class QueryService:
                 e * (_version_int_base**i) for i, e in enumerate(reversed(_version_info))
             )
 
-            for uid, axon_data in enumerate(request_data['metagraph_axons']):
+            own_hotkey = self.wallet.hotkey.ss58_address
+            for uid, axon_data in _queryable_axons(
+                request_data['metagraph_axons'], request_data.get('uid'), own_hotkey
+            ):
                 axon = bt.AxonInfo(
                     version=version_as_int,
                     hotkey=axon_data['hotkey'],
@@ -678,10 +701,8 @@ class QueryService:
                     placeholder1=0,
                     placeholder2=0,
                 )
-                # Query every published axon (non-zero IP), same as simulation mode.
-                if axon_data['ip'] != "0.0.0.0":
-                    axon_list.append(axon)
-                    uid_list.append(uid)
+                axon_list.append(axon)
+                uid_list.append(uid)
 
             self.metagraph = MinimalMetagraph(axon_list, uid_list)
             deregistered_uids = set(request_data['deregistered_uids'])
@@ -945,8 +966,8 @@ class QueryService:
             base_body = _json.dumps(base_synapse.model_dump()).encode('utf-8')
             synapse_name = base_synapse.name
 
-            # Extract signing inputs from the preprocessed synapse — these are
-            # constant across all miners for this round.
+            # Extract signing inputs from the preprocessed synapse. uuid and
+            # body_hash are constant across miners, the nonce is per request.
             dendrite_nonce  = base_synapse.dendrite.nonce
             dendrite_uuid   = base_synapse.dendrite.uuid
             dendrite_hotkey = base_synapse.dendrite.hotkey
@@ -958,17 +979,24 @@ class QueryService:
 
             t_sign_start = time.time()
             prepared = []
+            # The axon rejects a nonce not newer than the last one it accepted for
+            # this hotkey:uuid, so every request gets its own nonce, as bittensor's
+            # dendrite stamps time.time_ns() per call. Forced strictly increasing.
+            last_nonce = dendrite_nonce
             for d in deliveries:
                 uid = d['uid']
                 adat = d['axon_data']
                 miner_hotkey = adat['hotkey']
+                nonce = max(time.time_ns(), last_nonce + 1)
+                last_nonce = nonce
                 # Sign only — skips pydantic overhead that made per-miner cost ~86ms
                 message = (
-                    f"{dendrite_nonce}.{dendrite_hotkey}."
+                    f"{nonce}.{dendrite_hotkey}."
                     f"{miner_hotkey}.{dendrite_uuid}.{body_hash}"
                 )
                 sig = f"0x{self.wallet.hotkey.sign(message).hex()}"
                 headers = dict(base_headers)
+                headers['bt_header_dendrite_nonce']     = str(nonce)
                 headers['bt_header_axon_ip']           = adat['ip']
                 headers['bt_header_axon_port']         = str(adat['port'])
                 headers['bt_header_axon_hotkey']       = miner_hotkey

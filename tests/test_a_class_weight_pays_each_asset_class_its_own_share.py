@@ -102,15 +102,15 @@ def test_the_map_the_weights_and_the_shares_reach_both_pay_paths():
 
 
 def test_the_default_is_the_production_split_and_the_flat_rule_everywhere_it_does_not_fit():
-    # Since 1 October 2026 the release default is the two-background production split; the flat rule is what a
-    # single market (no class map) and any layout with another background count get from it.
+    # Since 0.6.4 the default weighs each class by its share of the layout's books, so
+    # any class count fits; a single market (no class map) still gets the flat rule.
     from taos.im.validator.reward import class_weights_for_layout
 
     parser = argparse.ArgumentParser()
     add_im_validator_args(None, parser)
     known, _ = parser.parse_known_args([])
     default = getattr(known, "scoring.debeta.class_weights")
-    assert default == "0.95,0.05"
+    assert default == "books"
     assert class_weights_for_layout(default, {}) == []
-    assert class_weights_for_layout(default, {0: 0, 1: 1, 2: 2}) == []
-    assert class_weights_for_layout(default, {0: 0, 1: 1}) == [0.95, 0.05]
+    assert class_weights_for_layout(default, {0: 0, 1: 1, 2: 2}) == [1 / 3, 1 / 3, 1 / 3]
+    assert class_weights_for_layout(default, {0: 0, 1: 0, 2: 0, 3: 1}) == [0.75, 0.25]

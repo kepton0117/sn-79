@@ -31,11 +31,13 @@ from taos.im.validator.trade import update_trade_volumes
 DEV = Path(__file__).resolve().parents[1]
 TRADE = DEV / "taos/im/validator/trade.py"
 PERSISTENCE = DEV / "taos/im/validator/persistence.py"
+SHADOW = DEV / "taos/im/validator/scoring_shadow.py"
 _S = tss._S
 
 # Not history state: configuration, clocks and services the ShadowState provides as knobs.
 KNOBS = {
-    "config", "simulation", "step", "effective_max_uids", "_last_prune_timestamp", "pagerduty_alert",
+    "config", "simulation", "step", "effective_max_uids", "_last_prune_timestamp", "_last_accounted_ts",
+    "pagerduty_alert",
     "engine", "kappa_cache", "deregistered_uids", "scoring_config", "simulation_config",
     "scoring_interval", "validator_uid",
     # derived cache: the book-to-class map keyed by the simulation object's identity, rebuilt on first use in
@@ -210,6 +212,31 @@ def test_child_save_persists_the_debeta_histories(tmp_path):
     assert keys.index("roundtrip_volume_sums") < keys.index("debeta_capbuy_hist") < keys.index("miner_stats"), (
         "the de-beta block sits where main's build_validator_state puts it"
     )
+
+
+def test_child_save_carries_the_smoothed_making_pool(tmp_path):
+    """The proportional making pool's smoothed term and share are what the making half pays, and a restart reads them
+    from the save. A save written by the scoring service carries them as main's own save does."""
+    shadow = tss._snapshot_to_shadow(_debeta_main())
+    path = str(tmp_path / "validator_state.mp")
+    light = tss._light_fields()
+    child_save_validator_state(shadow, light, path)
+    saved = msgpack.unpackb(open(path, "rb").read(), raw=False, strict_map_key=False)
+    assert saved.get("debeta_pool_ema") == tss._mp_norm(light["debeta_pool_ema"])
+
+
+def test_the_child_save_writes_every_key_main_save_writes():
+    """Key parity between the two writers of one file: main's build_validator_state and the scoring service's
+    child_save_validator_state, the de-beta block shared through build_debeta_state."""
+    import re
+    main = PERSISTENCE.read_text()
+    main = main[main.index("def build_validator_state("):]
+    main = main[:main.index("\ndef ", 1)]
+    child = SHADOW.read_text()
+    child = child[child.index("def child_save_validator_state("):]
+    child = child[:child.index("\ndef ", 1)]
+    keys = lambda src: set(re.findall(r'^\s+"(\w+)":', src, re.M))
+    assert keys(main) - keys(child) == set(), f"the child save lacks {sorted(keys(main) - keys(child))}"
 
 
 def test_main_and_child_saves_share_one_debeta_block():

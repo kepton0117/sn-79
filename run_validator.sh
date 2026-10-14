@@ -162,7 +162,12 @@ if [ "$PRESERVE_SIMULATOR" = "0" ]; then
 fi
 
 echo "Updating Validator"
-git pull
+case "${AUTO_UPDATE:-branch}" in
+    signed) python3 "$REPO_ROOT/taos/im/validator/signed_release.py" --repo "$REPO_ROOT" --apply \
+                || echo "WARNING: no verified release applied; starting on the current tree" ;;
+    branch) git pull ;;
+    *)      echo "AUTO_UPDATE=${AUTO_UPDATE}: not updating the tree" ;;
+esac
 git submodule sync
 git submodule update --init
 # THE LOCKFILE ON EVERY START, not only at install. A host that already had an older package kept it as
@@ -253,6 +258,7 @@ BENCHMARK_ARG=""
 
 VALIDATOR_CMD="python $(pwd)/validator.py \
   --netuid $NETUID \
+  --repo.auto_update ${AUTO_UPDATE:-branch} \
   --subtensor.chain_endpoint $ENDPOINT \
   --wallet.path $WALLET_PATH \
   --wallet.name $WALLET_NAME \

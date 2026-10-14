@@ -756,6 +756,7 @@ class Book(BaseModel):
     b: list[LevelInfo] = Field(alias="bids")
     a: list[LevelInfo] = Field(alias="asks")
     e: list[Order | TradeInfo | Cancellation] | None = Field(alias="events")
+    f: float | None = Field(alias="fundamental", default=None)
 
     @property
     def id(self) -> int:
@@ -776,6 +777,16 @@ class Book(BaseModel):
             int: The book's unique identifier.
         """
         return self.r
+
+    @property
+    def fundamental(self) -> float | None:
+        """
+        Get the book's fundamental price; exchange state updates carry none, so this is None.
+
+        Returns:
+            float | None: The fundamental price, or None.
+        """
+        return self.f
 
     @property
     def bids(self) -> list[LevelInfo]:
@@ -1483,6 +1494,11 @@ class LazyBook(Book):
         return self._raw.get("i")
 
     @property
+    def fundamental(self) -> float | None:
+        """The book's fundamental price, read from the raw payload; exchange state updates carry none."""
+        return self._raw.get("f")
+
+    @property
     def MTR(self) -> float | None:
         """The maker-taker ratio, read straight off the raw payload.
 
@@ -1538,7 +1554,8 @@ class LazyBook(Book):
             r=self._raw.get("r"),
             b=self.bids.parse(),
             a=self.asks.parse(),
-            e=self.events
+            e=self.events,
+            f=self._raw.get("f"),
         )
 
 

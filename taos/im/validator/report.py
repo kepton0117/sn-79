@@ -31,8 +31,8 @@ from taos.im.validator.ingest_payload import kappa_maps, debeta_maps, scoring_pa
 from prometheus_client import Counter, Gauge, Info, CollectorRegistry, generate_latest, CONTENT_TYPE_LATEST
 from prometheus_client.core import GaugeMetricFamily
 from taos.im.validator.exposition import Exposition, SNAPSHOT_ENABLED
-from fastapi import FastAPI
 from fastapi.responses import Response
+from taos.im.validator.http_surface import PerClientConcurrency, make_app, metrics_server_options
 import uvicorn
 import threading
 
@@ -182,14 +182,9 @@ class ReportingService:
             return True
         return (time.monotonic() - self._exposition_start) >= _EXPOSITION_WARMUP_MAX_SECONDS
 
-    def _start_metrics_server(self):
-        """
-        Start a FastAPI server exposing per-registry Prometheus metric endpoints.
-
-        Binds to `config.prometheus.port` on all interfaces. Runs in a daemon
-        thread so it shuts down automatically when the process exits.
-        """
-        app = FastAPI()
+    def _metrics_app(self):
+        """The metrics app: the combined /metrics and one path per registry family."""
+        app = make_app()
         # OFF UNLESS ASKED FOR. Compressing the exposition trades CPU on the scrape path against
         # transfer size, and whether that trade pays depends on how large the exposition is, how often
         # it is scraped and what sits between the two -- none of which match between a development box
@@ -202,6 +197,8 @@ class ReportingService:
             bt.logging.info(
                 f"Prometheus exposition will be gzipped at level {_METRICS_GZIP_LEVEL}"
             )
+        # Added last, so it is the outermost layer: a request past its address's bound is refused before any work.
+        app.add_middleware(PerClientConcurrency)
 
         def _warmup_response():
             # None => ready to serve; an empty 200 => still warming up. We return
@@ -220,7 +217,9 @@ class ReportingService:
                 if served is not None:
                     return served
             if name is None:
-                return b''.join([generate_latest(r) for r in self.registries.values()])
+                return b''.join(
+                    generate_latest(self.registries[n]) for n in self.exposition.main_registries() if n in self.registries
+                )
             return generate_latest(self.registries[name])
 
         def _endpoint(name=None):
@@ -231,7 +230,7 @@ class ReportingService:
 
         @app.get("/metrics")
         def all_metrics():
-            """All metrics combined (MVTRX_METRICS_MAIN=board leaves agent and trades to their own endpoints)"""
+            """The board registries combined; agent and trades are on their own endpoints unless MVTRX_METRICS_MAIN=all"""
             return _endpoint()
 
         @app.get("/metrics/validator")
@@ -269,13 +268,21 @@ class ReportingService:
             """GenTRX distributed-training metrics: pool allocation, per-miner EMA scores."""
             return _endpoint('gentrx')
 
+        return app
+
+    def _start_metrics_server(self):
+        """Serve the metrics app from a daemon thread, which ends with the process. The bind address and the port
+        come from metrics_server_options (http_surface); the per-address bound is the app's own middleware."""
+        app = self._metrics_app()
+        options = metrics_server_options(self.config)
+
         def run_server():
             """Serve the metrics endpoint until the process is stopped."""
-            uvicorn.run(app, host="0.0.0.0", port=self.config.prometheus.port, log_level="debug")
+            uvicorn.run(app, **metrics_server_options(self.config))
 
         self.metrics_server_thread = threading.Thread(target=run_server, daemon=True)
         self.metrics_server_thread.start()
-        bt.logging.success(f"Prometheus metrics server started on port {self.config.prometheus.port}")
+        bt.logging.success(f"Prometheus metrics server started on {options['host']}:{options['port']}")
     
     def _init_prometheus(self):
         """
@@ -705,6 +712,7 @@ class ReportingService:
         self.debeta_class_summary = {int(c): dict(v) for c, v in (data.get('debeta_class_summary') or {}).items()}
         self.debeta_class_details = {int(c): {int(u): dict(d) for u, d in (v or {}).items()}
                                      for c, v in (data.get('debeta_class_details') or {}).items()}
+        self.capture_floor_stats = {int(b): dict(v) for b, v in (data.get('capture_floor_stats') or {}).items()}
         self.scoring_shadow_health = data.get('scoring_shadow')
         self.history_clock = data.get('history_clock')
 
@@ -959,6 +967,17 @@ def publish_agent_class_gauges(self, updates, wallet_addr, netuid, simid):
                 if _v is None:
                     continue
                 updates.append((coll, float(_v), wallet_addr, netuid, simid, label, int(_uid), _gauge))
+
+
+def publish_capture_floor_gauges(self, updates, wallet_addr, netuid, simid):
+    """book_gauges capture_floor and capture_dust_share: the dust floor's level per book and the share of the live
+    capture window's prints it excludes, the quantity the board monitor flags and the acceptance rows assert."""
+    coll = getattr(self, 'prometheus_book_gauges', None)
+    for _book, _st in (getattr(self, 'capture_floor_stats', None) or {}).items():
+        for _key, _gauge in (("floor", "capture_floor"), ("dust_share", "capture_dust_share")):
+            _v = (_st or {}).get(_key)
+            if _v is not None:
+                updates.append((coll, float(_v), wallet_addr, netuid, simid, int(_book), 0, _gauge))
 
 
 def neuron_info_labels(self) -> dict:
@@ -1824,6 +1843,7 @@ async def report(self: ReportingService) -> None:
                         wallet_addr, netuid, simid, bookId, 0, "dynamic_taker_rate"))
                 updates.append((book_gauges, DISMTR,
                         wallet_addr, netuid, simid, bookId, 0, "maker_taker_ratio"))
+        publish_capture_floor_gauges(self, updates, wallet_addr, netuid, simid)
         bt.logging.debug(f"Book metrics collected ({time.time()-book_start:.4f}s).")
 
         if has_new_trades:
@@ -2372,16 +2392,17 @@ async def report(self: ReportingService) -> None:
     finally:
         self.shared_state_reporting = False
         
-if __name__ == '__main__':
+def build_parser() -> argparse.ArgumentParser:
+    """The reporting child's own argument parser: the validator forwards what the child reads."""
     parser = argparse.ArgumentParser()
     bt.Wallet.add_args(parser)
     bt.Subtensor.add_args(parser)
     bt.logging.add_args(parser)
-    bt.logging.set_info()
-    
+
     parser.add_argument('--netuid', type=int, default=1)
     parser.add_argument('--logging.level', type=str, default="info")
     parser.add_argument('--prometheus.port', type=int, default=9001)
+    parser.add_argument('--prometheus.host', type=str, default='0.0.0.0')
     parser.add_argument('--prometheus.level', type=str, default='INFO')
     parser.add_argument('--cpu-cores', type=str, default=None)
     parser.add_argument('--ipc-prefix', type=str, default='validator',
@@ -2394,7 +2415,12 @@ if __name__ == '__main__':
                         help='Publish the per-book de-beta gauges; forwarded by the validator, `false` turns them off')
     parser.add_argument('--neuron.observe', type=_flag, nargs='?', const=True, default=False,
                         help='Observe mode; forwarded by the validator so the child does not have to infer it per payload')
+    return parser
 
+
+if __name__ == '__main__':
+    bt.logging.set_info()
+    parser = build_parser()
     config = bt.Config(parser)
     bt.logging(config=config)
 

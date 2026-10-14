@@ -19,8 +19,7 @@ taosim::matching::DynamicFeePolicy::DynamicFeePolicy(const DFPolicyDesc &desc)
       m_historySlots{desc.historySlots},
       m_makerFee{desc.makerFee},
       m_takerFee{desc.takerFee},
-      m_feeMath{desc.maxMakerRate, desc.maxTakerRate, desc.targetMTR, desc.shapeMakerFee, desc.shapeMakerRebate},
-      m_lastUpdate{0}
+      m_feeMath{desc.maxMakerRate, desc.maxTakerRate, desc.targetMTR, desc.shapeMakerFee, desc.shapeMakerRebate}
 {}
 
 //-------------------------------------------------------------------------
@@ -95,65 +94,40 @@ void DynamicFeePolicy::updateHistory(
         ));
     }
 
-    auto& bookVolumes = m_totalVolumes[bookId];
-    if (m_lastUpdate != timestamp && m_lastUpdate != 0){
-        m_totalVolumesPrev[bookId] = bookVolumes;
+    // Each book keeps its own history: a slot per distinct time at which that book traded, its own running total
+    // over those slots, the total as it stood when its newest slot opened, and its own last-update time.
+    auto& slots = m_volumes.try_emplace(bookId, m_historySlots).first->second;
+    auto& total = m_totalVolumes[bookId];
+    const auto last = m_lastUpdate.find(bookId);
+    if (last == m_lastUpdate.end() || last->second != timestamp || slots.empty()) {
+        if (last != m_lastUpdate.end()) {
+            m_totalVolumesPrev[bookId] = total;
+        }
+        if (slots.full()) {
+            const auto& oldest = slots.front();
+            total.aggressive -= oldest.aggressive;
+            total.passive -= oldest.passive;
+        }
+        slots.push_back(Volumes{});
     }
-
-    if (isAggressive.value()){
-        bookVolumes.aggressive += volume;
+    if (isAggressive.value()) {
+        slots.back().aggressive += volume;
+        total.aggressive += volume;
     } else {
-        bookVolumes.passive += volume;
+        slots.back().passive += volume;
+        total.passive += volume;
     }
-
-    auto it = m_volumes.find(bookId);
-    if (it != m_volumes.end()) {
-        if (it->second.full() && m_lastUpdate != timestamp) {
-            auto& oldest = it->second.front();
-            bookVolumes.aggressive -= oldest.aggressive;
-            bookVolumes.passive -= oldest.passive;
-        }
-        if (isAggressive.value()){
-            if (m_lastUpdate == timestamp){
-                it->second.back().aggressive += volume;
-            } else {
-                it->second.push_back(Volumes{volume, 0_dec});
-            }
-        } else {
-            if (m_lastUpdate == timestamp){
-                it->second.back().passive += volume;
-            } else {
-                it->second.push_back(Volumes{0_dec, volume});
-            }
-        }
-    } else {
-        m_volumes[bookId] = boost::circular_buffer<Volumes>(m_historySlots);
-        if (isAggressive.value()){
-            if (m_lastUpdate == timestamp){
-                m_volumes[bookId].back().aggressive += volume;
-            } else {
-                m_volumes[bookId].push_back(Volumes{volume, 0_dec});
-            }
-        } else {
-            if (m_lastUpdate == timestamp){
-                m_volumes[bookId].back().passive += volume;
-            } else {
-                m_volumes[bookId].push_back(Volumes{0_dec, volume});
-            }
-        }
-        
-    }
-
-    m_lastUpdate = timestamp;
+    m_lastUpdate[bookId] = timestamp;
 }
 
 //-------------------------------------------------------------------------
 
 void DynamicFeePolicy::resetHistory() noexcept
 {
-    for (auto& [bookId, vol_hist]: m_volumes) {
-        vol_hist.clear();
-    }
+    m_volumes.clear();
+    m_totalVolumes.clear();
+    m_totalVolumesPrev.clear();
+    m_lastUpdate.clear();
 }
 
 //-------------------------------------------------------------------------

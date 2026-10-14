@@ -22,6 +22,7 @@ Per-UID reward computation: Kappa-3, P&L, and GenTRX scores combined into
 two-pool (trading + training) reward tensors.
 """
 
+import collections
 import time
 import torch
 import random
@@ -1324,10 +1325,29 @@ def class_weights_from(spec) -> list:
     return [w / tot for w in weights]
 
 
+CLASS_WEIGHTS_BY_BOOKS = "books"
+
+
+def _by_books(spec) -> bool:
+    return isinstance(spec, str) and spec.strip().lower() == CLASS_WEIGHTS_BY_BOOKS
+
+
+def class_weights_published(spec):
+    """The class dial as the validator publishes it: ``books`` as itself, explicit weights normalised."""
+    return CLASS_WEIGHTS_BY_BOOKS if _by_books(spec) else class_weights_from(spec)
+
+
 def class_weights_for_layout(spec, cmap: dict) -> list:
     """The class dial as the layout can use it: the normalised weights when the layout has as many classes as the
-    dial has entries, else the flat rule (empty). A single market has no class map and no dial; a default that fits
-    the production two-background wrapper must not index a class on a layout with another count."""
+    dial has entries, else the flat rule (empty). ``books`` weighs each class by its share of the layout's books
+    (96 and 32 give 0.75 and 0.25). A single market has no class map and no dial; a default that fits the
+    production two-background wrapper must not index a class on a layout with another count."""
+    if _by_books(spec):
+        counts = collections.Counter((cmap or {}).values())
+        if len(counts) < 2:
+            return []
+        n = sum(counts.values())
+        return [counts.get(c, 0) / n for c in range(max(counts) + 1)]
     weights = class_weights_from(spec)
     n_classes = len(set((cmap or {}).values()))
     if len(weights) < 2 or not cmap:
@@ -1457,8 +1477,30 @@ def skill_bar(self) -> int:
                                    getattr(dcfg, 'skill_min_books_share', SKILL_MIN_BOOKS_SHARE), n)
 
 
+def smoothed_skill_share(dcfg, detail, all_uids, class_shares, pool_ema, deregs, ts, halflife, n_snap, last_snap,
+                         scorable):
+    """The skill half's share after the track-record EMA, under scoring.debeta.skill_share_ema; None when the dial
+    is off or there is no EMA, which leaves pool_pay_vector computing the round's share as before.
+
+    The making term and share already pass apply_track_record_ema before allocation, so a later bad window costs
+    standing gradually rather than all at once; this gives the skill half the same schedule (a copy of the
+    pre-round count map and timestamp, as the making vectors use), carried under pool_ema["skill"]. ONE
+    implementation for main (get_rewards) and the scoring child (shadow_score)."""
+    if not int((dcfg or {}).get('skill_share_ema', 0) or 0) or not halflife or halflife <= 0:
+        return None
+    if class_shares:
+        share = {uid: float(class_shares[1].get(uid, 0.0)) for uid in all_uids}
+    else:
+        share = skill_pool_share(detail or {}, all_uids, int((dcfg or {}).get('skill_min_books', 4) or 4))
+    st = dict(pool_ema.get("skill") or {})
+    smoothed, _ = apply_track_record_ema(dict(share), all_uids, deregs, ts, halflife, st, dict(n_snap), last_snap,
+                                         scorable)
+    pool_ema["skill"] = st
+    return smoothed
+
+
 def pool_pay_vector(pool_mode, pool, detail, all_uids, ladder_scores, trading_scores, making_share, config,
-                    skill_min_books, class_shares=None) -> torch.FloatTensor:
+                    skill_min_books, class_shares=None, skill_share=None) -> torch.FloatTensor:
     """The trading emission vector for a making_pool setting. ONE implementation for main (get_rewards) and the
     scoring child (scoring_shadow.shadow_score): the child had its own copy that knew only 'proportional', so
     under 'proportional_both' it paid the Pareto ladder and main adopted it after every restart.
@@ -1480,6 +1522,8 @@ def pool_pay_vector(pool_mode, pool, detail, all_uids, ladder_scores, trading_sc
     if pool_mode in ("proportional", "proportional_blended", "proportional_both") and pool > 0.0:
         if pool_mode != "proportional_both":
             skill_share = None
+        elif skill_share is not None:
+            pass   # already smoothed by the caller (smoothed_skill_share)
         elif class_shares:
             skill_share = {uid: float(class_shares[1].get(uid, 0.0)) for uid in all_uids}
         else:
@@ -1835,7 +1879,9 @@ def build_scoring_config(self: 'Validator') -> Dict:
                 'skill_min_books_share': float(
                     getattr(getattr(self.config.scoring, 'debeta', None), 'skill_min_books_share', SKILL_MIN_BOOKS_SHARE)
                     or SKILL_MIN_BOOKS_SHARE),
-                'class_weights': class_weights_from(
+                'skill_share_ema': int(
+                    getattr(getattr(self.config.scoring, 'debeta', None), 'skill_share_ema', 0) or 0),
+                'class_weights': class_weights_published(
                     getattr(getattr(self.config.scoring, 'debeta', None), 'class_weights', None)),
             },
             'gentrx': {
@@ -2166,10 +2212,17 @@ def get_rewards(self: 'Validator', pinned_inputs: Dict = None) -> Tuple[torch.Fl
         if _kv is not None:
             _kv['making_share'] = (float(_make_share[uid]) / _share_tot) if _share_tot > 0 else 0.0
             _kv['ladder_input'] = float(_ladder_scores[uid])
+    _skill_sm = None
+    if _ema_hl and _ema_hl > 0 and _pool > 0.0 and _pool_mode == "proportional_both":
+        _skill_sm = smoothed_skill_share(_dcfg, validator_data.get('debeta_detail') or {}, all_uids, _class_shares,
+                                         _pool_ema, validator_data['deregistered_uids'], _ts, _ema_hl, _n_snap,
+                                         _last_snap, _scorable)
+        if not (_pin and 'trading_ema' in _pin):
+            self._debeta_pool_ema = _pool_ema
     distributed_trading = pool_pay_vector(
         _pool_mode, _pool, validator_data.get('debeta_detail') or {}, all_uids, _ladder_scores,
         trading_uid_scores, _make_share, validator_data['config'], int(_dcfg.get('skill_min_books', 4) or 4),
-        class_shares=_class_shares,
+        class_shares=_class_shares, skill_share=_skill_sm,
     ).to(self.device)
     _prof_pareto = time.perf_counter()
     # INFO (not debug): this is one line per scoring round and must land in the

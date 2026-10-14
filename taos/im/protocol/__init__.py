@@ -16,7 +16,7 @@ from taos.im.protocol.events import *
 from taos.im.protocol.models import Book, Account, Balance, Order
 from taos.im.protocol.response import FinanceAgentResponse
 from taos.im.protocol.gentrx import GenTRXAssignment
-from taos.im.utils.compress import compress, decompress
+from taos.im.utils.compress import compress, decompress, read_reply
 
 FinanceNotice = Annotated[
     Union[SimulationStartEvent | LimitOrderPlacementEvent | MarketOrderPlacementEvent | OrderCancellationsEvent | ClosePositionsEvent | TradeEvent | ResetAgentsEvent | SimulationEndEvent],
@@ -392,4 +392,8 @@ class MarketSimulationStateUpdate(SimulationStateUpdate):
         except Exception as ex:
             bt.logging.error(f"Failed to decompress {self.name} synapse data! {ex}\n{traceback.format_exc()}")
             return None
+
+    def decompress_reply(self, *, version: int, max_bytes: int, max_instructions: int) -> str | None:
+        """Read a miner's reply under the bounds of utils.compress.read_reply; None when read, else the reason."""
+        return read_reply(self, version=version, max_bytes=max_bytes, max_instructions=max_instructions)
 

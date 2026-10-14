@@ -189,6 +189,150 @@ def centered_mid(prices, W):
     return mid
 
 
+# A print below this fraction of its window's typical background-sided size takes no part in the capture mid;
+# a print of real size still shapes it.
+DUST_FLOOR_FRAC = 0.1
+
+
+def _background_sided(t):
+    ma, ta = t.get("Ma", -1), t.get("Ta", -1)
+    return (ma is None or ma < 0) or (ta is None or ta < 0)
+
+
+def _typical_size(sizes, min_size=0.0):
+    """The median size of the given prints among those at or above the book's minimum order size. A print below the
+    minimum can only be the residual of a partial fill, so residual dust cannot vote the reference down; a flood of
+    minimum-size prints can pull the median no lower than that minimum, which keeps the floor above any residual."""
+    voters = sorted(s for s in sizes if s > 0.0 and s >= min_size)
+    if not voters:
+        return 0.0
+    return voters[len(voters) // 2]
+
+
+FLOOR_REFERENCE_PRINTS = 256   # the trailing voters a book's dust floor is read from
+
+
+def _push_floor_reference(sorted_sizes, fifo, size, bg, min_size, n=FLOOR_REFERENCE_PRINTS):
+    """Admit a print to a book's floor reference, the trailing n background-sided prints at or above the minimum
+    order size, kept as two plain lists (sorted, and in arrival order for eviction) so the state snapshots and
+    persists as data; return the floor as of this print. Fixed per print on arrival, so the batch and the live path
+    read the same floor for the same print whatever the batching."""
+    if bg and size > 0.0 and size >= min_size:
+        bisect.insort(sorted_sizes, size)
+        fifo.append(size)
+        if len(fifo) > n:
+            old = fifo.pop(0)
+            del sorted_sizes[bisect.bisect_left(sorted_sizes, old)]
+    return DUST_FLOOR_FRAC * sorted_sizes[len(sorted_sizes) // 2] if sorted_sizes else 0.0
+
+
+def running_floors(sizes, bg, min_size=0.0):
+    """Each print's dust floor in sequence: DUST_FLOOR_FRAC of the median size of the trailing qualifying
+    background-sided prints up to and including it (a book that has seen none yet has floor 0: every print takes
+    part)."""
+    srt, fifo, ms = [], [], float(min_size or 0.0)
+    return [_push_floor_reference(srt, fifo, float(s), bool(b), ms) for s, b in zip(sizes, bg)]
+
+
+# How far, in multiples of W, a fill's capture window reaches past prints that do not vote for the W prints a side that
+# do. Prints that take no part in the mid must not take a voter's place in the window either: otherwise a fill wrapped
+# in them becomes its own reference and books nothing.
+CAPTURE_REACH_WINDOWS = 8
+
+
+CAPTURE_MARKET_MIN = 5   # with market votes on: the fewest background-sided votes a side a capture mid reaches for
+
+
+def _clears(size, floor):
+    return size > 0.0 and size >= floor
+
+
+def _floored_mean_at(prices, sizes, floors, bgs, i, W, reach, market=False):
+    """The capture mid of print i, the unweighted mean of its voters. The span is print i and the W nearest prints on
+    each side that clear its dust floor, looking at most `reach` prints a side, so prints below the floor neither vote
+    nor take a voter's place. With `market` (scoring.debeta.capture_market_votes) only the background-sided prints of
+    that span vote, and a side holding fewer than CAPTURE_MARKET_MIN of them reaches on, within the reach, until it
+    does: a print between two miners then moves no one's mid at any size. None when nothing votes."""
+    n = len(prices)
+    floor = floors[i]
+
+    def votes(j):
+        return _clears(sizes[j], floor) and (not market or bgs[j])
+    tot, cnt = (prices[i], 1) if votes(i) else (0.0, 0)
+    need = CAPTURE_MARKET_MIN if market else 0
+    for step in (-1, 1):
+        span = mkt = 0
+        j, stop = i + step, (max(-1, i - reach - 1) if step < 0 else min(n, i + reach + 1))
+        while j != stop and (span < W or mkt < need):
+            if _clears(sizes[j], floor):
+                span += 1
+                if not market or bgs[j]:
+                    mkt += 1
+                    tot += prices[j]
+                    cnt += 1
+            j += step
+    return tot / cnt if cnt else None
+
+
+def centered_mid_floored(prices, sizes, floors, W, bgs=None, reach=None, market=False):
+    """The capture mid at each print: the print itself and the W nearest prints on each side that clear the print's own
+    dust floor (running_floors), reaching past prints below it up to `reach` prints a side (CAPTURE_REACH_WINDOWS x W
+    by default); unweighted like centered_mid, and the plain 2W+1 window when nothing in it is below the floor. With
+    `market` only background-sided prints (`bgs`, _background_sided) vote (see _floored_mean_at). None where nothing
+    in reach votes (no reference)."""
+    r = int(reach) if reach is not None else CAPTURE_REACH_WINDOWS * W
+    flags = bgs if bgs is not None else [True] * len(prices)
+    return [_floored_mean_at(prices, sizes, floors, flags, i, W, r, market) for i in range(len(prices))]
+
+
+def _floored_mid_at(st, idx, W):
+    """The capture mid of the live window's print idx, over the prints the window still holds."""
+    return _floored_mean_at(st["prices"], st["sizes"], st["floors"], st["bgs"], idx - st["base"], W,
+                            CAPTURE_REACH_WINDOWS * W, bool(st.get("market")))
+
+
+def _forward_complete(st, idx, W):
+    """Whether print idx's forward side is settled: W later prints clear its floor (and, with market votes on,
+    CAPTURE_MARKET_MIN of them are background-sided), or its whole reach has arrived."""
+    reach = CAPTURE_REACH_WINDOWS * W
+    if st["n"] - 1 >= idx + reach:
+        return True
+    sizes, floors, bgs, fi = st["sizes"], st["floors"], st["bgs"], idx - st["base"]
+    need = CAPTURE_MARKET_MIN if st.get("market") else 0
+    floor, span, mkt = floors[fi], 0, 0
+    for j in range(fi + 1, len(sizes)):
+        if _clears(sizes[j], floor):
+            span += 1
+            mkt += bool(bgs[j])
+            if span >= W and mkt >= need:
+                return True
+    return False
+
+
+def capture_floor_stats(mid_state):
+    """The dust floor's footprint per book, read off the live capture window the scorer keeps: the share of the
+    window's prints that fall below their floor (what the floor excludes), the floor's current level and the
+    window's print count. The reporting payload ships it,
+    the report publishes it as book_gauges capture_dust_share and capture_floor, the board monitor flags a book
+    over its share threshold and the injected acceptance rows assert the same share under the same dust."""
+    out = {}
+    for book, st in (mid_state or {}).items():
+        sizes, floors = (st or {}).get("sizes") or [], (st or {}).get("floors") or []
+        # read from W prints before the oldest pending fill, not over the backward reach the window also keeps, so
+        # the share means what the board monitor's flag was set on
+        pend, rpend = (st or {}).get("pend") or [], (st or {}).get("rpend") or []
+        end = int((st or {}).get("n", len(sizes)))
+        oldest = min((pend[0][0] if pend else end), (rpend[0][0] if rpend else end))
+        start = max(0, oldest - int((st or {}).get("W", 15)) - int((st or {}).get("base", 0)))
+        sizes, floors = sizes[start:], floors[start:]
+        n = min(len(sizes), len(floors))
+        if n == 0:
+            continue
+        dust = sum(1 for s, f in zip(sizes, floors) if s < f)
+        out[int(book)] = {"floor": float(floors[-1]), "dust_share": dust / n, "n": n}
+    return out
+
+
 def caps_from_fills(fills):
     """fills: iterable of (buyer, seller, price, mid, volume). Returns {agent: [buy_cap, sell_cap]}.
     Per-trade buyer capture (mid-price)*v + seller capture (price-mid)*v == 0 (zero-sum: no making
@@ -209,8 +353,7 @@ def _uid(x):
 
 
 def _mark_weight(t):
-    """A print's weight in the realized mark: its size when the background market is on at least one side, else 0,
-    so prints arranged between miners cannot move the price a fill is marked against."""
+    """A print's weight in the realized mark: its size when the background market is on at least one side, else 0."""
     ma, ta = t.get("Ma", -1), t.get("Ta", -1)
     bg = (ma is None or ma < 0) or (ta is None or ta < 0)
     return float(t.get("q") or 0.0) if bg else 0.0
@@ -219,9 +362,7 @@ def _mark_weight(t):
 def _weighted_mark(prices, weights):
     """Size-weighted average over the background-sided prints of a window; None when the window holds none.
 
-    There is no plain-average fallback: a window filled with prints arranged between miners would otherwise set
-    the mark a third uid's fill is graded against (reported 7 October 2026: 31 dust prints straddling one fill's
-    horizon took its uid's quality from 0 to 1), and 0.26% of real windows reach an empty window with no attack."""
+    There is no plain-average fallback: a window without a background-sided print sets no mark."""
     tw = sum(weights)
     if tw > 0:
         return sum(p * w for p, w in zip(prices, weights)) / tw
@@ -255,9 +396,8 @@ def centered_mark(prices, weights, W, reach=None):
 
 def _capped_mark(t, mark, cap_mid):
     """The mark that books the maker's realized spread on this fill clamped to plus or minus its captured spread, so
-    one fill moves a uid's markout quality by at most its own weight (the quality sums over fills before the ratio,
-    and one pumped fill lifted it from 0 to 1 on the 7 October test tape). A fill with no mark in reach books nothing:
-    its mark is its own price."""
+    one fill moves a uid's markout quality by at most its own weight (the quality sums over fills before the ratio).
+    A fill with no mark in reach books nothing: its mark is its own price."""
     p, q = float(t["p"]), float(t["q"])
     if mark is None or q <= 0.0:
         return p
@@ -268,11 +408,14 @@ def _capped_mark(t, mark, cap_mid):
     return p + (cap if realized_buy > 0 else -cap) / q
 
 
-def _attribute_capture(buy_sums, sell_sums, book_id, t, mid, buy_hist, sell_hist, ts, maker_only=False):
+def _attribute_capture(buy_sums, sell_sums, book_id, t, mid, buy_hist, sell_hist, ts, maker_only=False,
+                       fee_weight=0.0):
     """Book one fill's capture against `mid`: buyer gets (mid-price)*q, seller the negation
     (zero-sum per fill under ANY mid, so a degraded mid can shift capture between counterparties
-    but never mint it)."""
+    but never mint it). The maker's side is booked net of `fee_weight` times the maker fee it paid (Mf; a rebate is a
+    negative fee and adds): the spread a maker earns after the venue's charge. The taker's side is unchanged."""
     buy_cap = (mid - float(t["p"])) * float(t["q"])
+    fee = fee_weight * float(t.get("Mf") or 0.0) if fee_weight else 0.0
     ma = t.get("Ma", -1)
     ta = t.get("Ta", -1)
     buyer, seller = (ta, ma) if int(t["s"]) == 0 else (ma, ta)
@@ -284,13 +427,15 @@ def _attribute_capture(buy_sums, sell_sums, book_id, t, mid, buy_hist, sell_hist
         if seller != ma:
             seller = None
     if buyer is not None and buyer >= 0:
-        buy_sums[buyer][book_id] = buy_sums[buyer].get(book_id, 0.0) + buy_cap
+        v = buy_cap - (fee if buyer == ma else 0.0)
+        buy_sums[buyer][book_id] = buy_sums[buyer].get(book_id, 0.0) + v
         if buy_hist is not None:
-            _hadd2(buy_hist, buyer, book_id, ts, buy_cap)
+            _hadd2(buy_hist, buyer, book_id, ts, v)
     if seller is not None and seller >= 0:
-        sell_sums[seller][book_id] = sell_sums[seller].get(book_id, 0.0) - buy_cap
+        v = -buy_cap - (fee if seller == ma else 0.0)
+        sell_sums[seller][book_id] = sell_sums[seller].get(book_id, 0.0) + v
         if sell_hist is not None:
-            _hadd2(sell_hist, seller, book_id, ts, -buy_cap)
+            _hadd2(sell_hist, seller, book_id, ts, v)
 
 
 CAPTURE_FLUSH_NS = 60_000_000_000  # force-finalize a pending fill after 60 sim-s without W forward prints
@@ -311,35 +456,32 @@ def _print_time(t, ts):
 
 
 def _finalize_ready(st, book_id, buy_sums, sell_sums, W, buy_hist, sell_hist, ts,
-                    now_ns, flush_ns, force=False):
-    """Finalize every pending fill whose forward window is complete (W prints arrived after it),
-    stale (older than flush_ns of sim time, so a quiet book cannot hold capture hostage), or
+                    now_ns, flush_ns, force=False, fee_weight=0.0):
+    """Finalize every pending fill whose forward window is complete (W prints that clear its floor arrived after it,
+    or its whole reach did), stale (older than flush_ns of sim time, so a quiet book cannot hold capture hostage), or
     force-flushed. The window truncates only at genuine stream edges, never at batch edges."""
-    prices, pend = st["prices"], st["pend"]
-    base, n = st["base"], st["n"]
+    pend = st["pend"]
     while pend:
         idx, arrive_ns, t = pend[0]
-        if not (force or n - 1 >= idx + W
+        if not (force or _forward_complete(st, idx, W)
                 or (now_ns is not None and arrive_ns is not None and now_ns - arrive_ns >= flush_ns)):
             break
-        lo = max(0, idx - W) - base
-        hi = min(n, idx + W + 1) - base
-        window = prices[lo:hi]
-        _attribute_capture(buy_sums, sell_sums, book_id, t, sum(window) / len(window),
-                           buy_hist, sell_hist, ts)
+        mid = _floored_mid_at(st, idx, W)
+        _attribute_capture(buy_sums, sell_sums, book_id, t, mid if mid is not None else float(t["p"]),
+                           buy_hist, sell_hist, ts, fee_weight=fee_weight)
         pend.pop(0)
     _trim_window(st, W)
 
 
 def _trim_window(st, W):
-    """Drop the prints no pending fill can still need: everything before the oldest pending fill's own window,
-    on either queue (capture's `pend`, realized's `rpend`). With no realized queue the bound is the old one, at
-    most 2W+1 prices; with one, the horizon's prints more."""
+    """Drop the prints no pending fill can still need: everything before the oldest pending fill's backward reach,
+    on either queue (capture's `pend`, realized's `rpend`). With no realized queue the window holds at most two
+    reaches and the fill; with one, the horizon's prints more."""
     prices, pend = st["prices"], st["pend"]
     rpend = st.get("rpend") or []
     base, n = st["base"], st["n"]
     oldest = min((pend[0][0] if pend else n), (rpend[0][0] if rpend else n))
-    new_base = max(base, oldest - W)
+    new_base = max(base, oldest - CAPTURE_REACH_WINDOWS * W)
     if new_base > base:
         del prices[:new_base - base]
         times = st.get("times")
@@ -348,11 +490,15 @@ def _trim_window(st, W):
         wts = st.get("wts")
         if wts is not None:
             del wts[:new_base - base]
+        for key in ("sizes", "floors", "bgs"):
+            lst = st.get(key)
+            if lst is not None:
+                del lst[:new_base - base]
         st["base"] = new_base
 
 
 def _finalize_realized_ready(st, book_id, buy_sums, sell_sums, W, buy_hist, sell_hist, ts,
-                             now_ns, horizon_ns, flush_ns, force=False):
+                             now_ns, horizon_ns, flush_ns, force=False, fee_weight=0.0):
     """Realized spread (2 October 2026): release every pending fill whose print stream has reached the fill's time
     plus the horizon with a full forward window after that print, or that has waited horizon + flush_ns of sim
     time on a quiet book, or everything when forced. The fill is booked against the centered window around the
@@ -367,7 +513,8 @@ def _finalize_realized_ready(st, book_id, buy_sums, sell_sums, W, buy_hist, sell
             k = bisect.bisect_left(times, arrive_ns + horizon_ns, max(0, idx - base))
             if k < len(times):
                 j = k + base
-        ready = (force or (j is not None and n - 1 >= j + W)
+        # the fill's capture mid bounds its realized spread below, so its capture window must be settled too
+        ready = (force or (j is not None and n - 1 >= j + W and _forward_complete(st, idx, W))
                  or (now_ns is not None and arrive_ns is not None and now_ns - arrive_ns >= horizon_ns + flush_ns))
         if not ready:
             break
@@ -376,11 +523,11 @@ def _finalize_realized_ready(st, book_id, buy_sums, sell_sums, W, buy_hist, sell
         wts = st.get("wts") or [0.0] * len(prices)
         mark = _mark_near(prices, wts, j - base, W, MARK_REACH_WINDOWS * W)
         # the fill's own centered window, the captured basis's mid, bounds how much realized spread it can book
-        fi = max(0, idx - base)
-        cap_lo, cap_hi = max(0, fi - W), min(len(prices), fi + W + 1)
-        cap_mid = sum(prices[cap_lo:cap_hi]) / max(1, cap_hi - cap_lo)
+        cap_mid = _floored_mid_at(st, max(base, idx), W)
+        if cap_mid is None:
+            cap_mid = float(t["p"])
         _attribute_capture(buy_sums, sell_sums, book_id, t, _capped_mark(t, mark, cap_mid),
-                           buy_hist, sell_hist, ts, maker_only=True)
+                           buy_hist, sell_hist, ts, maker_only=True, fee_weight=fee_weight)
         rpend.pop(0)
 
 
@@ -388,20 +535,20 @@ def accumulate_book_capture(buy_sums, sell_sums, book_id, trades, W, *,
                             buy_hist=None, sell_hist=None, ts=None,
                             mid_state=None, flush_ns=CAPTURE_FLUSH_NS,
                             real_buy_sums=None, real_sell_sums=None, real_buy_hist=None, real_sell_hist=None,
-                            horizon_ns=None, now_ns=None):
+                            horizon_ns=None, now_ns=None, min_size=0.0, fee_weight=0.0, market_votes=False):
     """Accumulate per-uid two-sided spread capture for ONE book's ordered trade batch into
     buy_sums / sell_sums ({uid: {book: cap}}), in place. Each `trade` is dict-like with keys
     p (price), q (quantity), s (side), Ma (maker uid), Ta (taker uid). side==0 => taker buys /
     maker sells; side==1 => maker buys / taker sells. buyer captures (mid-price)*q, seller
     (price-mid)*q, vs a non-lagging centered mid. Self-trades (Ma==Ta) earn nothing but their
-    prints still shape the mid (first-line wash guard; cross-uid rings are netted by P11).
+    prints still shape the mid unless market_votes is on (first-line wash guard; cross-uid rings are netted by P11).
 
     mid_state=None (offline callers passing a whole run as one batch): the centered mid is computed
     over THIS batch, truncating at its edges. At live print density that truncation is the rule,
     not the exception (on a live board: median 4 prints per state update,
     90.9% of batches degrade to the plain batch mean, 12.8% of prints see a full window), so live
     callers pass mid_state ({book: st}) to carry the print window ACROSS batches: each fill is held
-    (bounded: at most W pending fills and 2W+1 prices per book) until W forward prints arrive, then
+    (bounded: the prints of two capture reaches per book) until W forward prints clear its floor, then
     booked against its full centered window at the finalizing call's ts. A fill with no W forward
     prints inside flush_ns of sim time finalizes with a truncated forward side, so the lag is
     bounded and a quiet book still settles. Batch shape then cannot move capture: only the print
@@ -420,11 +567,17 @@ def accumulate_book_capture(buy_sums, sell_sums, book_id, trades, W, *,
     _h = int(horizon_ns) if horizon_ns else REALIZED_HORIZON_NS_DEFAULT
     if mid_state is None:
         prices = [float(t["p"]) for t in trades]
-        mids = centered_mid(prices, W)
+        # a fill in a window where nothing clears the floor has no reference and is graded against its own price,
+        # booking nothing
+        sizes = [float(t.get("q") or 0.0) for t in trades]
+        bgs = [_background_sided(t) for t in trades]
+        floors = running_floors(sizes, bgs, float(min_size or 0.0))
+        mids = [m if m is not None else p
+                for m, p in zip(centered_mid_floored(prices, sizes, floors, W, bgs, market=market_votes), prices)]
         for t, mid in zip(trades, mids):
             if t.get("Ma", -1) == t.get("Ta", -1):
                 continue
-            _attribute_capture(buy_sums, sell_sums, book_id, t, mid, buy_hist, sell_hist, ts)
+            _attribute_capture(buy_sums, sell_sums, book_id, t, mid, buy_hist, sell_hist, ts, fee_weight=fee_weight)
         if real_buy_sums is not None:
             times = [_print_time(t, ts if ts is not None else 0) for t in trades]
             marks = centered_mark(prices, [_mark_weight(t) for t in trades], W)
@@ -433,7 +586,7 @@ def accumulate_book_capture(buy_sums, sell_sums, book_id, trades, W, *,
                     continue
                 k = min(len(times) - 1, bisect.bisect_left(times, times[i] + _h))
                 _attribute_capture(real_buy_sums, real_sell_sums, book_id, t, _capped_mark(t, marks[k], mids[i]),
-                                   real_buy_hist, real_sell_hist, ts, maker_only=True)
+                                   real_buy_hist, real_sell_hist, ts, maker_only=True, fee_weight=fee_weight)
         return
     st = mid_state.setdefault(book_id, {"prices": [], "pend": [], "base": 0, "n": 0})
     st.setdefault("rpend", [])
@@ -445,6 +598,19 @@ def accumulate_book_capture(buy_sums, sell_sums, book_id, trades, W, *,
     if len(wts) < len(st["prices"]):
         # carried from before the weighted mark: those prints count as unweighted until they leave the window
         wts[:0] = [0.0] * (len(st["prices"]) - len(wts))
+    sizes, floors = st.setdefault("sizes", []), st.setdefault("floors", [])
+    if len(sizes) < len(st["prices"]):
+        # prints persisted without a size or a floor take part unconditionally until they leave the window
+        sizes[:0] = [float("inf")] * (len(st["prices"]) - len(sizes))
+        floors[:0] = [0.0] * (len(st["prices"]) - len(floors))
+    bgs = st.setdefault("bgs", [])
+    if len(bgs) < len(st["prices"]):
+        # prints persisted without their vote flag vote, as they did before the flag existed, until they leave
+        bgs[:0] = [True] * (len(st["prices"]) - len(bgs))
+    ref_sorted, ref_fifo = st.setdefault("ref_sorted", []), st.setdefault("ref_fifo", [])
+    st["min_size"] = float(min_size or 0.0)   # the book's minimum order size, the reference's voting bar
+    st["W"] = int(W)
+    st["market"] = bool(market_votes)   # scoring.debeta.capture_market_votes, read by _floored_mid_at and the readiness
     # two clocks: `ts` (sampled) keys the windowed histories; the prints' own times and `now` (the update's time)
     # measure the horizon and the flush grace, so a fill matures when the market has moved on, not when a bucket ends
     _now = int(now_ns) if now_ns is not None else ts
@@ -453,6 +619,9 @@ def accumulate_book_capture(buy_sums, sell_sums, book_id, trades, W, *,
         pt = _print_time(t, ts)
         times.append(pt)
         wts.append(_mark_weight(t))
+        sizes.append(float(t.get("q") or 0.0))
+        bgs.append(_background_sided(t))
+        floors.append(_push_floor_reference(ref_sorted, ref_fifo, sizes[-1], bgs[-1], st["min_size"]))
         if t.get("Ma", -1) != t.get("Ta", -1):
             st["pend"].append((st["n"], pt, t))
             # only fills with a miner on either side can earn or pay realized spread; background-on-background
@@ -460,9 +629,10 @@ def accumulate_book_capture(buy_sums, sell_sums, book_id, trades, W, *,
             if real_buy_sums is not None and ((t.get("Ma") or -1) >= 0 or (t.get("Ta") or -1) >= 0):
                 st["rpend"].append((st["n"], pt, t))
         st["n"] += 1
-    _finalize_ready(st, book_id, buy_sums, sell_sums, W, buy_hist, sell_hist, ts, _now, flush_ns)
+    _finalize_ready(st, book_id, buy_sums, sell_sums, W, buy_hist, sell_hist, ts, _now, flush_ns, fee_weight=fee_weight)
     if real_buy_sums is not None:
-        _finalize_realized_ready(st, book_id, real_buy_sums, real_sell_sums, W, real_buy_hist, real_sell_hist, ts, _now, _h, flush_ns)
+        _finalize_realized_ready(st, book_id, real_buy_sums, real_sell_sums, W, real_buy_hist, real_sell_hist, ts, _now, _h,
+                                 flush_ns, fee_weight=fee_weight)
         _trim_window(st, W)
 
 
@@ -470,7 +640,7 @@ def flush_capture_state(mid_state, buy_sums, sell_sums, W, *,
                         buy_hist=None, sell_hist=None, ts=None,
                         flush_ns=CAPTURE_FLUSH_NS, force=False,
                         real_buy_sums=None, real_sell_sums=None, real_buy_hist=None, real_sell_hist=None,
-                        horizon_ns=None, now_ns=None):
+                        horizon_ns=None, now_ns=None, fee_weight=0.0):
     """Finalize stale pending fills on EVERY book (books with no new trades never reach
     accumulate_book_capture, so the live loop calls this each cycle; force=True drains everything,
     for offline end-of-run and the sim-boundary re-base). With the realized arguments, the realized
@@ -480,11 +650,11 @@ def flush_capture_state(mid_state, buy_sums, sell_sums, W, *,
     _now = int(now_ns) if now_ns is not None else ts
     for book_id, st in mid_state.items():
         _finalize_ready(st, book_id, buy_sums, sell_sums, W, buy_hist, sell_hist, ts,
-                        _now, flush_ns, force=force)
+                        _now, flush_ns, force=force, fee_weight=fee_weight)
         if real_buy_sums is not None and st.get("rpend"):
             st.setdefault("times", [])
             _finalize_realized_ready(st, book_id, real_buy_sums, real_sell_sums, W, real_buy_hist, real_sell_hist, ts,
-                                     _now, _h, flush_ns, force=force)
+                                     _now, _h, flush_ns, force=force, fee_weight=fee_weight)
             _trim_window(st, W)
 
 

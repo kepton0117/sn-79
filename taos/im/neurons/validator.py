@@ -56,7 +56,7 @@ if __name__ != "__mp_main__":
     from GenTRX.src.bt_log import gtx_log
 
     import uvicorn
-    from fastapi import FastAPI, APIRouter
+    from fastapi import APIRouter
     from fastapi import Request
     import threading
     from threading import Thread, Lock, Event
@@ -567,6 +567,7 @@ if __name__ != "__mp_main__":
                 '--subtensor.network', self.config.subtensor.network,
                 '--netuid', str(self.config.netuid),
                 '--prometheus.port', str(self.config.prometheus.port),
+                '--prometheus.host', str(getattr(self.config.prometheus, 'host', None) or '0.0.0.0'),
                 '--prometheus.level', str(self.config.prometheus.level),
                 '--cpu-cores', ','.join(map(str, core_allocation['reporting'])),
                 '--ipc-prefix', self._reporting_ipc_prefix,
@@ -731,6 +732,9 @@ if __name__ != "__mp_main__":
                 # TAOS_AUTO_UPDATE_ON_LOCALNET=1 to exercise the run-end update path on localnet.
                 return True
             try:
+                # imported here: the module-level imports of the update helpers run only when this file is the
+                # entry point, and the move to the verified release must happen wherever update_repo runs
+                from taos.im.validator.update import pull_release
                 validator_py_files_changed, simulator_config_changed, simulator_py_files_changed, simulator_cpp_files_changed = check_repo(self)
                 remote = self.repo.remotes[self.config.repo.remote]
 
@@ -742,11 +746,11 @@ if __name__ != "__mp_main__":
                     if validator_py_files_changed and not (
                             simulator_cpp_files_changed or simulator_py_files_changed or simulator_config_changed):
                         bt.logging.warning("VALIDATOR LOGIC UPDATED - PULLING AND DEPLOYING.")
-                        remote.pull()
+                        pull_release(self, remote)
                         update_validator(self)
                 else:
                     try:
-                        remote.pull()
+                        pull_release(self, remote)
                     except Exception as ex:
                         self.pagerduty_alert(f"Failed to pull changes from repo on simulation end : {ex}")
                     # A tree pulled by hand before the boundary reads as nothing to pull, but the process
@@ -1962,11 +1966,12 @@ if __name__ != "__mp_main__":
                 self.main_loop.call_soon_threadsafe(lambda: self.main_loop.create_task(self._maintain()))
 
         def _prepare_reporting_data(self):
-            bt.logging.debug("Retrieving fundamental prices...")
+            from taos.im.validator.debeta import capture_floor_stats
+            from taos.im.validator.fundamental import reported as reported_fundamental
             start = time.time()
-            if hasattr(self.engine, 'load_fundamental'):
-                self.engine.load_fundamental()
-            bt.logging.debug(f"Retrieved fundamental prices ({time.time()-start:.4f}s).")
+            # The fundamental the metrics publish is the one the reported state carried to miners.
+            fundamental_price = reported_fundamental(
+                getattr(self.last_state, 'books', None), self.fundamental_price)
 
             book_count = self.simulation.book_count
             bt.logging.debug("Computing realized P&L totals...")
@@ -2167,6 +2172,7 @@ if __name__ != "__mp_main__":
                 'activity_factors': self.activity_factors,
                 'debeta_class_summary': getattr(self, '_debeta_class_summary', None) or {},
                 'debeta_class_details': getattr(self, '_debeta_class_details', None) or {},
+                'capture_floor_stats': capture_floor_stats(getattr(self, 'debeta_capture_mid', None)),
                 'pnl_factors': self.pnl_factors,
                 'kappa_values': self.kappa_values,
                 'unnormalized_scores': self.unnormalized_scores,
@@ -2187,7 +2193,7 @@ if __name__ != "__mp_main__":
                 'recent_trades': recent_trades,
                 'recent_miner_trades': recent_miner_trades,
                 'open_positions': open_positions,
-                'fundamental_price': self.fundamental_price,
+                'fundamental_price': fundamental_price,
                 'shared_state_rewarding': self.shared_state_rewarding,
                 'current_block': self.current_block,
                 'uid': self.uid,
@@ -4066,7 +4072,8 @@ if __name__ == "__main__":
         bt.logging.set_info()
     _bridge_stdlib_logging_to_bittensor()
     bt.logging.info("Initializing validator...")
-    app = FastAPI()
+    from taos.im.validator.http_surface import api_server_options, make_app
+    app = make_app()
 
     # STATE-INGEST ROUTES ARE LOCAL-ONLY. /orderbook and /account accept simulator state and notices,
     # so only the simulator on this host may reach them. Miners are unaffected (the validator queries
@@ -4113,7 +4120,7 @@ if __name__ == "__main__":
             _logging.getLogger("uvicorn.access").addFilter(_SuppressSimStateLog())
 
             # Listen runs in the main thread below; uvicorn is a background thread.
-            background_targets.append(('API', lambda: uvicorn.run(app, host="0.0.0.0", port=validator.config.port)))
+            background_targets.append(('API', lambda: uvicorn.run(app, **api_server_options(validator.config))))
         else:
             # Simulation mode: Listen is a background thread; uvicorn runs below.
             background_targets.append(('Listen', validator.listen))
@@ -4165,8 +4172,9 @@ if __name__ == "__main__":
             bt.logging.info("Exchange mode: running block monitoring loop in main thread...")
             validator.listen()   # blocks; errors are visible and process dies on crash
         else:
-            bt.logging.info(f"Starting FastAPI server on port {validator.config.port}...")
-            uvicorn.run(app, host="0.0.0.0", port=validator.config.port)
+            _api = api_server_options(validator.config)
+            bt.logging.info(f"Starting FastAPI server on {_api['host']}:{_api['port']}...")
+            uvicorn.run(app, **api_server_options(validator.config))
     except KeyboardInterrupt:
         bt.logging.info("Keyboard interrupt received")
     except Exception as ex:

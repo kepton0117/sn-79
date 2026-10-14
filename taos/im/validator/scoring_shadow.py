@@ -338,6 +338,7 @@ class ShadowState:
         for name, value in structs.items():
             setattr(self, name, value)
         self._last_prune_timestamp = knobs.get("_last_prune_timestamp")
+        self._last_accounted_ts = knobs.get("_last_accounted_ts")
         self.step = knobs.get("step", 0)
         self.effective_max_uids = knobs["effective_max_uids"]
         self.config = knobs["config"]
@@ -391,7 +392,7 @@ def shadow_score(shadow: ShadowState, sim_ts: int, deregs: list,
         The shadow's scoring result for parity comparison.
     """
     from taos.im.validator.reward import (apply_track_record_ema, compute_debeta_scores, making_pool_inputs,
-                                          pool_pay_vector, score_uids)
+                                          pool_pay_vector, score_uids, smoothed_skill_share)
 
     shadow.deregistered_uids = list(deregs)
     # The presence gate's absent set is main-side knowledge (query outcomes), shipped with the inputs.
@@ -473,9 +474,14 @@ def shadow_score(shadow: ShadowState, sim_ts: int, deregs: list,
         if _kv is not None:
             _kv['making_share'] = (float(_share[uid]) / _share_tot) if _share_tot > 0 else 0.0
             _kv['ladder_input'] = float(_ladder[uid])
+    _skill_sm = None
+    if _hl and _hl > 0 and _pool > 0.0 and _pool_mode == "proportional_both":
+        _skill_sm = smoothed_skill_share(_dcfg, getattr(shadow, 'debeta_detail', {}) or {}, all_uids, _class_shares,
+                                         _pema, shadow.deregistered_uids, sim_ts, _hl, _n_snap, _last_snap, _scorable)
     distributed = pool_pay_vector(
         _pool_mode, _pool, getattr(shadow, 'debeta_detail', {}) or {}, all_uids, _ladder, trading_scores, _share,
-        shadow.scoring_config, int(_dcfg.get('skill_min_books', 4) or 4), class_shares=_class_shares)
+        shadow.scoring_config, int(_dcfg.get('skill_min_books', 4) or 4), class_shares=_class_shares,
+        skill_share=_skill_sm)
     return {
         'trading': [float(x) for x in distributed.tolist()],
         'gentrx': [float(gentrx_scores_out[uid]) for uid in all_uids],
@@ -528,6 +534,8 @@ def child_save_validator_state(shadow, light: dict, path: str) -> int:
         "trading_score_ema": light.get("trading_score_ema", {}),
         "trading_score_ema_ts": light.get("trading_score_ema_ts"),
         "trading_score_ema_n": light.get("trading_score_ema_n", {}),
+        # the proportional making pool's smoothed term and share, as main's save writes them
+        "debeta_pool_ema": light.get("debeta_pool_ema", {}),
         "trade_volumes": snapshot_trade_volumes(shadow),
         "roundtrip_volumes": snapshot_roundtrip_volumes(shadow),
         "volume_sums": vols["volume_sums"],
@@ -680,6 +688,11 @@ def _shadow_child_main(sock, cores, parity_ns):
         pending_score_inputs = {}   # eager inputs by boundary ts
         applied = 0
         last_applied_ts = 0
+        # A state that steps back (at or below the INIT base, or behind the last applied state) is held until the
+        # next frame says what main did with it. The listener tees a state before main's tick handling sees it, so
+        # when that state is what makes main open a new run, its sim_start reaches the child AFTER it, while main
+        # shifts first and applies it second.
+        held = None
         pending_save = None         # (expect_ts, path, light, mono_deadline)
 
         def _maybe_save():
@@ -744,6 +757,21 @@ def _shadow_child_main(sock, cores, parity_ns):
                 else:
                     awaiting_score_at = (ts, time.monotonic())
 
+        def _resolve_held(shifted):
+            """Settle the held state: after a shift it is the new run's first state and is applied; with no
+            shift it is handled as it always was, dropped at or below the INIT base, applied above it."""
+            nonlocal held
+            if held is None:
+                return
+            h_ts, h_raw, below_base = held
+            held = None
+            if below_base and not shifted:
+                return
+            if awaiting_score_at is not None:
+                _side_push(h_ts, h_raw)
+            else:
+                _apply_one(h_ts, h_raw)
+
         while True:
             try:
                 kind, payload = frames.get(timeout=5.0)
@@ -759,6 +787,8 @@ def _shadow_child_main(sock, cores, parity_ns):
                         else:
                             _side_push(ts, raw)
                 continue
+            if held is not None and kind != "sim_start":
+                _resolve_held(False)
             if kind == "stop":
                 break
             if kind == "init_part":
@@ -794,7 +824,8 @@ def _shadow_child_main(sock, cores, parity_ns):
                         print("[SHADOW] init overdue — dropping oldest buffered round", flush=True)
                         buffered.pop(0)
                     continue
-                if ts <= base_ts:
+                if ts <= base_ts or ts < last_applied_ts:
+                    held = (ts, raw, ts <= base_ts)
                     continue
                 if awaiting_score_at is not None:
                     _side_push(ts, raw)
@@ -803,6 +834,14 @@ def _shadow_child_main(sock, cores, parity_ns):
             elif kind == "sim_start":
                 old_ts, new_ts = payload
                 if shadow is not None:
+                    # States teed before this shift are the old run's, and main applied them before shifting: the
+                    # child applies them first too. A boundary awaited among them is void, no score follows a run
+                    # change.
+                    awaiting_score_at = None
+                    pending, side_buffer = side_buffer, []
+                    for ts, raw in pending:
+                        _apply_one(ts, raw)
+                        awaiting_score_at = None
                     from taos.im.validator.trade import shift_simulation_histories
                     shift_simulation_histories(
                         shadow, old_ts, new_ts,
@@ -814,16 +853,11 @@ def _shadow_child_main(sock, cores, parity_ns):
                         effective_max_uids=shadow.effective_max_uids,
                         book_ids=shadow.simulation_config.get('book_ids'),
                     )
-                    # New sim restarts near ts=0 — the old-run guard must not
-                    # drop its frames, and any held boundary is void.
+                    # The new run restarts near ts=0, so the old-run guard must not drop its frames; the state that
+                    # triggered this shift, if main noticed the run change while handling it, follows the shift.
                     base_ts = -1
                     awaiting_score_at = None
-                    pending, side_buffer = side_buffer, []
-                    for ts, raw in pending:
-                        if awaiting_score_at is None:
-                            _apply_one(ts, raw)
-                        else:
-                            _side_push(ts, raw)
+                    _resolve_held(True)
                     print(f"[SHADOW] sim_start applied ({old_ts} -> {new_ts})", flush=True)
             elif kind == "resets":
                 if shadow is not None:
@@ -1330,6 +1364,7 @@ class ScoringShadow:
                 from taos.im.validator.reward import build_scoring_config, build_simulation_config_dict
                 knobs = {
                     "_last_prune_timestamp": getattr(validator, "_last_prune_timestamp", None),
+                    "_last_accounted_ts": getattr(validator, "_last_accounted_ts", None),
                     "step": validator.step,
                     "effective_max_uids": validator.effective_max_uids,
                     "config": _config_duck(validator.config),
@@ -1635,6 +1670,8 @@ def _config_duck(config):
                 skill_min_books=_num(getattr(_d, 'skill_min_books', None), 0, int),
                 skill_min_books_share=_num(getattr(_d, 'skill_min_books_share', None), 20 / 128, float),
                 class_weights=str(getattr(_d, 'class_weights', '') or ''),
+                making_fee_weight=_num(getattr(_d, 'making_fee_weight', None), 0.0, float),
+                capture_market_votes=_num(getattr(_d, 'capture_market_votes', None), 0, int),
                 skill_p11_strength=_num(getattr(_d, 'skill_p11_strength', None), 0.0, float),
                 presence_share_weighting=_num(getattr(_d, 'presence_share_weighting', None), 0, int),
                 presence_min_share=_num(getattr(_d, 'presence_min_share', None), 0.0, float),
@@ -1647,8 +1684,31 @@ def _config_duck(config):
 
 
 def _simulation_duck(simulation):
+    """What the scoring child reads off the simulation: the two scalars, and config_for_book answering each book's
+    minimum order size, the dust floor's voting bar (trade._min_order_size). Without that answer the child took the
+    0.0 fallback on every book while main read the layout's minimum, and the two sides built different floors from
+    the same prints on a two-class layout. The map is built here, once, so the duck stays plain data to ship."""
     from types import SimpleNamespace
-    return SimpleNamespace(
-        volumeDecimals=simulation.volumeDecimals,
-        miner_wealth=simulation.miner_wealth,
-    )
+    min_sizes = {}
+    lookup = getattr(simulation, "config_for_book", None)
+    if callable(lookup):
+        books = getattr(simulation, "book_ids", None) or range(int(getattr(simulation, "book_count", 0) or 0))
+        for b in books:
+            try:
+                min_sizes[int(b)] = float(getattr(lookup(int(b)), "min_order_size", 0.0) or 0.0)
+            except Exception:
+                min_sizes[int(b)] = 0.0
+    return _SimulationDuck(simulation.volumeDecimals, simulation.miner_wealth, min_sizes)
+
+
+class _SimulationDuck:
+    """Plain data with one lookup; a module-level class so the INIT frame pickles (a lambda on a namespace does not)."""
+
+    def __init__(self, volume_decimals, miner_wealth, min_order_size_by_book):
+        self.volumeDecimals = volume_decimals
+        self.miner_wealth = miner_wealth
+        self.min_order_size_by_book = dict(min_order_size_by_book)
+
+    def config_for_book(self, book_id):
+        from types import SimpleNamespace
+        return SimpleNamespace(min_order_size=self.min_order_size_by_book.get(int(book_id), 0.0))

@@ -15,6 +15,7 @@ from collections import defaultdict
 import pytest
 
 from taos.im.validator.debeta import (
+    CAPTURE_REACH_WINDOWS,
     accumulate_book_capture, flush_capture_state, centered_mid, CAPTURE_FLUSH_NS,
 )
 
@@ -119,7 +120,8 @@ def test_state_stays_bounded():
                                 ts=k * 1_000_000_000, mid_state=state)
     st = state[BOOK]
     assert len(st["pend"]) <= W + 1
-    assert len(st["prices"]) <= 2 * W + 1
+    # the window keeps the oldest pending fill's backward reach (a crowded fill reaches past dust for its neighbours)
+    assert len(st["prices"]) <= 2 * CAPTURE_REACH_WINDOWS * W + 1
 
 
 def test_wash_print_mid_shaping_dilutes_per_fill_and_stays_bounded_in_total():
@@ -158,11 +160,9 @@ def test_cross_second_wash_reach_adds_no_magnitude():
 
 
 def test_flush_knob_is_bounded_by_the_trailing_window():
-    """Adversarial residual: on a thin book an attacker can withhold forward prints so their fill
-    finalizes against the trailing window only. The gain is exactly the truncated-window
-    attribution (deterministic, bounded by trailing-mid minus price times quantity); the legacy
-    path scored such fills 0, so this hands honest thin-book makers fair credit at the cost of a
-    bounded, monitorable knob."""
+    """A fill whose window ends with no forward print finalizes against the trailing window only, and its
+    attribution is the trailing mid minus its price times its quantity: deterministic and bounded by that
+    window."""
     state = {}
     buy = defaultdict(dict)
     sell = defaultdict(dict)

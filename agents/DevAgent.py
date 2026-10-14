@@ -20,7 +20,7 @@ import traceback
 import uuid
 import numpy as np
 import bittensor as bt
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import IntEnum
 
 from taos.common.agents import launch
@@ -87,8 +87,8 @@ class PredictorEntry:
         sell: Volume bucket for sell-side trades.
         timestamp: Simulation timestamp when this entry was created.
     """
-    buy: VolumeBucket = VolumeBucket()
-    sell: VolumeBucket = VolumeBucket()
+    buy: VolumeBucket = field(default_factory=VolumeBucket)
+    sell: VolumeBucket = field(default_factory=VolumeBucket)
     timestamp: int = 0
     
     def update(self, volume: float, direction: OrderDirection, category: VolumeCategory) -> None:
@@ -121,7 +121,7 @@ class AgentDataStorage:
     predictors: list[PredictorEntry]
     midquotes: list[TimestampedPrice]
     last_signal: Signals = Signals.NOISE
-    positions: Positions = Positions()
+    positions: Positions = field(default_factory=Positions)
     
     def appendPredictor(self, entry: PredictorEntry) -> None:
         """Add a new predictor entry to the rolling window.

@@ -5,6 +5,9 @@
 #pragma once
 
 #include <deque>
+#include <stdexcept>
+
+#include <fmt/format.h>
 #include "CSVPrintable.hpp"
 #include "IHumanPrintable.hpp"
 
@@ -75,6 +78,12 @@ public:
     template<typename... Args>
     [[nodiscard]] LimitOrder::Ptr placeLimitOrder(OrderClientContext ctx, Args&&... args);
 
+    // Places under an id already issued from the shared counter (one the exchange minted for an
+    // order the pool executed) rather than drawing a new one. Throws if the id is in use here.
+    template<typename... Args>
+    [[nodiscard]] LimitOrder::Ptr placeLimitOrderWithId(
+        OrderID orderId, OrderClientContext ctx, Args&&... args);
+
     template<typename... Args>
     void logTrade(Args&&... args);
 
@@ -99,6 +108,19 @@ public:
         const Order::Ptr& order,
         AgentId agentId);
     void clearFilledOrders() noexcept;
+
+    // WHAT AN ORDER WAS AFTER IT LEFT THE BOOK. Unregistering drops the order and its client context
+    // together, yet the exchange can still owe a fully matched order a remainder when the chain fills
+    // it only in part, and that remainder must continue as the same order. Off by default; only the
+    // exchange's remainder restore turns it on, so simulation records nothing.
+    struct UnregisteredOrder
+    {
+        LimitOrder::Ptr order;
+        OrderClientContext ctx;
+    };
+    void retainUnregisteredOrders(size_t capacity) noexcept { m_unregisteredCapacity = capacity; }
+    [[nodiscard]] const UnregisteredOrder* unregisteredOrder(OrderID orderId) const noexcept;
+
     void printCSV(uint32_t depth) const;
 
     virtual void printCSV() const override { printCSV(5); }
@@ -159,8 +181,15 @@ private:
     BookSignals m_signals;
     std::shared_ptr<OrderID> m_orderIdCounter;
     std::shared_ptr<TradeID> m_tradeIdCounter;
+    template<typename... Args>
+    [[nodiscard]] LimitOrder::Ptr placeLimitOrderImpl(
+        OrderID orderId, OrderClientContext ctx, Args&&... args);
+
     std::map<OrderID, LimitOrder::Ptr> m_orderIdMap;
     std::map<OrderID, OrderClientContext> m_order2clientCtx;
+    std::map<OrderID, UnregisteredOrder> m_unregistered;
+    std::deque<OrderID> m_unregisteredQueue;
+    size_t m_unregisteredCapacity{0};
     taosim::book::OrderContainer m_buyQueue;
     taosim::book::OrderContainer m_sellQueue;
     mutable TopOfBook m_topOfBook;
@@ -192,9 +221,29 @@ MarketOrder::Ptr Book::placeMarketOrder(OrderClientContext clientCtx, Args&&... 
 template<typename... Args>
 LimitOrder::Ptr Book::placeLimitOrder(OrderClientContext clientCtx, Args&&... args)
 {
+    return placeLimitOrderImpl((*m_orderIdCounter)++, clientCtx, std::forward<Args>(args)...);
+}
+
+//-------------------------------------------------------------------------
+
+template<typename... Args>
+LimitOrder::Ptr Book::placeLimitOrderWithId(OrderID orderId, OrderClientContext clientCtx, Args&&... args)
+{
+    if (orderId >= *m_orderIdCounter || m_orderIdMap.contains(orderId)
+        || m_order2clientCtx.contains(orderId)) {
+        throw std::runtime_error{fmt::format(
+            "Book {}: order id {} was not issued or is already in use", m_id, orderId)};
+    }
+    return placeLimitOrderImpl(orderId, clientCtx, std::forward<Args>(args)...);
+}
+
+//-------------------------------------------------------------------------
+
+template<typename... Args>
+LimitOrder::Ptr Book::placeLimitOrderImpl(OrderID orderId, OrderClientContext clientCtx, Args&&... args)
+{
     static_assert(std::constructible_from<LimitOrder, OrderID, Args...>);
-    const auto limitOrder =
-        std::make_shared<LimitOrder>((*m_orderIdCounter)++, std::forward<Args>(args)...);
+    const auto limitOrder = std::make_shared<LimitOrder>(orderId, std::forward<Args>(args)...);
     m_order2clientCtx.insert({limitOrder->id(), clientCtx});
     m_signals.orderCreated(
         limitOrder, OrderContext{clientCtx.agentId, m_id, clientCtx.clientOrderId});

@@ -62,7 +62,7 @@ def _duck(start_sha, head_sha, head_paths=(), remote_endpoint="wss://entrypoint-
     head = _Commit(head_sha)
     repo = SimpleNamespace(remotes={"origin": remote}, head=SimpleNamespace(commit=head), commit=lambda sha: start if sha == start_sha else head)
     d = SimpleNamespace(
-        config=SimpleNamespace(subtensor=SimpleNamespace(chain_endpoint=remote_endpoint), repo=SimpleNamespace(remote="origin")),
+        config=SimpleNamespace(subtensor=SimpleNamespace(chain_endpoint=remote_endpoint), repo=SimpleNamespace(remote="origin", auto_update="branch")),
         repo=repo, repo_path=None, engine=SimpleNamespace(mode=mode), _start_commit=start_sha,
         pagerduty_alert=lambda msg, details=None: calls["alerts"].append(msg),
     )

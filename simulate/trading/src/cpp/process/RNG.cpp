@@ -25,6 +25,23 @@ std::mt19937::result_type RNG::operator()()
 
 //-------------------------------------------------------------------------
 
+void RNG::discard(unsigned long long z)
+{
+    std::mt19937::discard(z);
+    m_callCount += z;
+}
+
+//-------------------------------------------------------------------------
+
+RNG RNG::restored(uint64_t seed, uint64_t callCount)
+{
+    RNG rng{seed};
+    rng.discard(callCount);
+    return rng;
+}
+
+//-------------------------------------------------------------------------
+
 void RNG::checkpointSerialize(rapidjson::Document& json, const std::string& key) const
 {
     auto serialize = [this](rapidjson::Document& json) {
@@ -40,10 +57,7 @@ void RNG::checkpointSerialize(rapidjson::Document& json, const std::string& key)
 
 RNG RNG::fromCheckpoint(const rapidjson::Value& json)
 {
-    RNG rng{json["seed"].GetUint64()};
-    rng.m_callCount = json["callCount"].GetUint64();
-    rng.discard(rng.m_callCount);
-    return rng;
+    return restored(json["seed"].GetUint64(), json["callCount"].GetUint64());
 }
 
 //-------------------------------------------------------------------------

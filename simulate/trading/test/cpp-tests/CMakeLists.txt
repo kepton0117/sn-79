@@ -39,11 +39,13 @@ add_executable(taosim-tests
     BlockBookIdTests.cpp
     WakeupPayloadContractTests.cpp
     WakeupCheckpointRoundTripTests.cpp
+    RNGCheckpointResumeTests.cpp
     FuturesTraderActivityTests.cpp
     ProcessLogLocationTests.cpp
     MultiAssetSeedTests.cpp
     LifecycleNoticeTests.cpp
     ValidatorQueuePairingTests.cpp
+    RunDirSelectionTests.cpp
 )
 # Some test sources are not present in every distribution of this tree; guard on existence so the
 # target always configures.

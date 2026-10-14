@@ -14,7 +14,7 @@ def test_the_default_is_the_production_split():
     p = argparse.ArgumentParser()
     add_im_validator_args(None, p)
     a = next(x for x in p._actions if "--scoring.debeta.class_weights" in x.option_strings)
-    assert a.default == "0.95,0.05"
+    assert a.default == "books"   # each class's share of the layout's books, 0.75 and 0.25 on 96+32 (0.6.4)
 
 
 def test_a_mismatched_dial_falls_back_to_flat():

@@ -30,7 +30,7 @@ def test_at_the_run_end_the_update_installs_and_leaves_the_restart_to_the_new_ru
     monkeypatch.setattr(upd, "restart_validator_process", lambda self: ran.append("restart"))
     d = _validator()
     upd.update_validator(d, restart=False)
-    assert ran == [["pip", "install", "-e", "."]], "installed, not restarted"
+    assert len(ran) == 1 and ran[0][:4] == ["pip", "install", "-e", "."], "installed, not restarted"
     assert isinstance(d._restart_when_run_opens, float)
 
 
@@ -76,7 +76,7 @@ def _duck(end_ok=True):
     repo = SimpleNamespace(remotes={"origin": remote}, head=SimpleNamespace(commit=head), commit=lambda sha: head)
     return SimpleNamespace(
         config=SimpleNamespace(subtensor=SimpleNamespace(chain_endpoint="wss://entrypoint-finney.opentensor.ai:443"),
-                               repo=SimpleNamespace(remote="origin")),
+                               repo=SimpleNamespace(remote="origin", auto_update="branch")),
         repo=repo, repo_path=None, engine=SimpleNamespace(mode="simulation"), _start_commit="s",
         pagerduty_alert=lambda msg, details=None: None,
     )

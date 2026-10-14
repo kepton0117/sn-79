@@ -18,6 +18,7 @@ import subprocess
 import psutil
 
 from taos.common.utils.misc import run_process
+from taos.im.validator import signed_release
 from taos.im.neurons.validator import Validator
         
 def classify_changes(self, old_commit, new_commit) -> Tuple[bool, bool, bool, bool]:
@@ -108,6 +109,26 @@ def check_repo(self : Validator) -> Tuple[bool, bool, bool, bool]:
         start_time = time.time()
         remote = self.repo.remotes[self.config.repo.remote]
         branch = self.repo.active_branch.name
+        mode = auto_update_mode(self)
+        self._release_plan = None
+        if mode == "off":
+            bt.logging.info("Auto-update is off (--repo.auto_update off): not checking for updates")
+            return False, False, False, False
+        if mode == "signed":
+            plan = signed_release.plan_update(self.repo_path, remote.name, branch)
+            self._release_plan = plan
+            if plan["action"] == "refuse":
+                bt.logging.error(f"NOT UPDATING: {plan['reason']}")
+                self.pagerduty_alert(f"Release not applied: {plan['reason']}",
+                                     dedup_key=f"unverified-release-{plan.get('tag')}")
+                return False, False, False, False
+            if plan["action"] != "update":
+                bt.logging.info(f"Nothing to update: {plan['reason']}")
+                return False, False, False, False
+            local_commit = self.repo.head.commit
+            target = self.repo.commit(plan["commit"])
+            bt.logging.info(f"Verified release {plan['tag']} ({target.hexsha[:8]}) is ahead of {local_commit.hexsha[:8]}")
+            return classify_changes(self, local_commit, target)
         fetch_start = time.time()
         try:
             remote.fetch(branch)
@@ -173,6 +194,27 @@ def check_repo(self : Validator) -> Tuple[bool, bool, bool, bool]:
         )
         return False, False, False, False
 
+def auto_update_mode(self) -> str:
+    """The configured self-update mode (signed, branch or off); branch when unset or unknown."""
+    mode = str(getattr(getattr(self.config, "repo", None), "auto_update", None) or "branch")
+    return mode if mode in signed_release.MODES else "branch"
+
+
+def pull_release(self, remote) -> None:
+    """Move the tree to what check_repo found: the verified release tag in the signed mode, the branch tip in
+    the branch mode, nothing when off or when there is nothing verified to apply."""
+    mode = auto_update_mode(self)
+    if mode == "off":
+        return
+    if mode == "signed":
+        plan = getattr(self, "_release_plan", None) or {}
+        if plan.get("action") == "update":
+            signed_release.apply_update(self.repo_path, plan["tag"])
+            bt.logging.success(f"UPDATED TO VERIFIED RELEASE {plan['tag']}")
+        return
+    remote.pull()
+
+
 def update_validator(self : Validator, restart: bool = True) -> None:
     """
     Reinstall the package and restart the validator process, or leave the restart to the run that is about to open.
@@ -194,6 +236,8 @@ def update_validator(self : Validator, restart: bool = True) -> None:
     """
     try:
         py_cmd = ["pip", "install", "-e", "."]
+        if (self.repo_path / "constraints.txt").exists():
+            py_cmd += ["-c", "constraints.txt"]
         bt.logging.info("UPDATING VALIDATOR (PY)...")
         
         update_start = time.time()
@@ -385,6 +429,8 @@ def rebuild_simulator(self : Validator) -> None:
             raise Exception(f"FAILED TO COMPLETE SIMULATOR MAKE:\n{make.stderr}")
 
         py_cmd = ["pip", "install", "-e", "."]
+        if (self.repo_path / "constraints.txt").exists():
+            py_cmd += ["-c", str((self.repo_path / "constraints.txt").resolve())]
         bt.logging.info("REBUILDING SIMULATOR (PY)...")
         py_start = time.time()
         py = run_process(
@@ -412,6 +458,36 @@ def rebuild_simulator(self : Validator) -> None:
             details={"traceback": traceback.format_exc()}
         )
         raise
+
+def _is_simulator_cmdline(cmdline: str) -> bool:
+    """A simulation engine's command line, and never the exchange engine's.
+
+    Both run ../build/src/cpp/taosim; the exchange is started with -e. Matching the binary alone would kill the
+    exchange at every simulation run end on a host running both mechanisms.
+    """
+    if '../build/src/cpp/taosim' not in cmdline:
+        return False
+    return '-e' not in cmdline.split()
+
+
+def _kill_simulator_processes() -> int:
+    """Kill every simulation engine process; the exchange engine is left running. Returns how many."""
+    killed_count = 0
+    for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+        try:
+            cmdline = ' '.join(proc.info['cmdline'] or [])
+            if _is_simulator_cmdline(cmdline):
+                bt.logging.info(
+                    f"FOUND SIMULATOR PROCESS `{proc.info['name']}` "
+                    f"WITH PID {proc.info['pid']}"
+                )
+                proc.kill()
+                proc.wait(timeout=5.0)
+                killed_count += 1
+        except (psutil.NoSuchProcess, psutil.TimeoutExpired) as e:
+            bt.logging.warning(f"Error killing simulator process: {e}")
+    return killed_count
+
 
 def restart_simulator(self : Validator, end : bool = False) -> None:
     """
@@ -468,21 +544,7 @@ def restart_simulator(self : Validator, end : bool = False) -> None:
             except subprocess.TimeoutExpired:
                 bt.logging.warning("PM2 delete timed out after 10s")
 
-        killed_count = 0
-        for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
-            try:
-                cmdline = ' '.join(proc.info['cmdline'] or [])
-                if '../build/src/cpp/taosim' in cmdline:
-                    bt.logging.info(
-                        f"FOUND SIMULATOR PROCESS `{proc.info['name']}` "
-                        f"WITH PID {proc.info['pid']}"
-                    )
-                    proc.kill()
-                    proc.wait(timeout=5.0)
-                    killed_count += 1
-            except (psutil.NoSuchProcess, psutil.TimeoutExpired) as e:
-                bt.logging.warning(f"Error killing simulator process: {e}")
-        
+        killed_count = _kill_simulator_processes()
         if killed_count > 0:
             bt.logging.info(f"Killed {killed_count} simulator process(es)")
             time.sleep(2.0)
@@ -849,7 +911,7 @@ def check_simulator(self : Validator) -> bool:
         try:
             for proc in psutil.process_iter(['cmdline']):
                 cmdline = ' '.join(proc.info['cmdline'] or [])
-                if '../build/src/cpp/taosim' in cmdline:
+                if _is_simulator_cmdline(cmdline):
                     found = True
                     break
         except Exception as e:

@@ -22,7 +22,7 @@ from taos.common.protocol import SimulationStateUpdate, EventNotification
 from taos.im.protocol.exchange.events import *
 from taos.im.protocol.exchange.models import Book, Account, Balance, Order, LazyBooks, LazyAccounts
 from taos.im.protocol.exchange.response import ExchangeAgentResponse, ExchangeResponseBatch
-from taos.im.utils.compress import compress, decompress
+from taos.im.utils.compress import compress, decompress, read_reply
 
 class ExchangeEventNotification(EventNotification):
     """
@@ -126,6 +126,10 @@ class ExchangeStateUpdate(SimulationStateUpdate):
                 return self
         except Exception:
             return None
+
+    def decompress_reply(self, *, version: int, max_bytes: int, max_instructions: int) -> str | None:
+        """Read a miner's reply under the bounds of utils.compress.read_reply; None when read, else the reason."""
+        return read_reply(self, version=version, max_bytes=max_bytes, max_instructions=max_instructions)
 
     def decompress(self, lazy=False):
         """Decompress the payload back onto this update.

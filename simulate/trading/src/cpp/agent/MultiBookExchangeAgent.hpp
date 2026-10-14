@@ -59,6 +59,7 @@ public:
     // The shared trade id counter. The exchange service reads it to repair
     // continuity after a checkpoint restore; simulation never calls this.
     [[nodiscard]] auto&& tradeIdCounter(this auto&& self) noexcept { return self.m_tradeIdCounter; }
+    [[nodiscard]] auto&& orderIdCounter(this auto&& self) noexcept { return self.m_orderIdCounter; }
 
     // Mint a trade id for a fill the books never matched (an AMM/pool swap settled
     // straight off the reserves).  Without one, such a fill leaves the engine with no id
@@ -90,6 +91,8 @@ public:
     {
         AgentId agentId{};
         PlaceOrderLimitPayload::Ptr order;
+        // The id the placement was acknowledged under, so a restored remainder keeps it.
+        std::optional<OrderID> orderId;
     };
 
     // `order` may be NULL, and that is meaningful rather than an error: a MARKET order can
@@ -98,9 +101,13 @@ public:
     // guarded with `if (!order) return;`, which silently discarded exactly those entries and made
     // the market-order fix inert while looking correct.
     void recordPoolPlacement(
-        TradeID id, AgentId agentId, PlaceOrderLimitPayload::Ptr order) noexcept
+        TradeID id,
+        AgentId agentId,
+        PlaceOrderLimitPayload::Ptr order,
+        std::optional<OrderID> orderId = std::nullopt) noexcept
     {
-        m_poolPlacements.insert_or_assign(id, PoolPlacement{.agentId = agentId, .order = order});
+        m_poolPlacements.insert_or_assign(
+            id, PoolPlacement{.agentId = agentId, .order = order, .orderId = orderId});
         m_poolPlacementOrder.push_back(id);
         // Bounded: a correction arrives within a batch or two, so history beyond that is dead
         // weight on a live exchange carrying 129 books.

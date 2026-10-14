@@ -110,7 +110,7 @@ protected:
     int m_historySlots;
     decimal_t m_makerFee;
     decimal_t m_takerFee;
-    Timestamp m_lastUpdate;
+    std::map<BookId, Timestamp> m_lastUpdate;
     std::map<BookId, Volumes> m_totalVolumes;
     std::map<BookId, Volumes> m_totalVolumesPrev;
     std::map<BookId, boost::circular_buffer<Volumes>> m_volumes;

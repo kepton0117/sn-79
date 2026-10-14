@@ -13,9 +13,9 @@ later scrapes of the same cycle get the same bytes, and every per-registry endpo
 renderer writes the same text the client's generate_latest writes (the test asserts byte identity), about
 five times faster.
 
-MVTRX_METRICS_SNAPSHOT=0 restores the per-scrape live render. MVTRX_METRICS_MAIN=board serves /metrics
-without the two bulk registries (agent, trades), which keep their own endpoints; the default, all, keeps
-/metrics complete so a scraper that has not been told about the endpoints sees no gap.
+MVTRX_METRICS_SNAPSHOT=0 restores the per-scrape live render. /metrics serves the board registries without the two
+bulk registries (agent, trades), which keep their own endpoints; MVTRX_METRICS_MAIN=all serves every registry on
+/metrics.
 """
 import functools
 import os
@@ -28,7 +28,16 @@ import prometheus_client.exposition as _pe
 REGISTRY_ORDER = ('validator', 'simulation', 'miner', 'agent', 'books', 'trades', 'gentrx')
 BOARD_REGISTRIES = ('validator', 'simulation', 'miner', 'books', 'gentrx')
 SNAPSHOT_ENABLED = os.environ.get("MVTRX_METRICS_SNAPSHOT", "1").strip().lower() not in ("0", "false", "no", "off")
-MAIN_MODE = os.environ.get("MVTRX_METRICS_MAIN", "all").strip().lower() or "all"
+
+
+def main_mode_from(raw):
+    """What the combined /metrics serves: `board` (the default) leaves the agent and trades registries to their own
+    paths, `all` serves every registry."""
+    mode = (raw or "").strip().lower()
+    return mode or "board"
+
+
+MAIN_MODE = main_mode_from(os.environ.get("MVTRX_METRICS_MAIN"))
 
 
 # Name and value escaping as the text exposition writes them: a legacy-valid name goes through unchanged, any other

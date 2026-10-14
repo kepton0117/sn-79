@@ -7,15 +7,47 @@ onto an LOB snapshot to produce a timestamped sequence of book states.
 from loky.backend.context import set_start_method
 set_start_method('forkserver', force=True)
 from loky import get_reusable_executor, as_completed
+from loky.process_executor import BrokenProcessPool, TerminatedWorkerError
+import logging
 import time
 import copy
+
+logger = logging.getLogger(__name__)
+
+
+def _add(side, price, delta, volume_decimals):
+    """A new side mapping with one level moved by `delta`: the level is a NEW dict, every other level and the
+    previous side mapping are untouched, so the snapshot that holds them reads as it did. A level at zero leaves."""
+    new = dict(side)
+    level = new.get(price)
+    q = round((level['q'] if level is not None else 0.0) + delta, volume_decimals)
+    if q == 0.0 and delta < 0.0:
+        new.pop(price, None)
+    else:
+        new[price] = {'p': price, 'q': q, 'o': level['o'] if level is not None else None}
+    return new
+
+
+def _take(side, price, amount, volume_decimals):
+    """_add for a removal that touches only a level that exists (a trade or a cancellation at a price not resting
+    changes nothing, as before)."""
+    if price not in side:
+        return side
+    return _add(side, price, -amount, volume_decimals)
+
 
 def history(snapshot, events, volume_decimals):
     """
     Replay a sequence of order-book events onto an initial snapshot.
 
     Applies order placements, trades, and cancellations in chronological order,
-    recording a deep copy of the book state at each event timestamp.
+    recording the book state at each event timestamp. Each recorded snapshot is
+    its own top-level dict; the side an event did not touch and every level it
+    did not move are the previous snapshot's own objects, and only the moved
+    level is new. A full copy of the book per event would make a worker's
+    memory grow with events times levels, enough to kill workers under memory
+    pressure. Readers treat the snapshots as read-only;
+    the agent library validates each into its own model.
 
     Args:
         snapshot (dict): Initial LOB state with 'bids', 'asks', and 'timestamp' keys.
@@ -27,7 +59,8 @@ def history(snapshot, events, volume_decimals):
         Tuple[dict, dict]: (history_dict, trades_dict) where history_dict maps
             timestamp to book snapshot and trades_dict maps timestamp to trade event.
     """
-    history = {snapshot['timestamp']: copy.deepcopy(snapshot)}
+    current = copy.deepcopy(snapshot)
+    history = {snapshot['timestamp']: current}
     trades = {}
     # The engine rests a leveraged order at quantity x (1 + leverage) and removes the same on its cancellation, so the
     # replay keeps each order's leverage by id for the cancellation that follows (an order rested before the snapshot
@@ -35,6 +68,7 @@ def history(snapshot, events, volume_decimals):
     leverage_by_id = {}
     # Apply events in chronological order
     for event in sorted(events, key=lambda x: x['t']):
+        nxt = dict(current)
         match event:
             case o if event['y'] == 'o':
                 # Place new order
@@ -42,73 +76,34 @@ def history(snapshot, events, volume_decimals):
                 if lev > 0.0 and o.get('i') is not None:
                     leverage_by_id[o['i']] = lev
                 rested = o['q'] * (1.0 + lev)
-                if o['s'] == 0:
-                    if o['p'] not in snapshot['bids']:
-                        snapshot['bids'][o['p']] = {'p':o['p'], 'q':0.0, 'o':None}
-                    snapshot['bids'][o['p']]['q'] = round(
-                        snapshot['bids'][o['p']]['q'] + rested,
-                        volume_decimals
-                    )
-                else:
-                    if o['p'] not in snapshot['asks']:
-                        snapshot['asks'][o['p']] =  {'p':o['p'], 'q':0.0, 'o':None}
-                    snapshot['asks'][o['p']]['q'] = round(
-                        snapshot['asks'][o['p']]['q'] + rested,
-                        volume_decimals
-                    )
+                side = 'bids' if o['s'] == 0 else 'asks'
+                nxt[side] = _add(current[side], o['p'], rested, volume_decimals)
 
             case t if event['y'] == 't':
                 # Record trade
                 trades[t['t']] = t
-                if t['s'] == 0:
-                    if t['p'] in snapshot['asks']:
-                        snapshot['asks'][t['p']]['q'] = round(
-                            snapshot['asks'][t['p']]['q'] - t['q'],
-                            volume_decimals
-                        )
-                        if snapshot['asks'][t['p']]['q'] == 0.0:
-                            del snapshot['asks'][t['p']]
-                else:
-                    if t['p'] in snapshot['bids']:
-                        snapshot['bids'][t['p']]['q'] = round(
-                            snapshot['bids'][t['p']]['q'] - t['q'],
-                            volume_decimals
-                        )
-                        if snapshot['bids'][t['p']]['q'] == 0.0:
-                            del snapshot['bids'][t['p']]
+                side = 'asks' if t['s'] == 0 else 'bids'
+                nxt[side] = _take(current[side], t['p'], t['q'], volume_decimals)
 
             case c if event['y'] == 'c':
                 # Cancel existing order: on the side the event names when it carries one, else the guess from the
                 # best ask (an engine that publishes no side behaves as before)
-                side = c.get('s')
-                if side is not None:
-                    on_ask = int(side) == 1
+                side_flag = c.get('s')
+                if side_flag is not None:
+                    on_ask = int(side_flag) == 1
                 else:
-                    on_ask = bool(snapshot['asks']) and c['p'] >= min(snapshot['asks'].keys())
+                    on_ask = bool(current['asks']) and c['p'] >= min(current['asks'].keys())
                 c_lev = c.get('l')
                 removed = c['q'] * (1.0 + (float(c_lev) if c_lev is not None else leverage_by_id.get(c.get('i'), 0.0)))
-                if on_ask:
-                    if c['p'] in snapshot['asks']:
-                        snapshot['asks'][c['p']]['q'] = round(
-                            snapshot['asks'][c['p']]['q'] - removed,
-                            volume_decimals
-                        )
-                        if snapshot['asks'][c['p']]['q'] == 0.0:
-                            del snapshot['asks'][c['p']]
-                else:
-                    if c['p'] in snapshot['bids']:
-                        snapshot['bids'][c['p']]['q'] = round(
-                            snapshot['bids'][c['p']]['q'] - removed,
-                            volume_decimals
-                        )
-                        if snapshot['bids'][c['p']]['q'] == 0.0:
-                            del snapshot['bids'][c['p']]
+                side = 'asks' if on_ask else 'bids'
+                nxt[side] = _take(current[side], c['p'], removed, volume_decimals)
 
         # Add snapshot to history after each update
-        snapshot['timestamp'] = event['t']
-        history[event['t']] = copy.deepcopy(snapshot)
+        nxt['timestamp'] = event['t']
+        history[event['t']] = nxt
+        current = nxt
     return history, trades
-    
+
 def decimals_for(volume_decimals, book_id):
     """The volume decimals of one book: a mapping book id to decimals under a multi-asset layout (each class has
     its own grid), or the one integer that applies to every book."""
@@ -149,8 +144,18 @@ def batch_history(snapshots, events, batches, volume_decimals):
     """
     history_batches= []
     pool = get_reusable_executor(max_workers=len(batches))
-    tasks = [pool.submit(history_batch, {book_id : snapshots[book_id] for book_id in batch}, {book_id : events[book_id] for book_id in batch}, volume_decimals) for batch in batches]
-    for task in as_completed(tasks):
-        result = task.result()        
+    tasks = {}
+    for batch in batches:
+        task = pool.submit(history_batch, {book_id : snapshots[book_id] for book_id in batch}, {book_id : events[book_id] for book_id in batch}, volume_decimals)
+        tasks[task] = batch
+    for task in as_completed(list(tasks)):
+        try:
+            result = task.result()
+        except (TerminatedWorkerError, BrokenProcessPool, EOFError) as ex:
+            # A worker killed under memory pressure would take the whole update down with it: its batch is
+            # rebuilt here instead, so every book comes back and the agent keeps its history.
+            batch = tasks[task]
+            logger.warning(f"book rebuild worker died for books {batch} ({type(ex).__name__}: {ex}); rebuilt in-process")
+            result = history_batch({book_id : snapshots[book_id] for book_id in batch}, {book_id : events[book_id] for book_id in batch}, volume_decimals)
         history_batches.append(result)
     return {int(k): v for d in history_batches for k, v in d.items()}

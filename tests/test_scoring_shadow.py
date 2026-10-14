@@ -152,6 +152,7 @@ def _snapshot_to_shadow(main):
         parts[name] = pickle.loads(pickle.dumps(_plainify(getattr(main, name, {})), protocol=5))
     knobs = {
         "_last_prune_timestamp": main._last_prune_timestamp,
+        "_last_accounted_ts": getattr(main, "_last_accounted_ts", None),
         "step": main.step,
         "effective_max_uids": main.effective_max_uids,
         "config": main.config,
@@ -619,6 +620,7 @@ def _light_fields():
         "miner_stats": {1: {"requests": 3, "timeouts": 0, "failures": 0,
                             "rejections": 0, "call_time": [0.5]}},
         "miner_presence": {1: [1, 0, 1], 2: [0] * 50},
+        "debeta_pool_ema": {"term": {1: 0.2, 2: 0.1}, "share": {1: 0.3, 2: 0.7}},
     }
 
 
@@ -660,7 +662,7 @@ def test_child_save_validator_state_roundtrip(tmp_path):
         "activity_factors", "pnl_factors", "inventory_history", "kappa_values",
         "realized_pnl_history", "open_positions", "unnormalized_scores",
         "deregistered_uids", "trading_score_ema", "trading_score_ema_ts",
-        "trading_score_ema_n", "trade_volumes", "roundtrip_volumes",
+        "trading_score_ema_n", "debeta_pool_ema", "trade_volumes", "roundtrip_volumes",
         "volume_sums", "maker_volume_sums", "taker_volume_sums",
         "self_volume_sums", "roundtrip_volume_sums",
         "debeta_capbuy_hist", "debeta_capsell_hist", "debeta_realbuy_hist", "debeta_realsell_hist", "debeta_mtm_hist", "debeta_invsum_hist",

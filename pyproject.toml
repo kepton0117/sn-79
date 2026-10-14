@@ -88,6 +88,9 @@ ignore = [
 "taos/im/validator/engines/simulation.py" = ["S603", "S104", "S314", "S108"]
 "taos/im/validator/query.py" = ["S104", "S301"]
 "taos/im/validator/report.py" = ["S104"]
+# The metrics server's default bind (every interface) for the scrapers on other hosts.
+"taos/im/validator/http_surface.py" = ["S104"]
+"taos/common/utils/prometheus.py" = ["S104"]
 "taos/im/validator/forward.py" = ["S301"]  # unpickles own trusted-local checkpoints
 "taos/im/validator/seed.py" = ["S108"]
 "taos/im/agents/ai/regressor.py" = ["S301"]

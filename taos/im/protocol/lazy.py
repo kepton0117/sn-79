@@ -114,6 +114,21 @@ class LazyBook(Book):
         return self._raw.get("i")
 
     @property
+    def MTR(self) -> float | None:
+        """The maker-taker ratio, read from the raw wire dict.
+
+        A lazy book never fills the model's fields, so the eager Book's MTR (which returns the `r` field) has nothing to
+        read here; `r` is a field on Book, so it cannot be redefined as a property, and the accessor is overridden
+        instead, as `id`, `bids` and `asks` are.
+        """
+        return self._raw.get("r")
+
+    @property
+    def fundamental(self) -> float | None:
+        """The book's latest fundamental price, read from the raw wire dict; None when the state carries none."""
+        return self._raw.get("f")
+
+    @property
     def bids(self):
         """Bid levels, parsed lazily on first access."""
         if self._bids is None:
@@ -162,7 +177,8 @@ class LazyBook(Book):
             r=self._raw.get("r"),
             b=self.bids.parse(),
             a=self.asks.parse(),
-            e=self.events
+            e=self.events,
+            f=self._raw.get("f"),
         )
 
 

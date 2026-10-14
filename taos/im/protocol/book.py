@@ -910,6 +910,7 @@ class Book(BaseModel):
         asks (list[LevelInfo]): List of LevelInfo objects representing ask levels.
         events (list[Order | TradeInfo | Cancellation] | None): List of events applied to the book 
             since the last snapshot.
+        fundamental (float | None): The book's latest fundamental price, carried in simulation state updates.
     """
 
     i: int = Field(alias="id")
@@ -917,6 +918,7 @@ class Book(BaseModel):
     b: list[LevelInfo] = Field(alias="bids")
     a: list[LevelInfo] = Field(alias="asks")
     e: list[Order | TradeInfo | Cancellation] | None = Field(alias="events")
+    f: float | None = Field(alias="fundamental", default=None)
 
     @property
     def id(self) -> int:
@@ -940,6 +942,19 @@ class Book(BaseModel):
             float: The book's maker-taker ratio in [0, 1], or None if unset.
         """
         return self.r
+
+    @property
+    def fundamental(self) -> float | None:
+        """
+        Get the book's latest fundamental price.
+
+        Carried in every simulation state update; None when the state carries none (the exchange
+        mechanism, or a validator that does not send it).
+
+        Returns:
+            float | None: The fundamental price, or None.
+        """
+        return self.f
 
     @property
     def bids(self) -> list[LevelInfo]:
@@ -1088,7 +1103,7 @@ class Book(BaseModel):
                 for event in json['e']
             ]
 
-        return cls.model_construct(id=id, bids=bids, asks=asks, events=events, r=json.get("r"))
+        return cls.model_construct(id=id, bids=bids, asks=asks, events=events, r=json.get("r"), f=json.get("f"))
     
     @classmethod
     def from_ypy(cls, json: YpyObject, depth : int = 21) -> 'Book':

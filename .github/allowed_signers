@@ -1,0 +1,13 @@
+# Release signers for SN79 validator self-updates (taos/im/validator/signed_release.py).
+#
+# A validator in the signed update mode (--repo.auto_update signed, AUTO_UPDATE=signed in the launchers; opt-in, the
+# default is the branch tip until a key is listed here) moves only to a release tag vMAJOR.MINOR.PATCH whose SSH
+# signature verifies against THIS file as it stands in the tree the validator is already running. A key added here
+# takes effect from the release after the one that adds it.
+#
+# One line per signing key, in the format of ssh-keygen(1) ALLOWED SIGNERS:
+#   <principal> namespaces="git" <key type> <public key>
+# e.g.
+#   releases@taos.im namespaces="git" ssh-ed25519 AAAAC3Nza...
+#
+# No key is listed yet: until one is, a validator in the signed mode does not update itself.

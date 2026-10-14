@@ -29,6 +29,7 @@ The validator's cleanup_ipc() calls self.engine.stop() to close them.
 from __future__ import annotations
 
 import asyncio
+import concurrent.futures
 import logging
 import os
 import shutil
@@ -55,6 +56,7 @@ from taos.im.validator.engines import (
 )
 
 from taos.im.protocol import MarketSimulationStateUpdate
+from taos.im.validator.fundamental import stamp as stamp_fundamental
 from taos.im.validator.multiasset_state import flatten_multiasset_state
 
 if TYPE_CHECKING:
@@ -71,6 +73,8 @@ logger = logging.getLogger(__name__)
 _FRESH_EPISODE_FLOOR_NS = 30 * 60 * 1_000_000_000  # 30 sim-minutes
 # How long a restart owed at the run end may wait for the new run to open before the next state update takes it.
 _DEFERRED_RESTART_CEILING_S = 3600.0
+# How long the run's end waits for its state save before proceeding to the run-end update anyway.
+_END_SAVE_TIMEOUT_S = 30.0
 
 
 def _network_label(network: str) -> str:
@@ -119,6 +123,20 @@ def _read_first_and_last_nonempty(path: str, tail_chunk: int = 131072) -> tuple[
 _MQ_RECV_TIMEOUT_S = 30
 _MQ_REATTACH_AFTER = 2
 
+
+def _run_outputs(run_dir: Path):
+    """Every file a run wrote: at its root (a single-market run) and one level down, in each realization's
+    <class>-<instance> directory (a multi-asset run)."""
+    for entry in run_dir.iterdir():
+        if entry.is_dir():
+            yield from entry.iterdir()
+        else:
+            yield entry
+
+
+
+class RunWentBackwardError(RuntimeError):
+    """The engine published a state from a run older than the one this validator has locked."""
 
 class SimulationEngine(MarketEngine):
 
@@ -561,6 +579,16 @@ class SimulationEngine(MarketEngine):
                 f"on_start: duplicate SIMULATION_START at t={timestamp} "
                 "(further realization of the same episode) — already handled")
             return
+        # A notice that arrives AFTER the first state update of the same run already re-opened it (the notice went
+        # out while this process was coming up; the update carried the resumed clock) is that same episode.
+        _last = getattr(self, "_last_start_ts", None)
+        _run = os.path.basename(getattr(event, "logDir", "") or "")[:13]
+        _locked = getattr(getattr(self.validator, "simulation", None), "simulation_id", None)
+        if _last is not None and timestamp <= _last and _run and _run == _locked:
+            logger.info(
+                f"on_start: SIMULATION_START at t={timestamp} for run {_run!r}, already opened at t={_last} by its "
+                "first state update — absorbed")
+            return
         self._last_start_ts = timestamp
         self._open_run(self.validator.simulation_timestamp, timestamp, event.logDir, reason="start event")
 
@@ -715,9 +743,20 @@ class SimulationEngine(MarketEngine):
         self._notify_seed_log_dir_change(None)
         v.fundamental_price = {bookId: None for bookId in getattr(v.simulation, 'book_ids', None) or range(v.simulation.book_count)}
         v.pending_notices = {uid: [] for uid in range(v.effective_max_uids)}
-        asyncio.run_coroutine_threadsafe(
-            v._save_state_sync(), v.main_loop
-        ).result(timeout=30)
+        # THE SAVE IS BOUNDED, THE RUN-END UPDATE IS NOT SKIPPED. A save past its bound would raise TimeoutError
+        # here and update_repo would never run, so no fresh simulation would start; a large state saved on a
+        # host short of memory can take that long. The save is left to finish on the main loop; a failed save is
+        # logged. Either way the boundary proceeds.
+        _save = asyncio.run_coroutine_threadsafe(v._save_state_sync(), v.main_loop)
+        try:
+            _save.result(timeout=_END_SAVE_TIMEOUT_S)
+        except concurrent.futures.TimeoutError:
+            logger.warning(
+                f"Run-end state save still running after {_END_SAVE_TIMEOUT_S:.0f}s; proceeding to the run-end "
+                f"update, the save completes in the background"
+            )
+        except Exception:
+            logger.exception("Run-end state save failed; proceeding to the run-end update")
         v.update_repo(end=True)
 
     def on_tick(self, state: NormalizedState) -> None:
@@ -731,8 +770,19 @@ class SimulationEngine(MarketEngine):
           3. simulation_timestamp ← state.timestamp
           4. simulation_id ← basename(logDir)[:13]
           5. Periodic log compression
+          6. Each book's latest fundamental written into the state for the miners
         """
         v = self.validator
+        # A STATE FROM AN OLDER RUN IS REFUSED, NOT MERGED. A new run always has a later id, so a step back means
+        # the engine resumed the wrong run directory, and merging it would save a mixed state over the backups.
+        _locked = getattr(v.simulation, "simulation_id", None) if v.simulation else None
+        _incoming = os.path.basename(state.logDir or "")[:13]
+        if _locked and _incoming and _incoming < _locked:
+            logger.critical(
+                f"REFUSING a state from an older run: locked {_locked!r}, received {_incoming!r} ({state.logDir}). "
+                "The engine resumed the wrong run directory; restart it on the locked run."
+            )
+            raise RunWentBackwardError(f"state from run {_incoming!r} is older than the locked run {_locked!r}")
         # 0. A run that opened without this process. The clock the process holds is the old run's end; the
         #    update belongs to a run that has only just opened; no start event came between. Apply the run
         #    change here, as the event would have, before anything sums the histories on the new clock.
@@ -744,6 +794,19 @@ class SimulationEngine(MarketEngine):
                 "applying the run change now, as the event would have"
             )
             self._open_run(_prev_ts, 0, state.logDir, reason="clock regression at the first state update")
+            v._run_changes_recovered = getattr(v, '_run_changes_recovered', 0) + 1
+        elif state.timestamp < _prev_ts:
+            # THE SAME RUN, ITS CLOCK STEPPED BACK: a resume whose start notice this process never received (the
+            # engine can publish it while the validator is still coming up). The
+            # near-zero rule above cannot see a resumed clock, and without the re-open the histories keep the old
+            # clock, which the board monitor reads as stamped ahead of it. Re-open on the update's clock, as the
+            # notice would have; a late copy of that notice is then absorbed by on_start.
+            logger.warning(
+                f"RESUME NOT SEEN: the clock went from {_prev_ts} to {state.timestamp} on run {_incoming!r} without "
+                "a start event; re-opening the run on the resumed clock, as the event would have"
+            )
+            self._last_start_ts = state.timestamp
+            self._open_run(_prev_ts, state.timestamp, state.logDir, reason="clock regression on the resumed run")
             v._run_changes_recovered = getattr(v, '_run_changes_recovered', 0) + 1
         elif getattr(v, '_restart_when_run_opens', None) and \
                 time.time() - v._restart_when_run_opens > _DEFERRED_RESTART_CEILING_S:
@@ -786,6 +849,19 @@ class SimulationEngine(MarketEngine):
         # 5. Periodic log compression
         if v.simulation_timestamp % v.simulation.log_window == v.simulation.publish_interval:
             self.compress_outputs()
+        # 6. Every book in the state carries its latest fundamental to the miners
+        self._carry_fundamental(state)
+
+    def _carry_fundamental(self, state) -> None:
+        """Load the latest fundamental prices and write each into its book in the state."""
+        books = getattr(state, 'books', None)
+        if not books:
+            return
+        try:
+            self.load_fundamental()
+            stamp_fundamental(books, getattr(self.validator, 'fundamental_price', None))
+        except Exception:
+            logger.exception("Could not attach the fundamental prices to the state")
 
     # ─────────────────────────────────────────────────────────────────────────
     # collect_resets()
@@ -813,9 +889,17 @@ class SimulationEngine(MarketEngine):
     # Simulation-specific helpers (moved from validator.py)
     # ─────────────────────────────────────────────────────────────────────────
 
+    def _warn_fundamental_once(self, key: str, message: str) -> None:
+        """The fundamental is read at every state update, so each missing or unreadable file is reported once."""
+        warned = self.__dict__.setdefault('_fundamental_warned', set())
+        if key not in warned:
+            warned.add(key)
+            logger.warning(message)
+
     def load_fundamental(self) -> None:
         """Load fundamental price data from simulation output files."""
         v = self.validator
+        held = getattr(v, 'fundamental_price', None) or {}
 
         def read_into(prices: dict, file: str, what: str) -> None:
             try:
@@ -826,13 +910,19 @@ class SimulationEngine(MarketEngine):
                 if first_line == '':
                     return
                 book_ids = [int(col) for col in first_line.split(',') if col != "Timestamp\n"]
-                if fp_line is not None and book_ids:
-                    prices |= {book_ids[i]: float(price)
-                               for i, price in enumerate(fp_line.strip().split(',')[:-1])}
+                if fp_line is None or not book_ids or fp_line.strip() == first_line.strip():
+                    return
+                values = fp_line.strip().split(',')
+                if len(values) != len(book_ids) + 1:
+                    # A row still being written: its books keep the values last read.
+                    prices |= {bid: held.get(bid) for bid in book_ids}
+                    return
+                prices |= {book_ids[i]: float(price) for i, price in enumerate(values[:-1])}
             except FileNotFoundError:
-                logger.warning(f"load_fundamental: missing file {file} — skipping {what}")
+                self._warn_fundamental_once(file, f"load_fundamental: missing file {file}, skipping {what}")
             except Exception as exc:
-                logger.warning(f"load_fundamental: error reading {what} fundamental: {exc}")
+                self._warn_fundamental_once(
+                    f"{file}:{type(exc).__name__}", f"load_fundamental: error reading {what} fundamental: {exc}")
 
         if v.simulation.logDir and getattr(v.simulation, 'backgrounds', None):
             # Multi-asset: each realization writes its own fundamental files under
@@ -844,8 +934,8 @@ class SimulationEngine(MarketEngine):
                 inst_dir = os.path.join(v.simulation.logDir, f"{name}-{instance}")
                 files = sorted(glob.glob(os.path.join(inst_dir, 'fundamental.*.csv')))
                 if not files:
-                    logger.warning(
-                        f"load_fundamental: no fundamental files under {inst_dir}")
+                    self._warn_fundamental_once(
+                        inst_dir, f"load_fundamental: no fundamental files under {inst_dir}")
                 for file in files:
                     read_into(prices, file, f"realization {name}-{instance}")
         elif v.simulation.logDir:
@@ -872,7 +962,7 @@ class SimulationEngine(MarketEngine):
                     if output_dir.is_dir():
                         log_archives = {}
                         log_path = Path(output_dir)
-                        for log_file in log_path.iterdir():
+                        for log_file in _run_outputs(log_path):
                             if log_file.is_file() and log_file.suffix == '.log':
                                 log_period = log_file.name.split('.')[1]
                                 # A NAME THAT DOES NOT CARRY A PERIOD IS SKIPPED, NOT FATAL.

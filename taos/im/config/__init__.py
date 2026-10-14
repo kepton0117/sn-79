@@ -59,6 +59,17 @@ def add_im_validator_args(cls, parser):
     )
 
     parser.add_argument(
+        "--repo.auto_update",
+        type=str,
+        choices=["signed", "branch", "off"],
+        help="How the validator updates its own tree (hourly, at startup, at the run end). branch (default): the "
+             "tracked branch's tip. signed: only to the newest release tag on the tracked branch whose SSH signature "
+             "verifies against .github/allowed_signers of the running tree; opt-in until a release signing key "
+             "ships in that file. off: no self-update. The launchers read the same choice from AUTO_UPDATE.",
+        default="branch",
+    )
+
+    parser.add_argument(
         '--benchmark.enabled',
         type=bool,
         default=False,
@@ -78,7 +89,15 @@ def add_im_validator_args(cls, parser):
         help="Port number on which to serve validator listener.",
         default=8000,
     )
-    
+
+    parser.add_argument(
+        "--api.host",
+        type=str,
+        help="Address the validator listener binds. The simulator and the SL/TP service call it on this host, so "
+             "the default is loopback; name another address only for a caller on another host.",
+        default="127.0.0.1",
+    )
+
     parser.add_argument(
         "--compression.engine",
         choices=['zlib', 'lz4', 'zstd'],
@@ -486,14 +505,34 @@ def add_im_validator_args(cls, parser):
     parser.add_argument(
         "--scoring.debeta.class_weights",
         type=str,
-        help="Per-asset-class emission weights under a multi-asset layout, one per background in document order, comma "
-             "separated; normalised to sum 1. Each class's making and skill shares are normalised within the class and "
-             "mixed at these weights, so a new class starts with a small share of each half. Empty is the flat rule: a "
-             "class weighs whatever share of the field's credit and alpha it produces. Ignored on a single market; on "
-             "a layout whose background count differs from the dial's length the scorer uses the flat rule for the "
-             "round and warns. '0.95,0.05', the default, is the setting for the shipped two-class layout "
-             "(simulation_0, simulation_1).",
-        default="0.95,0.05",
+        help="Per-asset-class emission weights under a multi-asset layout: 'books' (the default) weighs each class by "
+             "its share of the layout's books, 96 and 32 giving 0.75 and 0.25; or one weight per background in document "
+             "order, comma separated, normalised to sum 1. Each class's making and skill shares are normalised within the "
+             "class and mixed at these weights. Empty is the flat rule: a class weighs whatever share of the field's "
+             "credit and alpha it produces. Ignored on a single market; on a layout whose background count differs from "
+             "an explicit dial's length the scorer uses the flat rule for the round and warns.",
+        default="books",
+    )
+    parser.add_argument(
+        "--scoring.debeta.capture_market_votes",
+        type=int,
+        help="Capture mid votes (0.6.4, default off): with 1 only prints with the background market on one side vote in a "
+             "fill's capture mid, over the same span (the 15 nearest prints a side that clear the fill's dust floor), "
+             "reaching on until 5 such prints a side vote. Two miners trading with each other then cannot move a "
+             "competitor's capture mid at any size. Off by default: on the 10 October mainnet run the minimum-size "
+             "shaping it closes was not in use (miner-to-miner votes pulled makers' mids by 0.0 bp on average) and "
+             "turning it on moves 2.8 to 10.2% of captured credit per window; the capture-window monitor flags the "
+             "attack, and switching this on is a validator restart.",
+        default=0,
+    )
+    parser.add_argument(
+        "--scoring.debeta.making_fee_weight",
+        type=float,
+        help="Fee-aware making credit (0.6.4): the share of each maker fee netted from the maker's captured and realized "
+             "spread on that fill (a rebate, a negative fee, adds), so the making pool pays the spread a maker earns after "
+             "the venue's charge. Stepped: 0.005 first, raised at later boundaries as maker fees fall; 0 books the gross "
+             "spread as before 0.6.4.",
+        default=0.005,
     )
     parser.add_argument(
         "--scoring.debeta.skill_min_books_share",
@@ -535,6 +574,16 @@ def add_im_validator_args(cls, parser):
         help="1: scale the skill leg's rank by the share of the skill pool that clears the hurdle on "
              "skill_hurdle_books books, so an emptying pool pays less rather than the same to fewer. "
              "0 (default): off. Published as debeta_skill_pool_factor either way.",
+        default=0,
+    )
+    parser.add_argument(
+        "--scoring.debeta.skill_share_ema",
+        type=int,
+        choices=[0, 1],
+        help="1: under the proportional_both pool, the skill half's share passes the same track-record EMA as the "
+             "making term and share before allocation, so standing in the skill half is earned over several "
+             "windows as it is in the making half. 0 (default): the skill half is allocated from the round's "
+             "share and smoothed only after allocation.",
         default=0,
     )
     parser.add_argument(

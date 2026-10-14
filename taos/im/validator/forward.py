@@ -490,20 +490,32 @@ async def notify(self : Validator, notices : List[FinanceEventNotification]) -> 
     """
     responses = []
     extended_metagraph = self.get_extended_metagraph()
-    
+    # The validator's own uid is published at its external IP with nothing serving it, so a
+    # notice sent there reaches whatever listens on that port. Same rule as query.py's
+    # _queryable_axons.
+    own_hotkey = self.wallet.hotkey.ss58_address
+
+    def _not_own(uid, axon):
+        return uid != self.uid and axon.hotkey != own_hotkey
+
+    others = [axon for uid, axon in enumerate(extended_metagraph.axons) if _not_own(uid, axon)]
+
     for notice in notices:
         if notice.event.agentId is not None:
             agent_id = notice.event.agentId
             if agent_id < len(extended_metagraph.axons):
-                axons = [extended_metagraph.axons[agent_id]]
+                target = extended_metagraph.axons[agent_id]
+                axons = [target] if _not_own(agent_id, target) else []
             else:
                 bt.logging.error(
                     f"Invalid agentId {agent_id} in notice (max: {len(extended_metagraph.axons)-1}), "
                     f"broadcasting to all agents instead"
                 )
-                axons = extended_metagraph.axons
+                axons = others
         else:
-            axons = extended_metagraph.axons
+            axons = others
+        if not axons:
+            continue
         responses.extend(await self.dendrite(
             axons=axons,
             synapse=notice,

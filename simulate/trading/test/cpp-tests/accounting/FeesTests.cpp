@@ -6,6 +6,7 @@
 #include "taosim/decimal/decimal.hpp"
 #include "taosim/matching/TieredFeePolicy.hpp"
 #include "taosim/matching/DynamicFeePolicy.hpp"
+#include <taosim/checkpoint/serialization/matching/DynamicFeePolicy.hpp>
 #include "taosim/matching/FeePolicyWrapper.hpp"
 #include "taosim/message/PayloadFactory.hpp"
 #include "formatting.hpp"
@@ -506,3 +507,171 @@ TEST_F(DynamicFeePolicyTest, trackVolumes)
 
 
 
+
+//-------------------------------------------------------------------------
+// The dynamic fee policy keeps one history per book. A book's slots, running total, previous-step total and
+// last-update time are its own, whichever other books of the same policy trade at the same time.
+
+namespace
+{
+
+std::unique_ptr<DynamicFeePolicy> makeDynamicPolicy(int historySlots)
+{
+    return std::make_unique<DynamicFeePolicy>(DFPolicyDesc{
+        .simulation = nullptr,
+        .historySlots = historySlots,
+        .makerFee = 0_dec,
+        .takerFee = 0_dec,
+        .maxMakerRate = DEC(0.015),
+        .maxTakerRate = DEC(0.015),
+        .targetMTR = DEC(0.4),
+        .shapeMakerFee = 2_dec,
+        .shapeMakerRebate = 2_dec});
+}
+
+struct FeeTrade
+{
+    Timestamp t;
+    BookId book;
+    decimal_t volume;
+    bool aggressive;
+};
+
+struct BookHistory
+{
+    std::vector<Volumes> slots;
+    Volumes total{};
+    std::optional<Volumes> prev;
+};
+
+// What each book must hold after `trades`, recomputed from that book's trades alone: a new slot whenever the
+// book's trade time changes, the newest `capacity` slots, their sum, and the sum when its newest slot opened.
+std::map<BookId, BookHistory> recomputeHistory(const std::vector<FeeTrade>& trades, size_t capacity)
+{
+    std::map<BookId, std::vector<std::pair<Timestamp, Volumes>>> perBook;
+    for (const auto& tr : trades) {
+        auto& slots = perBook[tr.book];
+        if (slots.empty() || slots.back().first != tr.t) {
+            slots.push_back({tr.t, Volumes{}});
+        }
+        (tr.aggressive ? slots.back().second.aggressive : slots.back().second.passive) += tr.volume;
+    }
+    std::map<BookId, BookHistory> out;
+    for (const auto& [book, slots] : perBook) {
+        BookHistory h;
+        const size_t newest = slots.size() - 1;
+        for (size_t i = slots.size() > capacity ? slots.size() - capacity : 0; i < slots.size(); ++i) {
+            h.slots.push_back(slots[i].second);
+            h.total.aggressive += slots[i].second.aggressive;
+            h.total.passive += slots[i].second.passive;
+        }
+        if (newest >= 1) {
+            Volumes prev{};
+            for (size_t i = newest > capacity ? newest - capacity : 0; i < newest; ++i) {
+                prev.aggressive += slots[i].second.aggressive;
+                prev.passive += slots[i].second.passive;
+            }
+            h.prev = prev;
+        }
+        out[book] = h;
+    }
+    return out;
+}
+
+void expectHistory(const DynamicFeePolicy& policy, const std::map<BookId, BookHistory>& want)
+{
+    for (const auto& [book, h] : want) {
+        ASSERT_TRUE(policy.volumes().contains(book)) << "book " << book;
+        const auto& slots = policy.volumes().at(book);
+        ASSERT_EQ(slots.size(), h.slots.size()) << "book " << book;
+        for (size_t i = 0; i < slots.size(); ++i) {
+            EXPECT_TRUE(slots[i].aggressive == h.slots[i].aggressive) << "book " << book << " slot " << i;
+            EXPECT_TRUE(slots[i].passive == h.slots[i].passive) << "book " << book << " slot " << i;
+        }
+        EXPECT_TRUE(policy.totalVolumes().at(book).aggressive == h.total.aggressive) << "book " << book;
+        EXPECT_TRUE(policy.totalVolumes().at(book).passive == h.total.passive) << "book " << book;
+        if (h.prev) {
+            ASSERT_TRUE(policy.totalVolumesPrev().contains(book)) << "book " << book;
+            EXPECT_TRUE(policy.totalVolumesPrev().at(book).aggressive == h.prev->aggressive) << "book " << book;
+            EXPECT_TRUE(policy.totalVolumesPrev().at(book).passive == h.prev->passive) << "book " << book;
+        }
+    }
+}
+
+}  // namespace
+
+TEST(DynamicFeePolicyHistory, aBooksFirstTradeAtAnotherBooksTimeOpensItsOwnSlot)
+{
+    const std::vector<FeeTrade> trades{{10, 0, 5_dec, true}, {10, 1, 7_dec, false}};
+    auto policy = makeDynamicPolicy(3);
+    for (const auto& tr : trades) policy->updateHistory(tr.t, tr.book, 1, tr.volume, tr.aggressive);
+    ASSERT_EQ(policy->volumes().at(1).size(), 1u);
+    EXPECT_TRUE(policy->volumes().at(1).back().passive == 7_dec);
+    expectHistory(*policy, recomputeHistory(trades, 3));
+}
+
+TEST(DynamicFeePolicyHistory, interleavedBooksKeepTheirOwnSlotsTotalsAndEviction)
+{
+    std::vector<FeeTrade> trades;
+    Timestamp t = 100;
+    for (int round = 0; round < 12; ++round) {
+        t += 10;
+        trades.push_back({t, 0, util::double2decimal(round + 1), round % 2 == 0});
+        trades.push_back({t, 1, util::double2decimal(2 * (round + 1)), round % 3 == 0});
+        if (round % 4 == 0) trades.push_back({t, 0, 1_dec, false});
+        if (round % 3 == 1) trades.push_back({t + 5, 1, 3_dec, true});
+    }
+    auto policy = makeDynamicPolicy(4);
+    for (const auto& tr : trades) policy->updateHistory(tr.t, tr.book, 1, tr.volume, tr.aggressive);
+    expectHistory(*policy, recomputeHistory(trades, 4));
+}
+
+TEST(DynamicFeePolicyHistory, aResetClearsTheTotalsWithTheSlots)
+{
+    auto policy = makeDynamicPolicy(3);
+    policy->updateHistory(10, 0, 1, 5_dec, true);
+    policy->updateHistory(20, 0, 1, 6_dec, false);
+    policy->resetHistory();
+    policy->updateHistory(20, 0, 1, 2_dec, true);
+    ASSERT_EQ(policy->volumes().at(0).size(), 1u);
+    EXPECT_TRUE(policy->totalVolumes().at(0).aggressive == 2_dec);
+    EXPECT_TRUE(policy->totalVolumes().at(0).passive == 0_dec);
+}
+
+TEST(DynamicFeePolicyHistory, aCheckpointKeepsEachBooksTimeAndAPolicyWideOneStillResumes)
+{
+    auto policy = makeDynamicPolicy(3);
+    policy->updateHistory(10, 0, 1, 5_dec, true);
+    policy->updateHistory(10, 1, 1, 7_dec, false);
+    policy->updateHistory(20, 0, 1, 1_dec, false);
+
+    // Packed through BinaryStream, as a checkpoint is: the decimal adaptor accepts no other stream.
+    taosim::serialization::BinaryStream current;
+    msgpack::packer<taosim::serialization::BinaryStream>{current}.pack(*policy);
+    auto restored = makeDynamicPolicy(3);
+    msgpack::unpack(current.data(), current.size()).get().convert(*restored);
+    EXPECT_EQ(restored->lastUpdate(), policy->lastUpdate());
+    restored->updateHistory(20, 1, 1, 4_dec, true);
+    EXPECT_EQ(restored->volumes().at(1).size(), 2u) << "book 1 last traded at 10, so 20 opens its own slot";
+
+    taosim::serialization::BinaryStream policyWide;
+    msgpack::packer<taosim::serialization::BinaryStream> pk{policyWide};
+    pk.pack_map(5);
+    pk.pack("type");
+    pk.pack("dynamic");
+    pk.pack("lastUpdate");
+    pk.pack(Timestamp{20});
+    pk.pack("totalVolumes");
+    pk.pack(policy->totalVolumes());
+    pk.pack("totalVolumesPrev");
+    pk.pack(policy->totalVolumesPrev());
+    pk.pack("volumes");
+    pk.pack(policy->volumes());
+    auto resumed = makeDynamicPolicy(3);
+    msgpack::unpack(policyWide.data(), policyWide.size()).get().convert(*resumed);
+    EXPECT_EQ(resumed->lastUpdate().at(0), Timestamp{20});
+    EXPECT_EQ(resumed->lastUpdate().at(1), Timestamp{20});
+    resumed->updateHistory(30, 1, 1, 4_dec, true);
+    EXPECT_EQ(resumed->volumes().at(1).size(), 2u);
+    EXPECT_TRUE(resumed->totalVolumes().at(1).aggressive == 4_dec);
+}

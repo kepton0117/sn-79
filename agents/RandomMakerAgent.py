@@ -146,7 +146,7 @@ class RandomMakerAgent(GenTRXAgent):
                     response.limit_order(
                         book_id=book_id,
                         direction=OrderDirection.SELL,
-                        quantity=round(quantity * 1 + leverage, volume_decimals),
+                        quantity=quantity,
                         price=askprice,
                         stp=STP.CANCEL_NEWEST,
                         timeInForce=tif,

@@ -27,3 +27,19 @@ agent_params() {
     *) echo "" ;;
   esac
 }
+
+# The parameters a launcher passes: an agent named on the command line without explicit parameters gets its own
+# entry from the map above; explicit parameters, the launcher's default agent, and an agent the map does not
+# know keep what they had.
+#   resolve_agent_params <agent> <named: 0|1> <params given: 0|1> <current params>
+resolve_agent_params() {
+  local mapped
+  if [ "$2" = "1" ] && [ "$3" = "0" ]; then
+    mapped="$(agent_params "$1")"
+    if [ -n "$mapped" ]; then
+      echo "$mapped"
+      return
+    fi
+  fi
+  echo "$4"
+}

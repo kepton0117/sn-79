@@ -78,6 +78,7 @@ EXEMPT = {
     "_gentrx": "object; its _scores are cleared by handle_deregistration",
     # runtime handles and flags of the query service, the reporter and load bookkeeping
     "_histories_rebased_at_load": "load counter", "_last_prune_timestamp": "clock", "_run_changes_recovered": "counter",
+    "_last_accounted_ts": "clock",
     "_pending_reward_tasks": "task queue", "_start_query_service": "method", "dendrite": "network handle",
     "get_extended_metagraph": "method", "hotkeys": "chain view", "miner_net_lock": "lock",
     "pagerduty_alert": "method", "query_ipc_executor": "executor", "query_notify_read": "IPC handle",

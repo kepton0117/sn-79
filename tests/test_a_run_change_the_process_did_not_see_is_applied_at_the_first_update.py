@@ -6,10 +6,13 @@ update it handles belongs to a run that opened without it. Nothing shifted the h
 window rides into the new run with stamps ahead of the clock, inside every window, for as long as the new clock
 takes to pass them.
 
-Two things close that gap. A state update whose clock has gone backwards onto a run that has only just opened is
-that missed start, and the engine applies the run change there, exactly as the start event would have. And a
-validator restart owed at the run end waits until the new run has opened and its state has been saved on the new
-clock, so the start event is handled by a process that stays up long enough to save it.
+Three things close that gap. A state update whose clock has gone backwards onto a run that has only just opened is
+that missed start, and the engine applies the run change there, exactly as the start event would have. A state
+update whose clock has gone backwards on the SAME run is a checkpoint resume whose start event was lost the same
+way (a full relaunch can bring the engine up while the validator is still loading), and
+the engine re-opens the run on the resumed clock, absorbing the event's late copy. And a validator restart owed at
+the run end waits until the new run has opened and its state has been saved on the new clock, so the start event
+is handled by a process that stays up long enough to save it.
 """
 import asyncio
 import os
@@ -35,8 +38,8 @@ def test_a_clock_that_goes_back_onto_a_young_run_is_a_missed_run_change():
 
 
 def test_a_resume_that_steps_back_on_a_mature_run_is_not():
-    # a checkpoint resume can land minutes behind the last state the validator saw, and it fires the start
-    # event itself; a run that is hours old did not just open
+    # a checkpoint resume can land minutes behind the last state the validator saw; a run that is hours old did
+    # not just open, so it is not a missed run change: the engine's own resume branch re-opens it instead
     assert not trade.missed_run_change(10 * H, 10 * H - 5 * 60 * S, fresh_threshold=FRESH)
 
 
@@ -148,11 +151,36 @@ def test_a_process_that_saw_the_start_event_does_not_shift_again_at_the_first_up
         loop.stop()
 
 
-def test_a_mature_run_whose_clock_steps_back_is_not_reopened(tmp_path, monkeypatch):
+def test_a_mature_run_whose_clock_steps_back_is_reopened_on_the_resumed_clock(tmp_path, monkeypatch):
+    # a checkpoint resume lands minutes to hours behind the last state the validator saw, and its start event
+    # is lost when the engine publishes it while the validator is still coming up:
+    # the first update re-opens the run on the resumed clock, and the late copy of the event is absorbed
     e, v, calls, loop = _engine(tmp_path, monkeypatch, clock=10 * H)
     try:
         e.on_tick(_state(tmp_path, 10 * H - 5 * 60 * S))
-        assert calls["shift"] == [] and calls["saves"] == 0
+        assert calls["shift"] == [(10 * H, 10 * H - 5 * 60 * S)] and calls["saves"] == 1
+        assert v.simulation_timestamp == 10 * H - 5 * 60 * S and v._run_changes_recovered == 1
+        e.on_start(10 * H - 6 * 60 * S, SimpleNamespace(logDir=str(tmp_path / "logs" / "20260927_170001")))
+        assert calls["shift"] == [(10 * H, 10 * H - 5 * 60 * S)], "the late start event is the episode already opened"
+        e.on_tick(_state(tmp_path, 10 * H - 5 * 60 * S + S))
+        assert calls["shift"] == [(10 * H, 10 * H - 5 * 60 * S)] and calls["saves"] == 1
+    finally:
+        loop.stop()
+
+
+def test_the_resume_reopen_sends_the_shadow_the_same_shift_once(tmp_path, monkeypatch):
+    # if the engine goes back to the start, the shadow scoring service and main must re-base the same way or their
+    # parity diverges. The resume re-open shifts main through _open_run, which sends the shadow the same (old, new) frame, so both sides
+    # make one identical move, and the late start event adds no second one
+    e, v, calls, loop = _engine(tmp_path, monkeypatch, clock=10 * H)
+    calls["shadow"] = []
+    v._scoring_shadow = SimpleNamespace(emit_sim_start=lambda old, new: calls["shadow"].append((old, new)))
+    try:
+        e.on_tick(_state(tmp_path, 10 * H - 7 * 60 * S))
+        assert calls["shadow"] == [(10 * H, 10 * H - 7 * 60 * S)] == calls["shift"]
+        e.on_start(10 * H - 7 * 60 * S - S, SimpleNamespace(logDir=str(tmp_path / "logs" / "20260927_170001")))
+        e.on_tick(_state(tmp_path, 10 * H - 7 * 60 * S + S))
+        assert calls["shadow"] == [(10 * H, 10 * H - 7 * 60 * S)], "one frame to the shadow, as one shift in main"
     finally:
         loop.stop()
 

@@ -571,7 +571,26 @@ void Book::unregisterLimitOrder(const LimitOrder::Ptr& order)
 {
     m_signals.unregister(order, m_id);
     m_orderIdMap.erase(order->id());
+    if (m_unregisteredCapacity > 0) {
+        if (const auto it = m_order2clientCtx.find(order->id()); it != m_order2clientCtx.end()) {
+            const bool inserted = m_unregistered.insert_or_assign(
+                order->id(), UnregisteredOrder{.order = order, .ctx = it->second}).second;
+            if (inserted) { m_unregisteredQueue.push_back(order->id()); }
+            while (m_unregisteredQueue.size() > m_unregisteredCapacity) {
+                m_unregistered.erase(m_unregisteredQueue.front());
+                m_unregisteredQueue.pop_front();
+            }
+        }
+    }
     m_order2clientCtx.erase(order->id());
+}
+
+//-------------------------------------------------------------------------
+
+const Book::UnregisteredOrder* Book::unregisteredOrder(OrderID orderId) const noexcept
+{
+    const auto it = m_unregistered.find(orderId);
+    return it != m_unregistered.end() ? &it->second : nullptr;
 }
 
 //-------------------------------------------------------------------------

@@ -162,17 +162,22 @@ fs::path runDirLatest(const fs::path& baseDir)
         }
         return false;
     };
-    const auto runDirsSortedByWriteTime =
+    // NEWEST BY RUN ID, NOT BY THE DIRECTORY'S WRITE TIME. A run directory is named by its start time
+    // (YYYYMMDD_HHMMSS), and its own write time moves whenever an entry is created or removed in it, so a
+    // day-rollover file or a cleanup could make an older run "latest". Same rule as run/start_simulator.sh's
+    // _newest_real_rundir.
+    const auto runDirsSortedByName =
         filesystem::collectMatchingPaths(baseDir, isSimRunDir)
         | ranges::actions::sort([](auto&& lhs, auto&& rhs) {
-            return fs::last_write_time(lhs) < fs::last_write_time(rhs);
+            return lhs.filename().string() < rhs.filename().string();
         });
-    if (runDirsSortedByWriteTime.empty()) {
+    if (runDirsSortedByName.empty()) {
         throw CheckpointError{fmt::format(
             "No run directories containing '{}' found in '{}'",
             CheckpointManager::s_storeDirName, baseDir.c_str())};
     }
-    return runDirsSortedByWriteTime.back();
+    fmt::println("Resuming the newest run by id: {}", runDirsSortedByName.back().c_str());
+    return runDirsSortedByName.back();
 }
 
 //-------------------------------------------------------------------------
@@ -326,10 +331,19 @@ void reestablishSharedTopology(MultiBookExchangeAgent& exchange)
     // One order-id and trade-id counter shared across the portfolio's books.
     auto&& books = exchange.books();
     if (!books.empty()) {
-        const auto orderIdCounter = books.front()->orderIdCounter();
+        // The exchange's own order counter is canonical, not the first book's: it is the one
+        // mintPoolOrderId draws from, and the restore leaves it at its construction value.
+        auto& orderIdCounter = exchange.orderIdCounter();
+        for (auto&& book : books) {
+            if (book->orderIdCounter()) {
+                *orderIdCounter = std::max(*orderIdCounter, *book->orderIdCounter());
+            }
+        }
         const auto tradeIdCounter = books.front()->tradeIdCounter();
-        for (auto&& book : books | views::drop(1)) {
+        for (auto&& book : books) {
             book->orderIdCounter() = orderIdCounter;
+        }
+        for (auto&& book : books | views::drop(1)) {
             book->tradeIdCounter() = tradeIdCounter;
         }
     }

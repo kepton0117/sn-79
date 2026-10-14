@@ -145,6 +145,13 @@ class prometheus:
                 help="""Prometheus serving port.""",
             )
             parser.add_argument(
+                "--prometheus.host",
+                type=str,
+                required=False,
+                default="0.0.0.0",
+                help="""Address the metrics server binds; every interface by default.""",
+            )
+            parser.add_argument(
                 "--prometheus.level",
                 required=False,
                 type=str,

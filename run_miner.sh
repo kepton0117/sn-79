@@ -31,7 +31,7 @@ NETUID=79
 AXON_PORT=8091
 AGENT_PATH=~/.taos/agents
 AGENT_NAME=SimpleRegressorAgent
-AGENT_PARAMS="min_quantity=0.1 max_quantity=1.0 expiry_period=200 model=PassiveAggressiveRegressor signal_threshold=0.0025"
+AGENT_PARAMS="quantity=1.0 expiry_period=120000000000 model=PassiveAggressiveRegressor signal_threshold=0.0025"   # what SimpleRegressorAgent reads; expiry in simulation ns (120 s)
 LOG_LEVEL=info
 GENTRX=0          # 1 = enable GenTRX training mode
 GENTRX_PARAMS=""  # override GenTRX-specific params (gtx_* keys)
@@ -95,6 +95,10 @@ entry_threshold=0.35 cancel_threshold=0.20 \
 stop_loss_bps=40 base_quote_size=0.3 enter_size_mult=3.0 \
 max_flat_inventory=2.0 expiry_period=500000000 max_fee_rate=0.005"
 fi
+
+# A named agent without -m runs on its own parameters, not on the default agent's.
+. "$REPO_ROOT/bin/agent_params.sh"
+AGENT_PARAMS="$(resolve_agent_params "$AGENT_NAME" "$_EXPLICIT_AGENT" "$_EXPLICIT_PARAMS" "$AGENT_PARAMS")"
 
 echo "ENDPOINT:        $ENDPOINT"
 echo "WALLET:          $WALLET_PATH $WALLET_NAME / $HOTKEY_NAME"

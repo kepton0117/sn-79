@@ -12,7 +12,7 @@ EXPECTED = {
     "debeta_making_basis": "realized",
     "debeta_making_horizon_s": 20.0,
     "debeta_s3_k": 4.0,
-    "debeta_class_weights": "0.95,0.05",
+    "debeta_class_weights": "books",
     "debeta_skill_min_books_share": 0.15625,
     "debeta_skill_hurdle_bps": 2.3,
 }

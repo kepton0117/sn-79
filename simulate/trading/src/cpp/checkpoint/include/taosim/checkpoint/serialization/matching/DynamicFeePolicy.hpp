@@ -7,6 +7,9 @@
 #include <taosim/matching/DynamicFeePolicy.hpp>
 #include <taosim/serialization/msgpack/boost/circular_buffer.hpp>
 
+#include <algorithm>
+#include <optional>
+
 //-------------------------------------------------------------------------
 
 namespace msgpack
@@ -76,11 +79,18 @@ struct convert<taosim::matching::DynamicFeePolicy>
             throw taosim::serialization::MsgPackError{};
         }
 
+        std::optional<Timestamp> policyWideLastUpdate;
+        bool perBookLastUpdate = false;
         for (const auto& [k, val] : o.via.map) {
             auto key = k.as<std::string_view>();
 
             if (key == "lastUpdate") {
-                v.lastUpdate() = val.as<Timestamp>();
+                policyWideLastUpdate = val.as<Timestamp>();
+            }
+            else if (key == "lastUpdatePerBook") {
+                using T = std::remove_cvref_t<decltype(v.lastUpdate())>;
+                v.lastUpdate() = val.as<T>();
+                perBookLastUpdate = true;
             }
             else if (key == "totalVolumes") {
                 using T = std::remove_cvref_t<decltype(v.totalVolumes())>;
@@ -96,6 +106,14 @@ struct convert<taosim::matching::DynamicFeePolicy>
             }
         }
 
+        // A checkpoint that carries only the policy-wide time gives that time to every book with a history.
+        if (!perBookLastUpdate && policyWideLastUpdate.has_value() && *policyWideLastUpdate != 0) {
+            v.lastUpdate().clear();
+            for (const auto& [bookId, slots] : v.volumes()) {
+                v.lastUpdate()[bookId] = *policyWideLastUpdate;
+            }
+        }
+
         return o;
     }
 };
@@ -107,12 +125,20 @@ struct pack<taosim::matching::DynamicFeePolicy>
     msgpack::packer<Stream>& operator()(
         msgpack::packer<Stream>& o, const taosim::matching::DynamicFeePolicy& v) const
     {
-        o.pack_map(5);
+        o.pack_map(6);
 
         o.pack("type");
         o.pack("dynamic");
 
+        // The latest of the books' times, for a reader that knows only the policy-wide field.
+        Timestamp latest = 0;
+        for (const auto& [bookId, t] : v.lastUpdate()) {
+            latest = std::max(latest, t);
+        }
         o.pack("lastUpdate");
+        o.pack(latest);
+
+        o.pack("lastUpdatePerBook");
         o.pack(v.lastUpdate());
 
         o.pack("totalVolumes");

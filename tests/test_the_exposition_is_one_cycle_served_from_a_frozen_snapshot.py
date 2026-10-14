@@ -56,7 +56,7 @@ def test_the_renderer_writes_exactly_what_the_client_writes():
 
 def test_a_snapshot_is_not_moved_by_the_next_cycles_updates():
     regs, miner_gauges, agent_gauges = _registries()
-    e = ex.Exposition(regs, ORDER)
+    e = ex.Exposition(regs, ORDER, main_mode='all')
     first = e.publish(step=1, sim_timestamp=5, sim_id='s')
     miner_gauges.update({('w', 1, 'score'): 0.75})
     agent_gauges.update({('w', 0, 1, 'pnl'): 9.0})

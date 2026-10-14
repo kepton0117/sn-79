@@ -21,6 +21,15 @@ from taos.im.validator.debeta import (
 # De-beta making: half-window (in trades) for the non-lagging centered mid used for spread capture.
 CAPTURE_W = 15
 
+
+def _min_order_size(self, book_id):
+    """The book's minimum order size, the dust floor's voting bar in the capture mid (0.6.4): from the book's own
+    class configuration on a multi-asset layout; 0.0 when the configuration cannot say, which leaves every print a vote."""
+    try:
+        return float(getattr(self.simulation.config_for_book(int(book_id)), "min_order_size", 0.0) or 0.0)
+    except Exception:
+        return 0.0
+
 if TYPE_CHECKING:
     from taos.im.neurons.validator import Validator
 
@@ -518,6 +527,16 @@ def update_trade_volumes(self: Validator, state: MarketSimulationStateUpdate):
     accounts = state.accounts
     notices = state.notices
 
+    # A simulation state handled twice is accounted once. On a stale queue frame the engine reads whatever shared
+    # memory holds, which can be the state it handled last. Nothing in the simulation dedupes a fill, so a repeat
+    # would count every fill again, and the scoring child, which drops a repeat of its INIT base, would then
+    # disagree with main. The exchange dedupes by trade id and is left as it was.
+    if getattr(getattr(self, 'engine', None), 'mode', 'simulation') != 'exchange':
+        if timestamp == getattr(self, '_last_accounted_ts', None):
+            bt.logging.warning(f"State at ts={timestamp} repeats the last accounted state; its fills are counted once.")
+            return
+        self._last_accounted_ts = timestamp
+
     volume_decimals = self.simulation.volumeDecimals
 
     sampled_timestamp = (timestamp // self.config.scoring.activity.trade_volume_sampling_interval) * self.config.scoring.activity.trade_volume_sampling_interval
@@ -565,6 +584,10 @@ def update_trade_volumes(self: Validator, state: MarketSimulationStateUpdate):
         _mark_window = int(getattr(_debeta_cfg, 'mark_window', 0) or 0)
         # realized spread (2 Oct 2026): the horizon a fill is marked at, sim seconds; accumulated at every making_basis
         _realized_ns = int(float(getattr(_debeta_cfg, 'making_horizon_s', 20.0) or 20.0) * 1e9)
+        # fee-aware making (0.6.4): the share of each maker fee netted from the maker's captured and realized spread
+        _fee_w = float(getattr(_debeta_cfg, 'making_fee_weight', 0.0) or 0.0)
+        # capture mid votes (0.6.4): 1 lets only background-sided prints vote in a fill's capture mid
+        _market_votes = bool(int(getattr(_debeta_cfg, 'capture_market_votes', 0) or 0))
         if not hasattr(self, 'debeta_cp'):
             self.debeta_cp = {}  # {maker_uid: {taker_uid: vol}} for P11 (running sum)
             self.debeta_cpc = {}  # {class: {maker_uid: {taker_uid: vol}}}: the same rows per asset class
@@ -601,6 +624,7 @@ def update_trade_volumes(self: Validator, state: MarketSimulationStateUpdate):
                     real_buy_sums=self.realized_buy_sums, real_sell_sums=self.realized_sell_sums,
                     real_buy_hist=self.debeta_realbuy_hist, real_sell_hist=self.debeta_realsell_hist,
                     horizon_ns=_realized_ns, now_ns=timestamp,
+                    min_size=_min_order_size(self, bookId), fee_weight=_fee_w, market_votes=_market_votes,
                 )
                 accumulate_book_mtm(
                     self.debeta_mtm, self.debeta_invsum, self.debeta_invn, self.debeta_inv,
@@ -644,7 +668,7 @@ def update_trade_volumes(self: Validator, state: MarketSimulationStateUpdate):
                             sell_hist=self.debeta_capsell_hist, ts=sampled_timestamp,
                             real_buy_sums=self.realized_buy_sums, real_sell_sums=self.realized_sell_sums,
                             real_buy_hist=self.debeta_realbuy_hist, real_sell_hist=self.debeta_realsell_hist,
-                            horizon_ns=_realized_ns, now_ns=timestamp)
+                            horizon_ns=_realized_ns, now_ns=timestamp, fee_weight=_fee_w)
 
     # De-beta live prune. BOTH legs share ONE window, the kappa lookback. Pruning making on the
     # 24h volume-assessment window, each leg inheriting the retention of the legacy leg it
@@ -1004,7 +1028,9 @@ def shift_simulation_histories(
                                 CAPTURE_W, buy_hist=self.debeta_capbuy_hist,
                                 sell_hist=self.debeta_capsell_hist, ts=old_ts, force=True,
                                 real_buy_sums=getattr(self, 'realized_buy_sums', None), real_sell_sums=getattr(self, 'realized_sell_sums', None),
-                                real_buy_hist=getattr(self, 'debeta_realbuy_hist', None), real_sell_hist=getattr(self, 'debeta_realsell_hist', None))
+                                real_buy_hist=getattr(self, 'debeta_realbuy_hist', None), real_sell_hist=getattr(self, 'debeta_realsell_hist', None),
+                                fee_weight=float(getattr(getattr(getattr(self, 'config', None), 'scoring', None) and
+                                                         self.config.scoring.debeta, 'making_fee_weight', 0.0) or 0.0))
             self.debeta_capture_mid = {}
         shift_hist_2level(self.debeta_capbuy_hist, self.capture_buy_sums, old_ts, new_ts, new_threshold)
         shift_hist_2level(self.debeta_capsell_hist, self.capture_sell_sums, old_ts, new_ts, new_threshold)
@@ -1206,7 +1232,8 @@ def missed_run_change(previous_ts, incoming_ts, *, fresh_threshold) -> bool:
     """A state update whose clock is behind the one the process holds, on a run that has only just opened, is the
     first update of a run whose start event this process never received: the process went down while the old
     run's end handling was starting the new engine, and came up after the event had been delivered. A checkpoint
-    resume can also step the clock back, but it fires the start event itself and never lands near zero."""
+    resume also steps the clock back, and never lands near zero: that case is the engine's own resume branch, which
+    re-opens the run on the resumed clock (its start event is lost the same way on a full relaunch)."""
     try:
         previous_ts = int(previous_ts or 0)
         incoming_ts = int(incoming_ts or 0)

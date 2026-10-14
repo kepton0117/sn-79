@@ -206,6 +206,11 @@
     "annotation": "list[taos.im.protocol.orders.Order | taos.im.protocol.book.TradeInfo | taos.im.protocol.orders.Cancellation] | None",
     "required": true
    },
+   "f": {
+    "alias": "fundamental",
+    "annotation": "float | None",
+    "required": false
+   },
    "i": {
     "alias": "id",
     "annotation": "<class 'int'>",
@@ -542,6 +547,11 @@
     "alias": "events",
     "annotation": "list[taos.im.protocol.orders.Order | taos.im.protocol.book.TradeInfo | taos.im.protocol.orders.Cancellation] | None",
     "required": true
+   },
+   "f": {
+    "alias": "fundamental",
+    "annotation": "float | None",
+    "required": false
    },
    "i": {
     "alias": "id",
