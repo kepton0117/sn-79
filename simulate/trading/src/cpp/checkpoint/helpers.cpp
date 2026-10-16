@@ -35,6 +35,8 @@
 
 #include <cstdio>
 #include <fstream>
+#include <regex>
+#include <unordered_set>
 #include <latch>
 
 //-------------------------------------------------------------------------
@@ -545,15 +547,102 @@ static void setupBlocks(
 
 //-------------------------------------------------------------------------
 
-static void setupLogFiles(const msgpack::object& o, const fs::path& logDir)
+namespace
 {
-    if (o.type != msgpack::type::MAP) {
+
+// The end of the window a log file covers, from its name: "<stem>.<DDHHMMSS>-<DDHHMMSS>.log", the
+// simulation's own time. Nothing for a name without one.
+std::optional<std::chrono::seconds> logWindowEnd(const std::string& name)
+{
+    static const std::regex pattern{R"(^.+\.(\d{8})-(\d{8})\.log$)"};
+    std::smatch m;
+    if (!std::regex_match(name, m, pattern)) return std::nullopt;
+    const std::string end = m[2].str();
+    const auto field = [&](size_t at) { return std::stoll(end.substr(at, 2)); };
+    return std::chrono::seconds{field(0) * 86400 + field(2) * 3600 + field(4) * 60 + field(6)};
+}
+
+std::chrono::seconds simulationOffset(const Simulation& simu, uint64_t timestamp)
+{
+    return std::chrono::duration_cast<std::chrono::seconds>(
+        taosim::simulation::timescaleToConverter(simu.config().time().scale)(timestamp));
+}
+
+}  // namespace
+
+void restoreLogFileSizes(const msgpack::object& sizes, const fs::path& logDir, std::chrono::seconds ckptOffset)
+{
+    if (sizes.type != msgpack::type::MAP) {
         throw taosim::checkpoint::CheckpointError{};
     }
 
-    for (const auto& [key, val] : o.via.map) {
-        fs::resize_file(logDir / key.as<std::string>(), val.as<size_t>());
+    for (const auto& [key, val] : sizes.via.map) {
+        const auto name = key.as<std::string>();
+        const auto path = logDir / name;
+        if (fs::exists(path)) {
+            fs::resize_file(path, val.as<size_t>());
+            continue;
+        }
+        const auto windowEnd = logWindowEnd(name);
+        if (windowEnd && *windowEnd <= ckptOffset) {
+            fmt::println("  {} is not on disk; its window had closed by the checkpoint, so it is "
+                "complete in the run's archive and is left there", path.c_str());
+            continue;
+        }
+        throw taosim::checkpoint::CheckpointError{fmt::format(
+            "{} is missing, and the checkpoint needs it: {}. Put the file back (a closed window is "
+            "packed into a zip at the run's root) and resume again.",
+            path.c_str(),
+            windowEnd ? "its window was still open at the checkpoint" : "its name carries no window")};
     }
+}
+
+//-------------------------------------------------------------------------
+
+size_t setAsideLogsWrittenAfter(const fs::path& runDir, const msgpack::object& commonObj, uint64_t ckptTimestamp)
+{
+    auto sizesObj = taosim::serialization::msgpackFindMapObj(commonObj, "logFileSizes");
+    if (!sizesObj) return 0;
+    const msgpack::object& sizes = sizesObj->get();
+
+    std::unordered_set<std::string> recorded;
+    auto collect = [&](const msgpack::object& map) {
+        if (map.type != msgpack::type::MAP) return;
+        for (const auto& [key, _] : map.via.map) recorded.insert(key.as<std::string>());
+    };
+    std::vector<fs::path> dirs;
+    if (sizes.type == msgpack::type::ARRAY) {
+        for (const auto& map : std::span{sizes.via.array.ptr, sizes.via.array.size}) collect(map);
+        // A realization's own directory is named <class>-<instance>; the run's root holds shared
+        // inputs (the seed files) that no realization records, and the checkpoint store.
+        static const std::regex realizationDir{R"(^[A-Za-z_][A-Za-z0-9_]*-\d+$)"};
+        for (const auto& entry : fs::directory_iterator{runDir}) {
+            if (entry.is_directory() && std::regex_match(entry.path().filename().string(), realizationDir)) {
+                dirs.push_back(entry.path());
+            }
+        }
+    } else {
+        collect(sizes);
+        dirs.push_back(runDir);
+    }
+
+    size_t moved = 0;
+    for (const auto& dir : dirs) {
+        for (const auto& entry : fs::directory_iterator{dir}) {
+            const auto name = entry.path().filename().string();
+            if (!entry.is_regular_file() || recorded.contains(name)
+                || !std::regex_match(name, CheckpointManager::s_relevantLogFilePattern)) {
+                continue;
+            }
+            fs::rename(entry.path(), dir / fmt::format("{}.superseded-{}", name, ckptTimestamp));
+            ++moved;
+        }
+    }
+    if (moved) {
+        fmt::println("  set aside {} log file(s) written after the checkpoint, as *.superseded-{}",
+            moved, ckptTimestamp);
+    }
+    return moved;
 }
 
 //-------------------------------------------------------------------------
@@ -571,7 +660,13 @@ void setupUsingCkptData(
     if (!logFileSizesObj) {
         throw taosim::checkpoint::CheckpointError{msgpackMapKeysToString(commonObj)};
     }
-    setupLogFiles(*logFileSizesObj, simuMngr->logDir());
+    const auto ckptTimestamp = taosim::serialization::msgpackFindMap<uint64_t>(commonObj, "timestamp");
+    if (!ckptTimestamp) {
+        throw taosim::checkpoint::CheckpointError{msgpackMapKeysToString(commonObj)};
+    }
+    restoreLogFileSizes(
+        *logFileSizesObj, simuMngr->logDir(),
+        simulationOffset(*simuMngr->simulations().front(), *ckptTimestamp));
 
     for (auto&& simu : simuMngr->simulations()) {
         simu->state() = taosim::simulation::SimulationState::STARTED;
@@ -602,9 +697,15 @@ void setupUsingCkptDataMultiAsset(
     if (!logFileSizesObj || logFileSizesObj->get().type != msgpack::type::ARRAY) {
         throw taosim::checkpoint::CheckpointError{msgpackMapKeysToString(commonObj)};
     }
+    const auto ckptTimestamp = taosim::serialization::msgpackFindMap<uint64_t>(commonObj, "timestamp");
+    if (!ckptTimestamp) {
+        throw taosim::checkpoint::CheckpointError{msgpackMapKeysToString(commonObj)};
+    }
     const auto& perRealization = logFileSizesObj->get().via.array;
     for (size_t idx = 0; idx < simulations.size() && idx < perRealization.size; ++idx) {
-        setupLogFiles(perRealization.ptr[idx], simulations[idx]->logDir());
+        restoreLogFileSizes(
+            perRealization.ptr[idx], simulations[idx]->logDir(),
+            simulationOffset(*simulations[idx], *ckptTimestamp));
     }
 
     for (auto&& simu : simulations) {

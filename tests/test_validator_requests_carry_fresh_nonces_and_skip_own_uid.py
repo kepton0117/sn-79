@@ -190,7 +190,7 @@ def test_each_signature_covers_the_nonce_and_uuid_the_request_carries(monkeypatc
 
 # ── query_miners never queries the validator's own uid or hotkey ──────────────
 
-def _axon(hotkey, ip="10.0.0.1", port=8091):
+def _axon(hotkey, ip="203.0.113.1", port=8091):
     return {"hotkey": hotkey, "coldkey": "ck", "ip": ip, "port": port, "ip_type": 4, "protocol": 4}
 
 
@@ -199,7 +199,7 @@ def test_queryable_axons_skip_own_uid_and_own_hotkey():
         _axon(VALIDATOR_HOTKEY, ip="156.155.10.180"),  # uid 0: this validator
         _axon("5Other", ip="0.0.0.0"),  # uid 1: not served
         _axon(MINER_HOTKEY),  # uid 2: a miner
-        _axon(VALIDATOR_HOTKEY, ip="10.0.0.9"),  # uid 3: own hotkey again
+        _axon(VALIDATOR_HOTKEY, ip="203.0.113.9"),  # uid 3: own hotkey again
     ]
     picked = q._queryable_axons(axons, own_uid=0, own_hotkey=VALIDATOR_HOTKEY)
     assert [uid for uid, _a in picked] == [2]

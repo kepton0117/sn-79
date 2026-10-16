@@ -2223,8 +2223,8 @@ if __name__ != "__mp_main__":
                         'pnl_weight': self.config.scoring.pnl.weight,
                         'pnl_lookback': getattr(self.config.scoring.pnl, 'lookback', self.config.scoring.kappa.lookback),
                         'gentrx_simulation_share': getattr(getattr(self.config.scoring, 'gentrx', None), 'simulation_share', 0.0) or 0.0,
-                        'pnl_normalization_min_daily_return': self.config.scoring.pnl.min_daily_return,
-                        'pnl_normalization_max_daily_return': self.config.scoring.pnl.max_daily_return,
+                        'pnl_normalization_min_daily_return': self.config.scoring.pnl.normalization.min_daily_return,
+                        'pnl_normalization_max_daily_return': self.config.scoring.pnl.normalization.max_daily_return,
                         'activity_impact': self.config.scoring.activity.impact,
                         'activity_trade_volume_sampling_interval': self.config.scoring.activity.trade_volume_sampling_interval,
                         'activity_trade_volume_assessment_period': self.config.scoring.activity.trade_volume_assessment_period,
@@ -2248,6 +2248,9 @@ if __name__ != "__mp_main__":
                         'debeta_class_weights': str(getattr(getattr(self.config.scoring, 'debeta', None), 'class_weights', '') or ''),
                         'debeta_skill_min_books_share': getattr(getattr(self.config.scoring, 'debeta', None), 'skill_min_books_share', 0.0),
                         'debeta_skill_hurdle_bps': getattr(getattr(self.config.scoring, 'debeta', None), 'skill_hurdle_bps', 0.0),
+                        'debeta_making_fee_weight': float(getattr(getattr(self.config.scoring, 'debeta', None), 'making_fee_weight', 0.0) or 0.0),
+                        'debeta_capture_market_votes': int(getattr(getattr(self.config.scoring, 'debeta', None), 'capture_market_votes', 0) or 0),
+                        'debeta_skill_share_ema': int(getattr(getattr(self.config.scoring, 'debeta', None), 'skill_share_ema', 0) or 0),
                     }
                 }
             }

@@ -1,7 +1,9 @@
-"""The validator publishes the scoring dials that decide 0.6.3 pay in its reporting config (neuron_info), so the
-dashboards' Scoring Config table can show them: the making basis and its horizon, the tether multiple, the class
-weights, the skill bar share and the skill hurdle. The whitelist is hand-built in the validator's report payload, so
-a dial missing from it never reaches a dashboard however it is set."""
+"""The validator publishes the scoring dials that decide 0.6.3 and 0.6.4 pay in its reporting config (neuron_info), so
+the dashboards' Scoring Config table can show them: the making basis and its horizon, the tether multiple, the class
+weights, the skill bar share and the skill hurdle, and from 0.6.4 the making fee weight, the capture market votes
+switch and the skill share EMA switch. The whitelist is hand-built in the validator's report payload, so a dial
+missing from it never reaches a dashboard however it is set. The PnL Score's daily-return bounds are published from
+the dials the PnL Score reads, scoring.pnl.normalization, not from a path the config does not carry."""
 import argparse
 import ast
 import pathlib
@@ -15,6 +17,9 @@ EXPECTED = {
     "debeta_class_weights": "books",
     "debeta_skill_min_books_share": 0.15625,
     "debeta_skill_hurdle_bps": 2.3,
+    "debeta_making_fee_weight": 0.005,
+    "debeta_capture_market_votes": 0,
+    "debeta_skill_share_ema": 0,
 }
 
 
@@ -70,3 +75,11 @@ def test_an_older_config_without_the_dials_still_publishes():
     for key in EXPECTED:
         value = eval(compile(ast.Expression(entries[key]), str(SRC), "eval"), {}, {"self": self})
         assert isinstance(value, (str, int, float)), (key, value)
+
+
+def test_the_pnl_return_bounds_are_published_from_the_dials_the_pnl_score_reads():
+    entries = _reporting_scoring_dict()
+    self = SimpleNamespace(config=_shipped_config())
+    for key, want in (("pnl_normalization_min_daily_return", -1.0), ("pnl_normalization_max_daily_return", 1.0)):
+        value = eval(compile(ast.Expression(entries[key]), str(SRC), "eval"), {}, {"self": self})
+        assert value == want, (key, value, want)

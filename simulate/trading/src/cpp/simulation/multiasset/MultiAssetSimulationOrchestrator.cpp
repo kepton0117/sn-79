@@ -193,23 +193,25 @@ void publishState(Impl& impl)
     std::memcpy(reqRegion.get_address(), stream.data(), stream.size());
     wall.tState = StepWallClock::clock::now();
 
-    retry:
-    const size_t packedSize = stream.size();
-    // Drain both queues before sending: a reply left in the response queue (by a validator
-    // that answered a previous engine, or a late answer to a resent state) would otherwise be
-    // read as the answer to this state, and every later reply would pair one state late.
-    if (!ipc::sendFreshRequest(*impl.validatorReqQueue, *impl.validatorResQueue,
-            std::span<const char>{std::bit_cast<const char*>(&packedSize), sizeof(packedSize)})) {
-        fmt::println("Sending to /{} timed out, retrying...",
-            SimulationManager::s_validatorReqMessageQueueName);
-        goto retry;
-    }
-    size_t resByteSize;
-    if (impl.validatorResQueue->receive(
-            std::span<char>{std::bit_cast<char*>(&resByteSize), sizeof(resByteSize)}) == -1) {
-        fmt::println("Receive from /{} timed out, retrying...",
-            SimulationManager::s_validatorResMessageQueueName);
-        goto retry;
+    // Both queues are drained before each send: a reply left in the response queue (by a validator
+    // that answered a previous engine, or a late answer to a resent state) would otherwise be read
+    // as the answer to this state, and every later reply would pair one state late.
+    //
+    // A STOP IS HONOURED WHILE NO VALIDATOR ANSWERS. A stop is acted on at the step's barrier, after
+    // this wait, and a validator that has stopped never answers, so without this the engine waits
+    // here until it is killed and writes no shutdown checkpoint. The step then goes unanswered.
+    const auto resByteSize = ipc::sendAndAwaitReply(
+        *impl.validatorReqQueue, *impl.validatorResQueue, stream.size(),
+        [] { return stopRequested(); },
+        [](std::string_view what) {
+            fmt::println("{} /{} timed out, retrying...",
+                what == "send" ? "Sending to" : "Receive from",
+                what == "send" ? SimulationManager::s_validatorReqMessageQueueName
+                               : SimulationManager::s_validatorResMessageQueueName);
+        });
+    if (!resByteSize) {
+        fmt::println("Stop requested while waiting for the validator; this step goes unanswered");
+        return;
     }
 
     bipc::shared_memory_object shmRes{
@@ -218,7 +220,7 @@ void publishState(Impl& impl)
 
     msgpack::object_handle oh;
     try {
-        oh = msgpack::unpack(std::bit_cast<const char*>(resRegion.get_address()), resByteSize);
+        oh = msgpack::unpack(std::bit_cast<const char*>(resRegion.get_address()), *resByteSize);
     } catch (const std::exception& e) {
         fmt::println("Error unpacking validator responses: {}", e.what());
         return;
@@ -582,6 +584,9 @@ std::unique_ptr<MultiAssetSimulationOrchestrator> MultiAssetSimulationOrchestrat
     }
 
     fmt::println("Checkpoint loaded successfully; initializing realizations...");
+
+    // Before fromConfig: the realizations' loggers open their current files as they are built.
+    checkpoint::setAsideLogsWrittenAfter(runDir, commonObj, *ckptTimestamp);
 
     // runDir is the run root (baseDir/<id>); pass its parent so fromConfig rebuilds the
     // SAME run root from the persisted 'id' (matching the single-config restore).

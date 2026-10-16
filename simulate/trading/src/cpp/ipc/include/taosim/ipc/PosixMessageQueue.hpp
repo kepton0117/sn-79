@@ -11,8 +11,10 @@ extern "C" {
 }
 
 #include <cerrno>
+#include <chrono>
 #include <cstdint>
 #include <cstring>
+#include <functional>
 #include <optional>
 #include <span>
 #include <string>
@@ -53,6 +55,10 @@ public:
     bool send(std::span<const char> msg, uint32_t priority = {}) noexcept;
     ptrdiff_t receive(std::span<char> msg, uint32_t* priority = {}) noexcept;
     ptrdiff_t blockingReceive(std::span<char> msg, uint32_t* priority = {}) noexcept;
+    ptrdiff_t receiveFor(
+        std::span<char> msg, std::chrono::nanoseconds timeout, uint32_t* priority = {}) noexcept;
+
+    [[nodiscard]] std::optional<size_t> timeout() const noexcept { return m_desc.timeout; }
 
     void flush() noexcept;
 
@@ -70,6 +76,18 @@ private:
 // this request. Call it only before a send, never between a send and its receive.
 bool sendFreshRequest(
     PosixMessageQueue& req, PosixMessageQueue& res, std::span<const char> msg) noexcept;
+
+// Sends `request` with sendFreshRequest and waits for the size_t reply, sending it again after every
+// full timeout of the response queue without one. The wait is cut into slices and `abandon` is asked
+// between them, so a caller that is stopping is not held by a peer that will never answer; the result
+// is then nullopt. `onRetry` is told "send" or "receive" whenever the request goes out again.
+std::optional<size_t> sendAndAwaitReply(
+    PosixMessageQueue& req,
+    PosixMessageQueue& res,
+    size_t request,
+    const std::function<bool()>& abandon,
+    const std::function<void(std::string_view)>& onRetry = {},
+    std::chrono::nanoseconds slice = std::chrono::milliseconds{200});
 
 //-------------------------------------------------------------------------
 

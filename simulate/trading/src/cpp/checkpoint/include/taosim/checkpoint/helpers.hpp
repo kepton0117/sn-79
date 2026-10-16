@@ -7,6 +7,8 @@
 #include <taosim/checkpoint/CheckpointToken.hpp>
 #include <taosim/serialization/msgpack/common.hpp>
 
+#include <chrono>
+#include <cstdint>
 #include <filesystem>
 #include <functional>
 #include <memory>
@@ -87,6 +89,22 @@ void setupUsingCkptDataMultiAsset(
     CheckpointManager* checkpointManager,
     const msgpack::object& commonObj,
     std::span<msgpack::object_handle> blockObjHandles);
+
+// Cuts each log file a checkpoint recorded back to its recorded size, so the resumed run continues
+// each file from the checkpoint's instant. A recorded file that is no longer on disk is left alone
+// when its window had closed by the checkpoint (`ckptOffset`, in the simulation's own time): the run
+// packs a closed window into its archive whole. A missing file of a window still open at the
+// checkpoint, or one whose name carries no window, stops the restore.
+void restoreLogFileSizes(
+    const msgpack::object& sizes, const std::filesystem::path& logDir, std::chrono::seconds ckptOffset);
+
+// Renames every log file the checkpoint does not record out of the log file pattern, so neither the
+// resumed run nor its next checkpoint takes it for its own. Those files were written after the
+// checkpoint by the stretch the resume replaces, and the file sinks append, so the resumed run would
+// otherwise extend them. Call before the resumed run's loggers open their files. Looks in each
+// realization's directory for a multi-asset run and at the run's root otherwise. Returns the count.
+size_t setAsideLogsWrittenAfter(
+    const std::filesystem::path& runDir, const msgpack::object& commonObj, uint64_t ckptTimestamp);
 
 // Re-link the shared-quote topology a msgpack restore severs: one quote Balance per
 // account and one order-id + trade-id counter across the exchange's books (each is

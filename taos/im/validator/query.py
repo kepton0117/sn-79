@@ -334,6 +334,7 @@ class QueryService:
                         for book_id in effective_book_ids
                     }
 
+            checked = set()
             for uid, synapse in synapses.items():
                 if uid in deregistered_uids:
                     continue
@@ -428,10 +429,16 @@ class QueryService:
                     )
                 
                 synapse.response.instructions = valid_instructions
+                checked.add(uid)
                 if valid_instructions:
                     total_responses += 1
                     total_instructions += len(valid_instructions)
-            
+
+            # Instructions reach the engine only through the checks above.
+            for uid, synapse in synapses.items():
+                if uid not in checked and getattr(synapse, 'response', None) is not None:
+                    synapse.response.instructions = []
+
             return total_responses, total_instructions, success, timeouts, failures
         finally:
             gc.enable()

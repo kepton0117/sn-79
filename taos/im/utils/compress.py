@@ -314,6 +314,7 @@ def compress_batch(axon_synapses: dict, batch, compressed_books: str, level: int
             "books": compressed_books,
             "payload": compress(payload, level=level, engine=engine, version=version),
         }
+        axon_synapses[uid].compression_engine = engine
     return axon_synapses
 
 def batch_compress(

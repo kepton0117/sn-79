@@ -45,8 +45,8 @@ def test_the_default_bind_is_every_interface():
 
 
 def test_a_host_can_bind_one_interface():
-    opts = metrics_server_options(_config(["--prometheus.host", "10.0.0.7", "--prometheus.port", "9091"]))
-    assert opts["host"] == "10.0.0.7"
+    opts = metrics_server_options(_config(["--prometheus.host", "203.0.113.7", "--prometheus.port", "9091"]))
+    assert opts["host"] == "203.0.113.7"
     assert opts["port"] == 9091
 
 
@@ -70,7 +70,7 @@ def test_the_reporting_child_accepts_the_host():
     from taos.im.validator.report import build_parser
 
     assert bt.Config(build_parser(), args=[]).prometheus.host == "0.0.0.0"
-    assert bt.Config(build_parser(), args=["--prometheus.host", "10.0.0.7"]).prometheus.host == "10.0.0.7"
+    assert bt.Config(build_parser(), args=["--prometheus.host", "203.0.113.7"]).prometheus.host == "203.0.113.7"
 
 
 def test_the_validator_forwards_the_host_to_the_reporting_child():

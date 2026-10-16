@@ -482,26 +482,29 @@ void SimulationManager::publishStateMessagePack()
             total.count(), parse.count(), proc.count(), state.count());
     }
 
-    retryMessagePack:
-
-    const size_t packedSize = stream.size();
-    // Drain both queues before sending: a reply left in the response queue (by a validator
-    // that answered a previous engine, or a late answer to a resent state) would otherwise be
-    // read as the answer to this state, and every later reply would pair one state late.
-    const bool mqSendSuccess = ipc::sendFreshRequest(
-        *m_validatorReqMessageQueue, *m_validatorResMessageQueue,
-        std::span<const char>{std::bit_cast<const char*>(&packedSize), sizeof(packedSize)});
-    if (!mqSendSuccess) {
-        fmt::println("Sending to /{} timed out, flushing and retrying...", s_validatorReqMessageQueueName);
-        goto retryMessagePack;
-    }
-
-    size_t resByteSize;
-    const bool mqRecvSuccess = m_validatorResMessageQueue->receive(
-        std::span<char>{std::bit_cast<char*>(&resByteSize), sizeof(resByteSize)}) != -1;
-    if (!mqRecvSuccess) {
-        fmt::println("Receive from /{} timed out, flushing and retrying...", s_validatorResMessageQueueName);
-        goto retryMessagePack;
+    // Both queues are drained before each send: a reply left in the response queue (by a validator
+    // that answered a previous engine, or a late answer to a resent state) would otherwise be read
+    // as the answer to this state, and every later reply would pair one state late.
+    //
+    // A STOP IS HONOURED WHILE NO VALIDATOR ANSWERS. A stop is acted on once the step completes,
+    // after this wait, and a validator that has stopped never answers, so without this the engine
+    // waits here until it is killed and writes no shutdown checkpoint. The step then goes unanswered.
+    const auto resByteSize = ipc::sendAndAwaitReply(
+        *m_validatorReqMessageQueue, *m_validatorResMessageQueue, stream.size(),
+        [] { return stopRequested(); },
+        [](std::string_view what) {
+            fmt::println("{} /{} timed out, flushing and retrying...",
+                what == "send" ? "Sending to" : "Receive from",
+                what == "send" ? s_validatorReqMessageQueueName : s_validatorResMessageQueueName);
+        });
+    if (!resByteSize) {
+        fmt::println("Stop requested while waiting for the validator; this step goes unanswered");
+        if (m_measureStepWallClockTime) {
+            const auto t = getTime();
+            m_measurements.t1parse = t;
+            m_measurements.t0proc = t;
+        }
+        return;
     }
 
     if (m_measureStepWallClockTime) {
@@ -518,7 +521,7 @@ void SimulationManager::publishStateMessagePack()
 
     msgpack::object_handle oh;
     try {
-        oh = msgpack::unpack(std::bit_cast<const char*>(resRegion.get_address()), resByteSize);
+        oh = msgpack::unpack(std::bit_cast<const char*>(resRegion.get_address()), *resByteSize);
     }
     catch (const std::exception& e) {
         fmt::println("Error unpacking responses: {}", e.what());
@@ -918,6 +921,9 @@ std::unique_ptr<SimulationManager> SimulationManager::fromCheckpoint(
     if (!ckptTimestamp) {
         throw checkpoint::CheckpointError{};
     }
+
+    // Before fromConfig: the simulation's loggers open their current files as they are built.
+    checkpoint::setAsideLogsWrittenAfter(runDir, commonObj, *ckptTimestamp);
 
     pugi::xml_document doc;
     if (pugi::xml_parse_result result = doc.load_file(configPath.c_str()); !result) {

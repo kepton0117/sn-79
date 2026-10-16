@@ -35,8 +35,8 @@ def test_the_default_bind_is_loopback():
 
 
 def test_a_deployment_can_name_another_address_and_port():
-    opts = api_server_options(_config(["--api.host", "10.0.0.7", "--port", "8001"]))
-    assert opts["host"] == "10.0.0.7"
+    opts = api_server_options(_config(["--api.host", "203.0.113.7", "--port", "8001"]))
+    assert opts["host"] == "203.0.113.7"
     assert opts["port"] == 8001
 
 

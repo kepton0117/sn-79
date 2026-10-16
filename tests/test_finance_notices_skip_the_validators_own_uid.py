@@ -16,7 +16,7 @@ from taos.im.validator.forward import notify
 OWN_HOTKEY = "5Ebq3nnVj2YAyznQsFDJJSmyoYGV7sx5boXqXv9go4rNrT3G"
 
 
-def _axon(hotkey, ip="10.0.0.1"):
+def _axon(hotkey, ip="203.0.113.1"):
     return SimpleNamespace(hotkey=hotkey, ip=ip)
 
 

@@ -8,6 +8,10 @@
 
 #include <fmt/format.h>
 
+#include <algorithm>
+#include <bit>
+#include <thread>
+
 #include <source_location>
 #include <stdexcept>
 #include <vector>
@@ -89,6 +93,15 @@ ptrdiff_t PosixMessageQueue::blockingReceive(std::span<char> msg, uint32_t* prio
 
 //-------------------------------------------------------------------------
 
+ptrdiff_t PosixMessageQueue::receiveFor(
+    std::span<char> msg, std::chrono::nanoseconds timeout, uint32_t* priority) noexcept
+{
+    const timespec ts = makeTimespec(static_cast<size_t>(std::max<int64_t>(timeout.count(), 0)));
+    return mq_timedreceive(m_handle, msg.data(), msg.size(), priority, &ts);
+}
+
+//-------------------------------------------------------------------------
+
 void PosixMessageQueue::flush() noexcept
 {
     // Drain every pending message without blocking, so a freshly-started
@@ -120,6 +133,47 @@ bool sendFreshRequest(
     req.flush();
     res.flush();
     return req.send(msg);
+}
+
+//-------------------------------------------------------------------------
+
+std::optional<size_t> sendAndAwaitReply(
+    PosixMessageQueue& req,
+    PosixMessageQueue& res,
+    size_t request,
+    const std::function<bool()>& abandon,
+    const std::function<void(std::string_view)>& onRetry,
+    std::chrono::nanoseconds slice)
+{
+    using clock = std::chrono::steady_clock;
+    const auto fullWait = res.timeout()
+        ? std::optional{std::chrono::nanoseconds{static_cast<std::chrono::nanoseconds::rep>(*res.timeout())}}
+        : std::nullopt;
+    const std::span<const char> out{std::bit_cast<const char*>(&request), sizeof(request)};
+    while (!abandon()) {
+        if (!sendFreshRequest(req, res, out)) {
+            if (onRetry) onRetry("send");
+            continue;
+        }
+        const auto deadline = fullWait ? std::optional{clock::now() + *fullWait} : std::nullopt;
+        size_t reply{};
+        for (;;) {
+            if (abandon()) return std::nullopt;
+            auto wait = slice;
+            if (deadline) {
+                const auto left = std::chrono::duration_cast<std::chrono::nanoseconds>(*deadline - clock::now());
+                if (left <= std::chrono::nanoseconds::zero()) break;
+                wait = std::min(slice, left);
+            }
+            if (res.receiveFor(std::span<char>{std::bit_cast<char*>(&reply), sizeof(reply)}, wait) != -1) {
+                return reply;
+            }
+            // A failure other than the slice running out returns at once; pace it like a timeout.
+            if (errno != ETIMEDOUT) std::this_thread::sleep_for(wait);
+        }
+        if (onRetry) onRetry("receive");
+    }
+    return std::nullopt;
 }
 
 //-------------------------------------------------------------------------
