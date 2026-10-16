@@ -18,8 +18,25 @@ from taos.im.validator.debeta import (
     prune_hist_2level, prune_hist_1level, shift_hist_2level, shift_hist_1level,
 )
 
-# De-beta making: half-window (in trades) for the non-lagging centered mid used for spread capture.
+# De-beta making: default half-window (in trades) for the non-lagging centered mid used for
+# spread capture. Live capture reads --scoring.debeta.centered_window; this constant is the
+# default and the fallback for callers without a validator config (tests, offline agents).
 CAPTURE_W = 15
+
+
+def _centered_window(self):
+    """Half-window (in trades) for the non-lagging centered mid used for spread capture.
+
+    Reads --scoring.debeta.centered_window. Falls back to CAPTURE_W when the flag is missing
+    or unreadable. A non-positive value is treated as missing (a zero-width window is not a
+    centered mid).
+    """
+    try:
+        cfg = getattr(getattr(getattr(self, 'config', None), 'scoring', None), 'debeta', None)
+        w = int(getattr(cfg, 'centered_window', CAPTURE_W) or CAPTURE_W)
+    except (TypeError, ValueError, AttributeError):
+        return CAPTURE_W
+    return max(1, w)
 
 
 def _min_order_size(self, book_id):
@@ -588,6 +605,8 @@ def update_trade_volumes(self: Validator, state: MarketSimulationStateUpdate):
         _fee_w = float(getattr(_debeta_cfg, 'making_fee_weight', 0.0) or 0.0)
         # capture mid votes (0.6.4): 1 lets only background-sided prints vote in a fill's capture mid
         _market_votes = bool(int(getattr(_debeta_cfg, 'capture_market_votes', 0) or 0))
+        # capture half-window (0.6.5): the flag already existed and was published; capture used CAPTURE_W
+        _capture_w = _centered_window(self)
         if not hasattr(self, 'debeta_cp'):
             self.debeta_cp = {}  # {maker_uid: {taker_uid: vol}} for P11 (running sum)
             self.debeta_cpc = {}  # {class: {maker_uid: {taker_uid: vol}}}: the same rows per asset class
@@ -618,7 +637,7 @@ def update_trade_volumes(self: Validator, state: MarketSimulationStateUpdate):
             de_trades = _et_batches.get(bookId, []) if _debeta_exchange else trades
             if de_trades:
                 accumulate_book_capture(
-                    self.capture_buy_sums, self.capture_sell_sums, bookId, de_trades, CAPTURE_W,
+                    self.capture_buy_sums, self.capture_sell_sums, bookId, de_trades, _capture_w,
                     buy_hist=self.debeta_capbuy_hist, sell_hist=self.debeta_capsell_hist,
                     ts=sampled_timestamp, mid_state=self.debeta_capture_mid,
                     real_buy_sums=self.realized_buy_sums, real_sell_sums=self.realized_sell_sums,
@@ -664,7 +683,7 @@ def update_trade_volumes(self: Validator, state: MarketSimulationStateUpdate):
     # forward window, then finalizes truncated).
     if _debeta_on and getattr(self, 'debeta_capture_mid', None):
         flush_capture_state(self.debeta_capture_mid, self.capture_buy_sums, self.capture_sell_sums,
-                            CAPTURE_W, buy_hist=self.debeta_capbuy_hist,
+                            _capture_w, buy_hist=self.debeta_capbuy_hist,
                             sell_hist=self.debeta_capsell_hist, ts=sampled_timestamp,
                             real_buy_sums=self.realized_buy_sums, real_sell_sums=self.realized_sell_sums,
                             real_buy_hist=self.debeta_realbuy_hist, real_sell_hist=self.debeta_realsell_hist,
@@ -1025,7 +1044,7 @@ def shift_simulation_histories(
         # histories); the mid window must never span the boundary price jump, so the stream resets.
         if getattr(self, 'debeta_capture_mid', None):
             flush_capture_state(self.debeta_capture_mid, self.capture_buy_sums, self.capture_sell_sums,
-                                CAPTURE_W, buy_hist=self.debeta_capbuy_hist,
+                                _centered_window(self), buy_hist=self.debeta_capbuy_hist,
                                 sell_hist=self.debeta_capsell_hist, ts=old_ts, force=True,
                                 real_buy_sums=getattr(self, 'realized_buy_sums', None), real_sell_sums=getattr(self, 'realized_sell_sums', None),
                                 real_buy_hist=getattr(self, 'debeta_realbuy_hist', None), real_sell_hist=getattr(self, 'debeta_realsell_hist', None),
